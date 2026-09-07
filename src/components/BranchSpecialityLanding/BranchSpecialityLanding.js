@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import HeroSection from './HeroSection';
 import TreatmentsSection from './TreatmentsSection';
 import ConditionsTreatedSection from './ConditionsTreatedSection';
@@ -10,6 +11,7 @@ import CONFIG from '@/config';
 import Head from 'next/head';
 
 const BranchSpecialityLanding = ({ location, speciality }) => {
+    const router = useRouter();
     const [pageData, setPageData] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -44,6 +46,12 @@ const BranchSpecialityLanding = ({ location, speciality }) => {
         fetchData();
     }, [location, speciality]);
 
+    useEffect(() => {
+        if (!loading && !pageData) {
+            router.replace("/");
+        }
+    }, [loading, pageData, router]);
+
     if (loading) {
         return (
             <div className="w-full min-h-[60vh] flex flex-col items-center justify-center bg-gray-50">
@@ -54,11 +62,7 @@ const BranchSpecialityLanding = ({ location, speciality }) => {
     }
 
     if (!pageData) {
-        return (
-            <div className="w-full min-h-[60vh] flex items-center justify-center bg-gray-50">
-                <p className="text-xl text-gray-500 font-semibold font-['Poppins']">Specialty page data not found.</p>
-            </div>
-        );
+        return null;
     }
 
     // Default to the provided structure from the API

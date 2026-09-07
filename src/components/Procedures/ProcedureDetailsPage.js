@@ -43,6 +43,12 @@ export default function ProcedureDetailsPage({ url }) {
         fetchData();
     }, [url]);
 
+    useEffect(() => {
+        if (!loading && (!data || !data.pHeroSection)) {
+            router.replace("/");
+        }
+    }, [loading, data, router]);
+
     if (loading) {
         return (
             <div className="flex flex-row justify-center items-center mt-20 mb-4 gap-2">
@@ -55,7 +61,7 @@ export default function ProcedureDetailsPage({ url }) {
     }
 
     if (!data || !data.pHeroSection) {
-        return <p className="text-center mt-14 font-inter p-4 text-lg text-pink-700 font-semibold">No Data Found!</p>;
+        return null;
     }
 
     const { pHeroSection, WhatIsProcedure: whatIsProcedureData, whyIsProcedureNeeded, conditionsTreated, symptoms, risksAvoided, typesOfProcedure, howIsProcedurePerformed, pDuration, benefits, recovery, whyChoose, takeCharge, faqs } = data;

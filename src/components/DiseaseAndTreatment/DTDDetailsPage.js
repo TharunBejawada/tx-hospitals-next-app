@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import CONFIG from "@/config";
 import DTHeroSection from "@/components/DiseaseAndTreatment/DTHeroSection";
 import DTAppointmentForm from "@/components/DiseaseAndTreatment/DTAppointmentForm";
@@ -20,6 +21,7 @@ import TakeFirstStepDT from "@/components/DiseaseAndTreatment/TakeFirstStepDT";
 import FAQDT from "@/components/DiseaseAndTreatment/FAQDT";
 
 export default function DTDDetailsPage({ url }) {
+    const router = useRouter();
 
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState(null);
@@ -44,6 +46,12 @@ export default function DTDDetailsPage({ url }) {
         fetchData();
     }, [url]);
 
+    useEffect(() => {
+        if (!loading && !data) {
+            router.replace("/");
+        }
+    }, [loading, data, router]);
+
     if (loading) {
         return (
             <div className="flex flex-row justify-center items-center mt-20 mb-4 gap-2">
@@ -56,7 +64,7 @@ export default function DTDDetailsPage({ url }) {
     }
 
     if (!data) {
-        return <p className="text-center mt-14 font-inter p-4 text-lg text-pink-700 font-semibold">No Data Found!</p>;
+        return null;
     }
 
     return (

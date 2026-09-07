@@ -58,6 +58,12 @@ export default function RoboticProcedureDetailPage() {
         fetchData();
     }, [router.isReady, router.asPath]);
 
+    useEffect(() => {
+        if (!loading && (error || !data)) {
+            router.replace("/");
+        }
+    }, [loading, error, data, router]);
+
     if (loading) {
         return (
             <SecondaryLayout>
@@ -69,15 +75,7 @@ export default function RoboticProcedureDetailPage() {
     }
 
     if (error || !data) {
-        return (
-            <SecondaryLayout>
-                <div className="text-center py-20">
-                    <h1 className="text-2xl font-bold text-gray-800">
-                        {error || "Procedure Not Found"}
-                    </h1>
-                </div>
-            </SecondaryLayout>
-        );
+        return null;
     }
 
     return (
