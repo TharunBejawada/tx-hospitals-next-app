@@ -21,10 +21,25 @@ export default function ContactUs() {
     const [selectedLocation, setSelectedLocation] = useState(locations[0]);
 
     useEffect(() => {
+        if (!router.isReady) return;
+
         if (locationName) {
-            setSelectedLocation(getLocationBySlug(locationName));
+            const isBracket = locationName.includes('[') || locationName.includes(']');
+            const matched = locations.find(loc => loc.slug === locationName);
+
+            if (isBracket || !matched) {
+                const defaultLoc = locations[0];
+                setSelectedLocation(defaultLoc);
+                router.replace(`/contact-us/${defaultLoc.slug}/`);
+            } else {
+                setSelectedLocation(matched);
+            }
+        } else {
+            const defaultLoc = locations[0];
+            setSelectedLocation(defaultLoc);
+            router.replace(`/contact-us/${defaultLoc.slug}/`);
         }
-    }, [locationName]);
+    }, [locationName, router.isReady]);
 
     const handleLocationChange = (loc) => {
         router.push(`/contact-us/${loc.slug}/`);

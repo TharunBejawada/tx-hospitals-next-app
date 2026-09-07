@@ -28,6 +28,11 @@ export default function UniversalPage() {
     useEffect(() => {
         if (!url) return;
 
+        if (url.includes('[') || url.includes(']')) {
+            router.replace("/");
+            return;
+        }
+
         const fetchData = async () => {
             try {
                 // 1. FAST PATH: Check local storage hint for instant resolution
@@ -121,17 +126,23 @@ export default function UniversalPage() {
                     return;
                 }
 
-                setType("404");
-                setLoading(false);
+                router.replace("/");
+                return;
             } catch (err) {
                 console.error("Universal Error:", err);
-                setType("404");
-                setLoading(false);
+                router.replace("/");
+                return;
             }
         };
 
         fetchData();
     }, [url]);
+
+    useEffect(() => {
+        if (type === "404") {
+            router.replace("/");
+        }
+    }, [type, router]);
 
     /* Loading state */
     if (loading) {
@@ -174,12 +185,6 @@ export default function UniversalPage() {
         );
     }
 
-    /* 404 PAGE */
-    return (
-        <SecondaryLayout>
-            <div className="mt-14 text-center text-pink-700">
-                404 - Page Not Found
-            </div>
-        </SecondaryLayout>
-    );
+    /* 404 / REDIRECT TO HOME */
+    return null;
 }
