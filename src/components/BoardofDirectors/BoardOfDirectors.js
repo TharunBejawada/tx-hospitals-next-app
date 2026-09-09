@@ -60,9 +60,9 @@ of TX Hospitals.`,
     return (
         <section className="bg-[#f3f3f3] py-12">
             <div className="max-w-6xl mx-auto px-4 text-center">
-                <h2 className="text-3xl md:text-4xl font-bold text-[#a32035] mb-8">
+                <h1 className="text-3xl md:text-4xl font-bold text-[#a32035] mb-8">
                     Board of Directors
-                </h2>
+                </h1>
 
                 <div className="flex flex-col gap-8">
                     {directors.map((director, index) => (

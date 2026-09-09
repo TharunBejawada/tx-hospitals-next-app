@@ -73,7 +73,7 @@ export default function ContactUs() {
             </Head>
             {isMobile ? (
                 <>
-                    <div className="text-3xl font-inter text-center font-bold -mt-5">Contact Us</div>
+                    <h1 className="text-3xl font-inter text-center font-bold -mt-5">Contact Us</h1>
                     <div className="grid grid-cols-2 gap-2 font-inter p-2">
                         {locations.map((loc) => (
                             <div
@@ -134,7 +134,7 @@ export default function ContactUs() {
                 <div className="mt-4 px-10 font-inter">
                     <div className="flex h-auto bg-gray-100">
                         <div className="w-1/4 bg-white shadow-lg p-4">
-                            <div className="text-3xl font-bold mb-4">Contact Us</div>
+                            <h1 className="text-3xl font-bold mb-4">Contact Us</h1>
                             <ul>
                                 {locations.map((loc) => (
                                     <li

@@ -25,7 +25,7 @@ export default function FAQs() {
             <SecondaryLayout>
                 {isMobile ? (
                     <div className="-mt-6 font-inter mb-2">
-                        <h2 className="text-xl p-1 font-bold text-pink-700">FAQs</h2>
+                        <h1 className="text-xl p-1 font-bold text-pink-700">FAQs</h1>
                         <FAQSchema faqs={faqs} />
                         <div className="text-gray-700 p-1 leading-relaxed">
                             <div className="space-y-2">
@@ -65,7 +65,7 @@ export default function FAQs() {
                     </div>
                 ) : (
                     <div className="mt-5 px-10 font-inter mb-2">
-                        <h2 className="text-3xl p-2 font-bold text-pink-700">FAQs</h2>
+                        <h1 className="text-3xl p-2 font-bold text-pink-700">FAQs</h1>
                         <FAQSchema faqs={faqs} />
                         <div className="text-gray-700 p-4 leading-relaxed">
                             <div className="space-y-4">
