@@ -60,7 +60,7 @@ const HerniaHero = ({ onBookClick }) => {
                                 onClick={onBookClick}
                                 className="w-full sm:w-auto bg-white text-[#be185d] hover:bg-pink-50 font-extrabold py-4 px-6 md:px-12 rounded-full transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 shadow-xl hover:shadow-2xl text-sm md:text-base lg:text-lg uppercase tracking-wider"
                             >
-                                Get a Free Second Opinion
+                                Get Second Opinion
                             </button>
 
                             <div className="w-full sm:w-auto">

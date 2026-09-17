@@ -34,7 +34,7 @@ const HerniaFinalCTA = ({ onBookClick }) => {
                         onClick={onBookClick}
                         className="w-full sm:w-auto bg-white text-[#be185d] hover:bg-pink-50 font-extrabold py-3 md:py-4 px-6 md:px-12 rounded-full transition-all duration-300 ease-in-out shadow-xl hover:shadow-2xl text-sm md:text-base lg:text-lg uppercase tracking-wider"
                     >
-                        Free Doctor Consultation
+                        Get Doctor Consultation
                     </motion.button>
 
                     <div className="w-full sm:w-auto">

@@ -79,7 +79,7 @@ const HerniaTypes = ({ onBookClick }) => {
                         onClick={onBookClick}
                         className="w-full sm:w-auto bg-[#be185d] hover:bg-[#a2144e] text-white font-extrabold py-4 px-6 md:px-12 rounded-full transition-all shadow-xl text-sm md:text-base lg:text-lg uppercase tracking-wider transform hover:scale-105"
                     >
-                        Free Doctor Consultation
+                        Get Doctor Consultation
                     </button>
 
                     <div className="w-full sm:w-auto">

@@ -105,7 +105,7 @@ const HerniaForm = () => {
                         <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                     ) : (
                         <>
-                            Get a Free Second Opinion
+                            Get Second Opinion
                             <span className="group-hover:translate-x-1 transition-transform">→</span>
                         </>
                     )}
