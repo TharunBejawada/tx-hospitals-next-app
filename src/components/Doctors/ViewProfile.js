@@ -61,7 +61,7 @@ export default function ViewProfile({ doctorData }) {
                             </div>
 
                             <div className="flex-1 w-full text-center">
-                                <h2 className="text-2xl font-bold text-[#b01752]">{doctorData?.name}</h2>
+                                <h1 className="text-2xl font-bold text-[#b01752]">{doctorData?.name}</h1>
                                 <p className="text-black font-bold mt-1 text-sm">{doctorData?.designation}</p>
                                 <p className="text-gray-500 text-sm mt-1 whitespace-pre-line">
                                     {doctorData.qualification}
@@ -179,7 +179,7 @@ export default function ViewProfile({ doctorData }) {
                             </div>
 
                             <div className="flex-1">
-                                <h2 className="text-4xl font-bold text-[#b01752]">{doctorData?.name}</h2>
+                                <h1 className="text-4xl font-bold text-[#b01752]">{doctorData?.name}</h1>
                                 <p className="text-black font-bold mt-2 text-lg">{doctorData?.designation}</p>
                                 <p className="text-gray-500 mt-1 whitespace-pre-line text-sm">
                                     {doctorData.qualification}
