@@ -731,7 +731,7 @@ export default function HospitalNavbar({ variant = "primary", forceSecondary = f
                                     <span>9144514459 / 9963229765</span>
                                 </a>
                                 <button onClick={() => { window.dispatchEvent(new CustomEvent('open-appointment-modal')); setIsMenuOpen(false); }} className="flex items-center justify-center gap-2 w-full py-3 rounded-lg bg-pink-700 text-white font-bold hover:bg-pink-800 transition-colors shadow-md">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <svg xmlns="http://www.w3.org/2000/svg" alt="Image" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                         <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
                                         <line x1="16" y1="2" x2="16" y2="6"></line>
                                         <line x1="8" y1="2" x2="8" y2="6"></line>
@@ -769,7 +769,7 @@ export default function HospitalNavbar({ variant = "primary", forceSecondary = f
                                         className="relative py-12"
                                     >
                                         <a
-                                            href={isSpecialties ? "/specialities" : `#${menu}`}
+                                            href={isSpecialties ? "/specialities/" : `#${menu}`}
                                             className={`${linkClass} cursor-pointer flex items-center gap-1`}
                                             onClick={(e) => {
                                                 if (!isSpecialties) {

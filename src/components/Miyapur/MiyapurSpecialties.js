@@ -55,7 +55,7 @@ const MiyapurSpecialties = () => {
                     <>
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-8">
                             {visibleSpecialties.map((item, index) => {
-                                const path = item?.LandingPageUrl || `/Miyapur/specialities/${item.SpecialityName}`;
+                                const path = item?.LandingPageUrl || `/Miyapur/specialities/${item.SpecialityName}/`;
                                 return (
                                     <div
                                         key={index}

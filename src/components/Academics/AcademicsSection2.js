@@ -14,7 +14,7 @@ const AcademicsSection2 = () => {
                         <header className="flex flex-col gap-4 border-b border-gray-200 bg-gradient-to-r from-pink-700 to-pink-900 px-6 py-5 text-white md:flex-row md:items-center md:justify-between md:px-8">
                             <div className="flex items-start gap-4">
                                 <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-white/15 backdrop-blur">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-stethoscope h-5 w-5" aria-hidden="true">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-stethoscope h-5 w-5" aria-hidden="true" alt="Image">
                                         <path d="M11 2v2"></path>
                                         <path d="M5 2v2"></path>
                                         <path d="M5 3H4a2 2 0 0 0-2 2v4a6 6 0 0 0 12 0V5a2 2 0 0 0-2-2h-1"></path>
@@ -94,7 +94,7 @@ const AcademicsSection2 = () => {
                         <header className="flex flex-col gap-4 border-b border-gray-200 bg-gradient-to-r from-pink-700 to-pink-900 px-6 py-5 text-white md:flex-row md:items-center md:justify-between md:px-8">
                             <div className="flex items-start gap-4">
                                 <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-white/15 backdrop-blur">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-heart-pulse h-5 w-5" aria-hidden="true">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-heart-pulse h-5 w-5" aria-hidden="true" alt="Image">
                                         <path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"></path>
                                         <path d="M3.22 13H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27"></path>
                                     </svg>
@@ -142,7 +142,7 @@ const AcademicsSection2 = () => {
                         <header className="flex flex-col gap-4 border-b border-gray-200 bg-gradient-to-r from-pink-700 to-pink-900 px-6 py-5 text-white md:flex-row md:items-center md:justify-between md:px-8">
                             <div className="flex items-start gap-4">
                                 <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-white/15 backdrop-blur">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-book-open h-5 w-5" aria-hidden="true">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-book-open h-5 w-5" aria-hidden="true" alt="Image">
                                         <path d="M12 7v14"></path>
                                         <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"></path>
                                     </svg>
@@ -182,7 +182,7 @@ const AcademicsSection2 = () => {
                         <header className="flex flex-col gap-4 border-b border-gray-200 bg-gradient-to-r from-pink-700 to-pink-900 px-6 py-5 text-white md:flex-row md:items-center md:justify-between md:px-8">
                             <div className="flex items-start gap-4">
                                 <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-white/15 backdrop-blur">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-award h-5 w-5" aria-hidden="true">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-award h-5 w-5" aria-hidden="true" alt="Image">
                                         <path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"></path>
                                         <circle cx="12" cy="8" r="6"></circle>
                                     </svg>
@@ -246,7 +246,7 @@ const AcademicsSection2 = () => {
                         <header className="flex flex-col gap-4 border-b border-gray-200 bg-gradient-to-r from-pink-700 to-pink-900 px-6 py-5 text-white md:flex-row md:items-center md:justify-between md:px-8">
                             <div className="flex items-start gap-4">
                                 <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-white/15 backdrop-blur">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-activity h-5 w-5" aria-hidden="true">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-activity h-5 w-5" aria-hidden="true" alt="Image">
                                         <path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"></path>
                                     </svg>
                                 </div>

@@ -37,7 +37,7 @@ const RPFAQ = ({ data }) => {
                                         {faq.question}
                                     </span>
                                     <div className={`flex-shrink-0 transition-transform duration-500 ${isOpen ? "rotate-180" : ""}`}>
-                                        <svg className={`w-6 h-6 ${isOpen ? "text-white" : "text-[#b02a44]"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg alt="Icon" className={`w-6 h-6 ${isOpen ? "text-white" : "text-[#b02a44]"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
                                         </svg>
                                     </div>

@@ -122,7 +122,7 @@ const RPWhatIs = ({ data }) => {
                             {submitted ? (
                                 <div className="text-center py-6">
                                     <div className="w-14 h-14 rounded-full bg-[#b02a44]/10 flex items-center justify-center mx-auto mb-3">
-                                        <svg className="w-7 h-7 text-[#b02a44]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg alt="Icon" className="w-7 h-7 text-[#b02a44]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                         </svg>
                                     </div>

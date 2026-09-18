@@ -8,37 +8,37 @@ export default function BanjaraHillsSpecialities() {
             icon: '/assets/banjara-hills/heart-attack.svg',
             title: 'Cardiology',
             subtitle: 'Heart Care',
-            path: '/specialities/cardiac-sciences'
+            path: '/specialities/cardiac-sciences/'
         },
         {
             icon: '/assets/banjara-hills/bones.svg',
             title: 'Orthopaedics',
             subtitle: 'Bone & Joint Care',
-            path: '/specialities/orthopaedics'
+            path: '/specialities/orthopaedics/'
         },
         {
             icon: '/assets/banjara-hills/organ.svg',
             title: 'Gastro enterology',
             subtitle: 'Digestive Care',
-            path: '/specialities/gastro-sciences'
+            path: '/specialities/gastro-sciences/'
         },
         {
             icon: '/assets/banjara-hills/kidney (1).svg',
             title: 'Nephrology',
             subtitle: 'Kidney Care',
-            path: '/specialities/nephrology'
+            path: '/specialities/nephrology/'
         },
         {
             icon: '/assets/banjara-hills/neurology.svg',
             title: 'Neurology',
             subtitle: 'Brain & Nerve Care',
-            path: '/specialities/neuro-sciences'
+            path: '/specialities/neuro-sciences/'
         },
         {
             icon: '/assets/banjara-hills/urology (4).svg',
             title: 'Urology',
             subtitle: 'Urinary Care',
-            path: '/specialities/urology'
+            path: '/specialities/urology/'
         }
     ];
 
@@ -51,7 +51,7 @@ export default function BanjaraHillsSpecialities() {
                         Our Specialities
                     </h2>
                     <Link
-                        href="/specialities"
+                        href="/specialities/"
                         className="text-[#b3204d] hover:text-[#971b41] font-bold text-sm transition-colors duration-300 hover:underline decoration-2 underline-offset-4"
                     >
                         View All Specialities

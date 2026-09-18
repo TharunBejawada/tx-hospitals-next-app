@@ -48,7 +48,7 @@ export default function ThankYouPage() {
                             <img src="/assets/FYD/Thank You Icon.png" className="w-10 h-10 object-contain" alt="Success" />
                         </motion.div>
                         <div className="absolute top-0 left-0 w-full h-full opacity-10">
-                            <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                            <svg className="w-full h-full" alt="Image" viewBox="0 0 100 100" preserveAspectRatio="none">
                                 <circle cx="10" cy="10" r="20" fill="white" />
                                 <circle cx="90" cy="80" r="15" fill="white" />
                             </svg>

@@ -10,109 +10,109 @@ const specialities = [
         title: "Cardiac Sciences",
         desc: "Advanced heart care with modern diagnostics and minimally invasive treatments.",
         img: "/assets/specialities/Cardiac Image.png",
-        path: "/specialities/cardiac-sciences"
+        path: "/specialities/cardiac-sciences/"
     },
     {
         title: "Gastro Sciences",
         desc: "Complete digestive and liver care with endoscopy and advanced surgery.",
         img: "/assets/specialities/Gastro Image.png",
-        path: "/specialities/gastro-sciences"
+        path: "/specialities/gastro-sciences/"
     },
     {
         title: "Ortho Sciences",
         desc: "Expert bone, joint and spine solutions with surgical and rehab support.",
         img: "/assets/specialities/Orthopediac image.png",
-        path: "/specialities/orthopaedics"
+        path: "/specialities/orthopaedics/"
     },
     {
         title: "Nephrology",
         desc: "Expert treatment for kidney diseases, dialysis and renal transplants.",
         img: "/assets/specialities/Urology Image.png",
-        path: "/specialities/nephrology"
+        path: "/specialities/nephrology/"
     },
     {
         title: "Urology",
         desc: "Advanced care for urinary tract, prostate and bladder disorders.",
         img: "/assets/specialities/Urology.webp",
-        path: "/specialities/urology"
+        path: "/specialities/urology/"
     },
     {
         title: "Gynecology",
         desc: "Comprehensive care for women's health, pregnancy, fertility, and gynecological conditions.",
         img: "/assets/specialities/Gynecology.webp",
-        path: "/specialities/gynecology-hospitals"
+        path: "/specialities/gynecology-hospitals/"
     },
     {
         title: "Pediatrics",
         desc: "Expert healthcare for newborns, infants, children, and adolescents with compassionate care.",
         img: "/assets/specialities/Pediatric.webp",
-        path: "/specialities/pediatric-hospitals"
+        path: "/specialities/pediatric-hospitals/"
     },
     {
         title: "Transplant Medicine",
         desc: "Life-saving organ transplants with expert surgical precision.",
         img: "/assets/specialities/Transplant.webp",
-        path: "/specialities/transplant-medicine"
+        path: "/specialities/transplant-medicine/"
     },
     {
         title: "Robotic Sciences",
         desc: "Robotic-assisted surgeries for greater accuracy and faster recovery.",
         img: "/assets/specialities/Robotics.webp",
-        path: "/specialities/robotics-science"
+        path: "/specialities/robotics-science/"
     },
     {
         title: "Neurology",
         desc: "Advanced care for brain, spine and nervous system disorders.",
         img: "/assets/specialities/Neuro.webp",
-        path: "/specialities/neuro-sciences"
+        path: "/specialities/neuro-sciences/"
     },
     {
         title: "Oncology",
         desc: "Complete cancer care with surgery, chemotherapy and radiation.",
         img: "/assets/specialities/Oncology.webp",
-        path: "/specialities/oncology"
+        path: "/specialities/oncology/"
     },
     {
         title: "Pulmonology",
         desc: "Specialized care for lung and respiratory health.",
         img: "/assets/specialities/Pulmonology.webp",
-        path: "/specialities/pulmonology"
+        path: "/specialities/pulmonology/"
     },
     {
         title: "ENT",
         desc: "Expert solutions for ear, nose and throat conditions with modern techniques.",
         img: "/assets/specialities/ENT.webp",
-        path: "/specialities/ent"
+        path: "/specialities/ent/"
     },
     {
         title: "Internal Medicine",
         desc: "Preventive and chronic disease management for overall adult health.",
         img: "/assets/specialities/Internal medicine.webp",
-        path: "/specialities/internal-medicine"
+        path: "/specialities/internal-medicine/"
     },
     {
         title: "Skin & Cosmetic Care",
         desc: "Medical and aesthetic treatments for healthy skin, hair and beauty.",
         img: "/assets/specialities/Skin.webp",
-        path: "/specialities/dermatology-cosmetic-care"
+        path: "/specialities/dermatology-cosmetic-care/"
     },
     {
         title: "Dental & Maxillofacial",
         desc: "Comprehensive dental, oral and facial procedures including cosmetics.",
         img: "/assets/specialities/Dental.webp",
-        path: "/specialities/dental-and-maxillofacial-care"
+        path: "/specialities/dental-and-maxillofacial-care/"
     },
     {
         title: "Anaesthesia & Pain Management",
         desc: "Safe anaesthesia and advanced pain relief for surgery and chronic pain.",
         img: "/assets/specialities/Anaesthesia.webp",
-        path: "/specialities/anaesthesia-and-pain-management"
+        path: "/specialities/anaesthesia-and-pain-management/"
     },
     {
         title: "Eye / Ophthalmology",
         desc: "Precision diagnosis and treatment for vision and eye disorders.",
         img: "/assets/specialities/Eye.webp",
-        path: "/specialities/eye-ophthalmology"
+        path: "/specialities/eye-ophthalmology/"
     }
 ];
 
@@ -310,7 +310,7 @@ export default function SpecialitiesHomepage({ isClinicalResearch = false }) {
                                                         }`}
                                                 >
                                                     <span>{faq.question}</span>
-                                                    <svg
+                                                    <svg alt="Toggle Icon"
                                                         className={`w-5 h-5 transform transition-transform ${openIndex === idx ? "rotate-180" : ""
                                                             }`}
                                                         fill="none"
@@ -468,7 +468,7 @@ export default function SpecialitiesHomepage({ isClinicalResearch = false }) {
                                                         }`}
                                                 >
                                                     <span>{faq.question}</span>
-                                                    <svg
+                                                    <svg alt="Toggle Icon"
                                                         className={`w-5 h-5 transform transition-transform ${openIndex === idx ? "rotate-180" : ""
                                                             }`}
                                                         fill="none"

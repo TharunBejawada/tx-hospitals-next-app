@@ -208,6 +208,7 @@ export default function COEOverview({ department: propDepartment }) {
                         >
                             {data?.extraFields?.map((field, index) => {
                                 const getHeadingTag = () => {
+                                    if (index === 0) return 'h1';
                                     if (index === 0 || index === 1 || index === 2) return 'h2';
                                     return 'h3';
                                 };

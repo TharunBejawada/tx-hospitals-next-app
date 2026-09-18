@@ -140,6 +140,7 @@ export default function ViewProfile({ doctorData }) {
                                                 className={`w-5 h-5 transform transition-transform ${openIndex === idx ? "rotate-180" : ""
                                                     }`}
                                                 fill="none"
+                                                alt="Image"
                                                 stroke="currentColor"
                                                 viewBox="0 0 24 24"
                                             >
@@ -256,6 +257,7 @@ export default function ViewProfile({ doctorData }) {
                                                 className={`w-5 h-5 transform transition-transform ${openIndex === idx ? "rotate-180" : ""
                                                     }`}
                                                 fill="none"
+                                                alt="Image"
                                                 stroke="currentColor"
                                                 viewBox="0 0 24 24"
                                             >

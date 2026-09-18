@@ -4,7 +4,7 @@ import sanitize from "@/utils/sanitize";
 import useIsMobile from "@/hooks/useIsMobile";
 
 const CheckIcon = () => (
-    <svg
+    <svg alt="Check Icon"
         className="w-5 h-5 flex-shrink-0 text-white"
         viewBox="0 0 24 24"
         fill="none"

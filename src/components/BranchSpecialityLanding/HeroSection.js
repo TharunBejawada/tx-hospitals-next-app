@@ -269,7 +269,7 @@ const HeroSection = ({ pageData, location, speciality }) => {
                                     </>
                                 ) : (
                                     <>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <svg xmlns="http://www.w3.org/2000/svg" alt="Image" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                             <path d="M8 2v4" />
                                             <path d="M16 2v4" />
                                             <rect width="18" height="18" x="3" y="4" rx="2" />
@@ -286,7 +286,7 @@ const HeroSection = ({ pageData, location, speciality }) => {
                         <div className="flex flex-col items-center">
                             <div className="flex gap-0.5 mb-1">
                                 {[...Array(5)].map((_, i) => (
-                                    <svg key={i} xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="#bd385c" stroke="#bd385c" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <svg key={i} xmlns="http://www.w3.org/2000/svg" alt="Image" width="13" height="13" viewBox="0 0 24 24" fill="#bd385c" stroke="#bd385c" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                         <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z" />
                                     </svg>
                                 ))}
@@ -299,7 +299,7 @@ const HeroSection = ({ pageData, location, speciality }) => {
                         <div style={{ width: '1px', height: '32px', background: 'rgba(255, 255, 255, 0.18)' }} />
 
                         <div className="flex items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#bd385c" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <svg xmlns="http://www.w3.org/2000/svg" alt="Image" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#bd385c" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <circle cx="12" cy="12" r="10" />
                                 <polyline points="12 6 12 12 16 14" />
                             </svg>

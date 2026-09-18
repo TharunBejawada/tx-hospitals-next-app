@@ -13,25 +13,25 @@ const specialities = [
         title: "Cardiac Sciences",
         desc: "Advanced heart care with modern diagnostics and minimally invasive treatments.",
         img: "/assets/specialities/Cardiac Image.png",
-        path: "/specialities/cardiac-sciences"
+        path: "/specialities/cardiac-sciences/"
     },
     {
         title: "Gastro Sciences",
         desc: "Complete digestive and liver care with endoscopy and advanced surgery.",
         img: "/assets/specialities/Gastro Image.png",
-        path: "/specialities/gastro-sciences"
+        path: "/specialities/gastro-sciences/"
     },
     {
         title: "Ortho Sciences",
         desc: "Expert bone, joint and spine solutions with surgical and rehab support.",
         img: "/assets/specialities/Orthopediac image.png",
-        path: "/specialities/orthopaedics"
+        path: "/specialities/orthopaedics/"
     },
     {
         title: "Nephrology",
         desc: "Expert treatment for kidney diseases, dialysis and renal transplants.",
         img: "/assets/specialities/Urology Image.png",
-        path: "/specialities/nephrology"
+        path: "/specialities/nephrology/"
     },
 ];
 
@@ -59,7 +59,7 @@ export default function Specialities() {
     const isMobile = useIsMobile();
 
     const handleViewMore = () => {
-        router.push("/specialities");
+        router.push("/specialities/");
     };
 
     const handleNavigate = (path) => {

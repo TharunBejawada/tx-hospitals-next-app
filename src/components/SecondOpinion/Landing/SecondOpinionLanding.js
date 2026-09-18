@@ -45,7 +45,7 @@ export default function SecondOpinionLanding({
             value: "2,00,000+",
             label: "Happy Patients",
             icon: (
-                <svg className="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <svg alt="Icon" className="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
                     <circle cx="9" cy="7" r="4" />
                     <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
@@ -57,7 +57,7 @@ export default function SecondOpinionLanding({
             value: "25,000+",
             label: "Surgeries Performed",
             icon: (
-                <svg className="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <svg alt="Icon" className="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
                 </svg>
             )
@@ -66,7 +66,7 @@ export default function SecondOpinionLanding({
             value: "150+",
             label: "Expert Specialists",
             icon: (
-                <svg className="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <svg alt="Icon" className="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M4.5 2h15" />
                     <path d="M6 2v6a6 6 0 0 0 12 0V2" />
                     <path d="M12 14v4a2 2 0 1 0 4 0v-4" />
@@ -78,7 +78,7 @@ export default function SecondOpinionLanding({
             value: "NABH",
             label: "Accredited Hospital",
             icon: (
-                <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg alt="Icon" className="w-7 h-7" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     {/* Ribbon */}
                     <path d="M8 2L12 11L16 2" stroke="#2563eb" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
                     <path d="M10 2L12 9L14 2" stroke="#facc15" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
@@ -92,7 +92,7 @@ export default function SecondOpinionLanding({
             value: "24x7",
             label: "Emergency Care",
             icon: (
-                <svg className="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <svg alt="Icon" className="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
                     <path d="M3 3v5h5" />
                     <path d="M12 7v5l4 2" />
@@ -107,7 +107,7 @@ export default function SecondOpinionLanding({
             title: "Senior Specialists",
             desc: "with 20+ Years of Experience",
             icon: (
-                <svg className="w-5 h-5 text-[#b01640]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <svg alt="Icon" className="w-5 h-5 text-[#b01640]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
             )
@@ -116,7 +116,7 @@ export default function SecondOpinionLanding({
             title: "Accurate Diagnosis",
             desc: "& Personalised Treatment Plan",
             icon: (
-                <svg className="w-5 h-5 text-[#b01640]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <svg alt="Icon" className="w-5 h-5 text-[#b01640]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                 </svg>
             )
@@ -125,7 +125,7 @@ export default function SecondOpinionLanding({
             title: "Quick Appointments",
             desc: "& Faster Report Reviews",
             icon: (
-                <svg className="w-5 h-5 text-[#b01640]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <svg alt="Icon" className="w-5 h-5 text-[#b01640]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
             )
@@ -134,7 +134,7 @@ export default function SecondOpinionLanding({
             title: "Confidential",
             desc: "& Secure Consultations",
             icon: (
-                <svg className="w-5 h-5 text-[#b01640]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <svg alt="Icon" className="w-5 h-5 text-[#b01640]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                 </svg>
             )
@@ -172,42 +172,42 @@ export default function SecondOpinionLanding({
                             {
                                 name: "Cardiology",
                                 icon: <Heart className="w-9 h-9 text-[#b01640]" strokeWidth={1.8} />,
-                                path: "/specialities/cardiac-sciences"
+                                path: "/specialities/cardiac-sciences/"
                             },
                             {
                                 name: "Gastro Sciences",
                                 icon: <Activity className="w-9 h-9 text-[#b01640]" strokeWidth={1.8} />,
-                                path: "/specialities/gastro-sciences"
+                                path: "/specialities/gastro-sciences/"
                             },
                             {
                                 name: "Orthopaedics",
                                 icon: <Bone className="w-9 h-9 text-[#b01640]" strokeWidth={1.8} />,
-                                path: "/specialities/orthopaedics"
+                                path: "/specialities/orthopaedics/"
                             },
                             {
                                 name: "Nephrology",
                                 icon: <Droplet className="w-9 h-9 text-[#b01640]" strokeWidth={1.8} />,
-                                path: "/specialities/nephrology"
+                                path: "/specialities/nephrology/"
                             },
                             {
                                 name: "Urology",
                                 icon: <Microscope className="w-9 h-9 text-[#b01640]" strokeWidth={1.8} />,
-                                path: "/specialities/urology"
+                                path: "/specialities/urology/"
                             },
                             {
                                 name: "Neurosciences",
                                 icon: <Brain className="w-9 h-9 text-[#b01640]" strokeWidth={1.8} />,
-                                path: "/specialities/neuro-sciences"
+                                path: "/specialities/neuro-sciences/"
                             },
                             {
                                 name: "Oncology",
                                 icon: <ShieldPlus className="w-9 h-9 text-[#b01640]" strokeWidth={1.8} />,
-                                path: "/specialities/oncology"
+                                path: "/specialities/oncology/"
                             },
                             {
                                 name: "Pulmonology",
                                 icon: <Wind className="w-9 h-9 text-[#b01640]" strokeWidth={1.8} />,
-                                path: "/specialities/pulmonology"
+                                path: "/specialities/pulmonology/"
                             }
                         ].map((spec, index) => (
                             <Link
@@ -227,7 +227,7 @@ export default function SecondOpinionLanding({
 
                     <div className="flex justify-center">
                         <Link
-                            href="/specialities"
+                            href="/specialities/"
                             className="border border-[#b01640] text-[#b01640] hover:bg-[#b01640] hover:text-white rounded-lg font-bold font-montserrat text-xs tracking-widest px-8 py-3.5 transition-all uppercase shadow-sm hover:shadow-md"
                         >
                             View All Specialities
@@ -313,7 +313,7 @@ export default function SecondOpinionLanding({
                                 title: "Expert & Unbiased Medical Opinion",
                                 desc: "Get an independent assessment of your condition and treatment options.",
                                 icon: (
-                                    <svg className="w-7 h-7 text-gray-800" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <svg alt="Icon" className="w-7 h-7 text-gray-800" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
                                         <circle cx="9" cy="7" r="4" />
                                         <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
@@ -325,7 +325,7 @@ export default function SecondOpinionLanding({
                                 title: "Advanced Technology & Infrastructure",
                                 desc: "World-class facilities enabling accurate diagnosis and better outcomes.",
                                 icon: (
-                                    <svg className="w-7 h-7 text-[#b01640]" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <svg alt="Icon" className="w-7 h-7 text-[#b01640]" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
                                         <path d="M6 10h2l2-3 2 6 1.5-4.5L15 10h3" />
                                         <line x1="12" y1="17" x2="12" y2="21" />
@@ -337,7 +337,7 @@ export default function SecondOpinionLanding({
                                 title: "Comprehensive Care",
                                 desc: "From diagnosis to treatment and follow-up, we are with you at every step.",
                                 icon: (
-                                    <svg className="w-7 h-7 text-amber-500" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <svg alt="Icon" className="w-7 h-7 text-amber-500" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M12 22a7 7 0 0 0 7-7h-2a5 5 0 0 1-10 0H5a7 7 0 0 0 7 7z" fill="#fef08a" strokeWidth="1.5" />
                                         <path d="M12 2a7 7 0 0 0-7 7h2a5 5 0 0 1 10 0h2a7 7 0 0 0-7-7z" fill="#fef08a" strokeWidth="1.5" />
                                     </svg>
@@ -347,7 +347,7 @@ export default function SecondOpinionLanding({
                                 title: "Patient-Centric Approach",
                                 desc: "We listen, care and recommend what is best for your health.",
                                 icon: (
-                                    <svg className="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <svg alt="Icon" className="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
                                         <circle cx="9" cy="7" r="4" fill="#dbeafe" />
                                         <path d="M19 16v-2a2 2 0 0 0-2-2h-1" />

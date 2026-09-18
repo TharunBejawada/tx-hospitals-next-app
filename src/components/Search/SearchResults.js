@@ -398,7 +398,7 @@ export default function SearchResults({ initialQuery = "" }) {
 
                 {/* Curved wave bottom */}
                 <div className="absolute bottom-0 left-0 right-0 overflow-hidden leading-none pointer-events-none">
-                    <svg viewBox="0 0 1440 54" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"
+                    <svg alt="Play Icon" viewBox="0 0 1440 54" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"
                         style={{ display: "block", width: "100%", height: "54px" }}>
                         <path
                             d="M0,32 C240,60 480,8 720,32 C960,56 1200,8 1440,32 L1440,54 L0,54 Z"

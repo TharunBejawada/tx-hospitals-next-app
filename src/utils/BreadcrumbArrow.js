@@ -3,6 +3,7 @@ export default function BreadcrumbArrow({ className = "" }) {
         <svg
             className="rtl:rotate-180 w-3 h-3 text-gray-800 mx-1"
             aria-hidden="true"
+            alt="Breadcrumb Arrow Icon"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 6 10"

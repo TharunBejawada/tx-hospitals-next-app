@@ -52,7 +52,7 @@ export default function KachigudaCTA() {
                         onClick={() => setIsModalOpen(true)}
                         className="w-full sm:w-auto px-8 py-3.5 bg-[#e65c00] hover:bg-[#cc5200] text-white font-bold rounded-full text-base shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2.5"
                     >
-                        <svg className="w-5 h-5 text-white stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-5 h-5 text-white stroke-[2.5]" alt="Image" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
                         Book Appointment
@@ -63,7 +63,7 @@ export default function KachigudaCTA() {
                         href="tel:04048108108"
                         className="w-full sm:w-auto px-8 py-3.5 bg-transparent border-2 border-white hover:bg-white/10 hover:border-white text-white font-bold rounded-full text-base shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2.5"
                     >
-                        <svg className="w-5 h-5 text-white stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-5 h-5 text-white stroke-[2.5]" alt="Image" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                         </svg>
                         Call Now

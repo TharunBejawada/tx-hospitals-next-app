@@ -59,7 +59,7 @@ export default function CRFAQ() {
     return (
         <section className={`bg-[#240c17] text-white w-full ${isMobile ? 'py-12 px-6' : 'py-20 px-12 md:px-24'}`}>
             <div className="max-w-4xl mx-auto flex flex-col items-start text-left">
-                
+
                 {/* Header */}
                 <div className="mb-12 w-full">
                     <motion.div
@@ -74,7 +74,7 @@ export default function CRFAQ() {
                         </span>
                     </motion.div>
 
-                    <motion.h2 
+                    <motion.h2
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
@@ -106,6 +106,7 @@ export default function CRFAQ() {
                                 <svg
                                     className={`w-5 h-5 flex-shrink-0 text-pink-500 transform transition-transform duration-300 ${openIndex === idx ? "rotate-180" : ""}`}
                                     fill="none"
+                                    alt="Image"
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
                                 >
@@ -114,7 +115,7 @@ export default function CRFAQ() {
                             </button>
 
                             {openIndex === idx && (
-                                <motion.div 
+                                <motion.div
                                     initial={{ opacity: 0, height: 0 }}
                                     animate={{ opacity: 1, height: 'auto' }}
                                     className={`px-6 pb-5 pt-2 text-gray-400 bg-pink-900/40 ${isMobile ? 'text-xs' : 'text-sm leading-relaxed'}`}

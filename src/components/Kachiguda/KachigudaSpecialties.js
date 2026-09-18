@@ -9,42 +9,42 @@ const KachigudaSpecialties = () => {
             title: "Cardiac Sciences",
             desc: "Advanced heart care, angioplasty, bypass & cardiac imaging.",
             bgColor: "bg-[#e6fcf5]", // Teal accent
-            path: "/specialities/cardiac-sciences"
+            path: "/specialities/cardiac-sciences/"
         },
         {
             emoji: "🦴",
             title: "Ortho Sciences",
             desc: "Joint replacement, spine surgery & sports injury rehab.",
             bgColor: "bg-[#e3fafc]", // Cyan accent
-            path: "/specialities/orthopaedics"
+            path: "/specialities/orthopaedics/"
         },
         {
             emoji: "🧬",
             title: "Gastro Sciences",
             desc: "Endoscopy, liver care & advanced GI surgeries.",
             bgColor: "bg-[#e8f0fe]", // Soft blue accent
-            path: "/specialities/gastro-sciences"
+            path: "/specialities/gastro-sciences/"
         },
         {
             emoji: "🫀",
             title: "Nephrology",
             desc: "Kidney disease, dialysis & renal transplant programs.",
             bgColor: "bg-[#ebf8ff]", // Sky accent
-            path: "/specialities/nephrology"
+            path: "/specialities/nephrology/"
         },
         {
             emoji: "🧠",
             title: "Neurosciences",
             desc: "Brain & spine treatment, stroke care & neuro-surgery.",
             bgColor: "bg-[#f3f0ff]", // Indigo/purple accent
-            path: "/specialities/neuro-sciences"
+            path: "/specialities/neuro-sciences/"
         },
         {
             emoji: "👶",
             title: "Pediatrics",
             desc: "Expert child health, neonatology & pediatric surgery.",
             bgColor: "bg-[#fff9db]", // Gold/yellow accent
-            path: "/specialities/paediatrics"
+            path: "/specialities/paediatrics/"
         }
     ];
 
@@ -108,7 +108,7 @@ const KachigudaSpecialties = () => {
                     viewport={{ once: true }}
                     className="flex justify-center mt-6 md:mt-10"
                 >
-                    <Link href="/specialities">
+                    <Link href="/specialities/">
                         <button className="bg-[#8b006a] hover:bg-[#750059] text-white font-extrabold text-sm md:text-base px-8 py-3.5 rounded-full shadow-lg shadow-purple-200/50 hover:shadow-xl transition-all duration-350 transform hover:-translate-y-0.5">
                             View All Specialties
                         </button>

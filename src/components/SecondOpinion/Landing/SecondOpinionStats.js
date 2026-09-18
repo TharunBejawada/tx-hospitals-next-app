@@ -7,7 +7,7 @@ export default function SecondOpinionStats({ stats = [] }) {
             value: "2,00,000+",
             label: "Happy Patients",
             icon: (
-                <svg className="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <svg alt="Icon" className="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
                     <circle cx="9" cy="7" r="4" />
                     <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
@@ -19,7 +19,7 @@ export default function SecondOpinionStats({ stats = [] }) {
             value: "25,000+",
             label: "Surgeries Performed",
             icon: (
-                <svg className="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <svg alt="Icon" className="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
                 </svg>
             )
@@ -28,7 +28,7 @@ export default function SecondOpinionStats({ stats = [] }) {
             value: "150+",
             label: "Expert Specialists",
             icon: (
-                <svg className="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <svg alt="Icon" className="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M4.5 2h15" />
                     <path d="M6 2v6a6 6 0 0 0 12 0V2" />
                     <path d="M12 14v4a2 2 0 1 0 4 0v-4" />
@@ -40,7 +40,7 @@ export default function SecondOpinionStats({ stats = [] }) {
             value: "NABH",
             label: "Accredited Hospital",
             icon: (
-                <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg alt="Icon" className="w-7 h-7" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     {/* Ribbon */}
                     <path d="M8 2L12 11L16 2" stroke="#2563eb" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
                     <path d="M10 2L12 9L14 2" stroke="#eab308" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
@@ -54,7 +54,7 @@ export default function SecondOpinionStats({ stats = [] }) {
             value: "24x7",
             label: "Emergency Care",
             icon: (
-                <svg className="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <svg alt="Icon" className="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
                     <path d="M3 3v5h5" />
                     <path d="M12 7v5l4 2" />

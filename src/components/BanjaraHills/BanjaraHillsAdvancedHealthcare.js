@@ -8,49 +8,49 @@ export default function BanjaraHillsAdvancedHealthcare() {
             icon: '/assets/banjara-hills/heart-attack.svg',
             title: 'Cardiology',
             description: 'Advanced heart care in Banjara Hills including angioplasty, pacemakers, interventions and cardiac procedures.',
-            path: '/specialities/cardiac-sciences'
+            path: '/specialities/cardiac-sciences/'
         },
         {
             icon: '/assets/banjara-hills/bones.svg',
             title: 'Orthopaedics',
             description: 'Expert orthopaedic care for joint replacement, spine treatment, arthroscopy, fractures and trauma management.',
-            path: '/specialities/orthopaedics'
+            path: '/specialities/orthopaedics/'
         },
         {
             icon: '/assets/banjara-hills/organ.svg',
             title: 'Gastroenterology',
             description: 'Specialized gastro care for liver, stomach, intestine and pancreatic disorders with advanced endoscopy treatment.',
-            path: '/specialities/gastro-sciences'
+            path: '/specialities/gastro-sciences/'
         },
         {
             icon: '/assets/banjara-hills/kidney (1).svg',
             title: 'Nephrology',
             description: 'Comprehensive kidney care including dialysis, kidney transplant support and critical nephrology services.',
-            path: '/specialities/nephrology'
+            path: '/specialities/nephrology/'
         },
         {
             icon: '/assets/banjara-hills/neurology.svg',
             title: 'Neurology',
             description: 'Advanced neurology care for brain, spine, nerve and movement disorders with accurate diagnosis and treatment.',
-            path: '/specialities/neuro-sciences'
+            path: '/specialities/neuro-sciences/'
         },
         {
             icon: '/assets/banjara-hills/urology (4).svg',
             title: 'Urology',
             description: 'Expert urology treatment for kidney stones, prostate conditions, urinary disorders and minimally invasive surgery.',
-            path: '/specialities/urology'
+            path: '/specialities/urology/'
         },
         {
             icon: '/assets/banjara-hills/pulmonology (3).svg',
             title: 'Pulmonology',
             description: 'Advanced lung care for asthma, COPD, sleep disorders, infections and respiratory critical care support.',
-            path: '/specialities/pulmonology'
+            path: '/specialities/pulmonology/'
         },
         {
             icon: '/assets/banjara-hills/oncology.svg',
             title: 'Oncology',
             description: 'Comprehensive cancer care with medical oncology, surgical oncology and personalized treatment planning.',
-            path: '/specialities/oncology'
+            path: '/specialities/oncology/'
         }
     ];
 

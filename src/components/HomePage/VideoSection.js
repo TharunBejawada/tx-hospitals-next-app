@@ -152,6 +152,7 @@ export default function VideoSection() {
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 24 24"
                                 fill="currentColor"
+                                alt="Image"
                                 style={{
                                     width: isHovered ? "26px" : "21px",
                                     height: isHovered ? "26px" : "21px",
@@ -176,7 +177,7 @@ export default function VideoSection() {
                             backdropFilter: "blur(4px)",
                         }}
                     >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 24 24">
+                        <svg xmlns="http://www.w3.org/2000/svg" alt="Image" className="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M8 5v14l11-7z" />
                         </svg>
                         Watch Now
@@ -296,7 +297,7 @@ export default function VideoSection() {
                                                     <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(100,0,40,0.8) 0%, transparent 60%)" }} />
                                                     <div className="absolute inset-0 flex items-center justify-center">
                                                         <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center" style={{ boxShadow: "0 4px 16px rgba(196,54,106,0.4)" }}>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#c4366a" className="w-6 h-6 ml-0.5"><path d="M8 5v14l11-7z" /></svg>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" alt="Image" viewBox="0 0 24 24" fill="#c4366a" className="w-6 h-6 ml-0.5"><path d="M8 5v14l11-7z" /></svg>
                                                         </div>
                                                     </div>
                                                     <p className="absolute bottom-3 left-3 right-3 text-white text-xs font-semibold line-clamp-2 drop-shadow-md">{item.title}</p>
@@ -375,7 +376,7 @@ export default function VideoSection() {
                                                     <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(30,0,60,0.82) 0%, transparent 60%)" }} />
                                                     <div className="absolute inset-0 flex items-center justify-center">
                                                         <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center" style={{ boxShadow: "0 4px 16px rgba(106,17,203,0.4)" }}>
-                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#6a11cb" className="w-6 h-6 ml-0.5"><path d="M8 5v14l11-7z" /></svg>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" alt="Image" viewBox="0 0 24 24" fill="#6a11cb" className="w-6 h-6 ml-0.5"><path d="M8 5v14l11-7z" /></svg>
                                                         </div>
                                                     </div>
                                                     <p className="absolute bottom-3 left-3 right-3 text-white text-xs font-semibold line-clamp-2 drop-shadow-md">{item.title}</p>
@@ -478,7 +479,7 @@ export default function VideoSection() {
                                         : "0 4px 15px rgba(196,54,106,0.35)",
                                 }}
                             >
-                                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                <svg xmlns="http://www.w3.org/2000/svg" alt="Image" className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                                     <path d="M8 5v14l11-7z" />
                                 </svg>
                                 View All Videos

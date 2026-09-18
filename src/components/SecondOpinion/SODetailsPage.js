@@ -51,7 +51,7 @@ export default function SODetailsPage({ surgeryData }) {
                 isMobile ? (
                     <section className="w-full">
                         <div className="bg-gray-50 text-center -mt-6">
-                            <h2 className="text-xl font-semibold text-pink-700">{surgeryData?.soTitle}</h2>
+                            <h1 className="text-xl font-semibold text-pink-700">{surgeryData?.soTitle}</h1>
                             <div className="flex justify-center mt-2 px-2">
                                 <Breadcrumb items={breadcrumbItems} />
                             </div>
@@ -68,9 +68,9 @@ export default function SODetailsPage({ surgeryData }) {
                             </div>
                             <div className="relative max-w-6xl mx-auto py-2 flex flex-col items-center gap-4">
                                 <div className="text-white text-center">
-                                    <h1 className="text-xl font-semibold leading-snug mb-3">
+                                    <h2 className="text-xl font-semibold leading-snug mb-3">
                                         {surgeryData?.soField[0]?.heading}
-                                    </h1>
+                                    </h2>
 
                                     <div
                                         className="text-lg leading-relaxed"
@@ -188,9 +188,9 @@ export default function SODetailsPage({ surgeryData }) {
                             <div className="mb-2">
                                 <Breadcrumb items={breadcrumbItems} />
                             </div>
-                            <h2 className="w-full text-center text-4xl font-semibold text-pink-700">
+                            <h1 className="w-full text-center text-4xl font-semibold text-pink-700">
                                 {surgeryData?.soTitle}
-                            </h2>
+                            </h1>
                         </div>
                         <section className="relative w-full bg-pink-900/50 overflow-hidden">
                             <div className="absolute inset-0">
@@ -204,9 +204,9 @@ export default function SODetailsPage({ surgeryData }) {
                             </div>
                             <div className="relative max-w-6xl mx-auto py-2 flex items-center gap-10">
                                 <div className="text-white">
-                                    <h1 className="text-5xl font-semibold leading-snug mb-3">
+                                    <h2 className="text-5xl font-semibold leading-snug mb-3">
                                         {surgeryData?.soField[0]?.heading}
-                                    </h1>
+                                    </h2>
 
                                     <div
                                         className="text-lg leading-relaxed"

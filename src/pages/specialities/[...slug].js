@@ -109,7 +109,7 @@ export default function CenterOfExcellencePage() {
 
     const breadcrumbItems = [
         { label: "Home", href: "/" },
-        { label: "Specialities", href: "/specialities" },
+        { label: "Specialities", href: "/specialities/" },
         { label: title },
     ];
 
@@ -143,7 +143,7 @@ export default function CenterOfExcellencePage() {
             {!isMobile ? (
                 <div className="mt-10 font-inter mx-[5%]">
                     <Breadcrumb items={breadcrumbItems} />
-                    <h1 className="text-4xl font-bold text-pink-700 text-center">{title}</h1>
+                    <h2 className="text-4xl font-bold text-pink-700 text-center">{title}</h2>
                     <img src={image} alt={title} className="w-full h-full mt-2" />
                     <motion.div
                         className="flex items-center justify-center gap-10 mx-[1%] mt-6"
@@ -190,7 +190,7 @@ export default function CenterOfExcellencePage() {
             ) : (
                 <div className="-mt-4 font-inter">
                     <Breadcrumb items={breadcrumbItems} />
-                    <h1 className="text-2xl font-bold text-pink-700 text-center">{title}</h1>
+                    <h2 className="text-2xl font-bold text-pink-700 text-center">{title}</h2>
                     <img src={image} alt={title} className="w-full h-full" />
                     <motion.div
                         className="grid grid-cols-2 gap-2 m-2"

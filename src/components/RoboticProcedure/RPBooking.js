@@ -28,7 +28,7 @@ const RPBooking = ({ data, onBookNow }) => {
                         href="tel:9144514459"
                         className="bg-white text-gray-900 px-8 py-3 rounded-[8px] text-[15px] font-bold flex items-center gap-3 hover:bg-gray-100 transition-all shadow-md w-full sm:w-auto justify-center"
                     >
-                        <svg className="w-5 h-5 text-[#b02a44]" fill="currentColor" viewBox="0 0 24 24">
+                        <svg alt="Icon" className="w-5 h-5 text-[#b02a44]" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M20 15.5c-1.2 0-2.4-.2-3.6-.6-.3-.1-.7 0-1 .2l-2.2 2.2c-2.8-1.4-5.1-3.8-6.6-6.6l2.2-2.2c.3-.3.4-.7.2-1-.3-1.1-.5-2.3-.5-3.5 0-.6-.4-1-1-1H4c-.6 0-1 .4-1 1 0 9.4 7.6 17 17 17 .6 0 1-.4 1-1v-3.5c0-.6-.4-1-1-1z" />
                         </svg>
                         9144514459

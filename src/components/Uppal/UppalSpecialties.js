@@ -12,79 +12,79 @@ const specialtiesData = [
         title: "Cardiology",
         icon: <Heart size={32} />,
         desc: "Heart care, ECG, echo, cardiac consultations & interventions by expert cardiologists near you.",
-        path: "/specialities/cardiac-sciences"
+        path: "/specialities/cardiac-sciences/"
     },
     {
         title: "Orthopedics",
         icon: <Bone size={32} />,
         desc: "Bone, joint & spine treatment. Fractures, joint replacements, sports injuries & physiotherapy.",
-        path: "/specialities/orthopaedics"
+        path: "/specialities/orthopaedics/"
     },
     {
         title: "Neurology",
         icon: <Brain size={32} />,
         desc: "Brain & nervous system care, stroke, epilepsy, migraines and neurological disorders.",
-        path: "/specialities/neuro-sciences"
+        path: "/specialities/neuro-sciences/"
     },
     {
         title: "Gastroenterology",
         icon: <Activity size={32} />,
         desc: "Digestive health, liver care, endoscopy, colonoscopy & hernia surgery by expert GI doctors.",
-        path: "/specialities/gastro-sciences"
+        path: "/specialities/gastro-sciences/"
     },
     {
         title: "Oncology",
         icon: <ShieldPlus size={32} />,
         desc: "Cancer diagnosis, treatment & support, chemotherapy, surgical oncology & palliative care.",
-        path: "/specialities/oncology"
+        path: "/specialities/oncology/"
     },
     {
         title: "Pulmonology",
         icon: <Wind size={32} />,
         desc: "Lung & respiratory care, asthma, COPD, sleep apnea, bronchoscopy & chest infections.",
-        path: "/specialities/pulmonology"
+        path: "/specialities/pulmonology/"
     },
     {
         title: "Nephrology",
         icon: <Droplet size={32} />,
         desc: "Kidney care, dialysis, chronic kidney disease management & transplant coordination.",
-        path: "/specialities/nephrology"
+        path: "/specialities/nephrology/"
     },
     {
         title: "Urology",
         icon: <Microscope size={32} />,
         desc: "Urinary tract, kidney stones, prostate & bladder conditions, minimally invasive surgeries.",
-        path: "/specialities/urology"
+        path: "/specialities/urology/"
     },
     {
         title: "ENT",
         icon: <Ear size={32} />,
         desc: "Ear, nose & throat care, hearing loss, sinus infections, tonsil surgery & voice disorders.",
-        path: "/specialities/ent"
+        path: "/specialities/ent/"
     },
     {
         title: "Internal Medicine",
         icon: <Stethoscope size={32} />,
         desc: "General physician consultations, diabetes, thyroid, hypertension & chronic disease management.",
-        path: "/specialities/internal-medicine"
+        path: "/specialities/internal-medicine/"
     },
     {
         title: "Dermatology",
         icon: <User size={32} />,
         desc: "Skin, hair & nail conditions, acne, psoriasis, eczema, laser therapy & cosmetic dermatology.",
-        path: "/specialities/dermatology-cosmetic-care"
+        path: "/specialities/dermatology-cosmetic-care/"
     },
     {
         title: "Dental",
         icon: <Smile size={32} />,
         desc: "Complete dental care, cleaning, fillings, root canals, implants & orthodontic treatments.",
-        path: "/specialities/dental-and-maxillofacial-care"
+        path: "/specialities/dental-and-maxillofacial-care/"
     },
     {
         title: "Ophthalmology",
         icon: <Eye size={32} />,
         desc: "Eye care, cataract, glaucoma, retinal disorders, LASIK & routine eye examinations.",
-        path: "/specialities/eye-ophthalmology"
+        path: "/specialities/eye-ophthalmology/"
     }
 ];
 

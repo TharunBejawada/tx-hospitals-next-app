@@ -85,6 +85,7 @@ export default function FAQ() {
                                     <svg
                                         className="w-6 h-6"
                                         fill="none"
+                                        alt="Image"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
                                     >

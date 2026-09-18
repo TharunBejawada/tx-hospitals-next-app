@@ -5,22 +5,22 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 
 const specialtiesList = [
-    { name: 'Cardiology', icon: '/assets/Departments/Cardiac Sciences.png', path: '/specialities/cardiac-sciences' },
-    { name: 'Orthopedics', icon: '/assets/Departments/Orthopaedics.png', path: '/specialities/orthopaedics' },
-    { name: 'Robotic Surgery', icon: '/assets/Departments/Robotics Sciences.png', path: '/specialities' },
-    { name: 'General Medicine', icon: '/assets/Departments/Internal Medicine.png', path: '/specialities/internal-medicine' },
-    { name: 'Gastroenterology', icon: '/assets/Departments/Gastro Sciences.png', path: '/specialities/gastro-sciences' },
-    { name: 'Nephrology', icon: '/assets/Departments/Nephrology.png', path: '/specialities/nephrology' },
-    { name: 'Urology', icon: '/assets/Departments/Urology Icon.png', path: '/specialities/urology' },
-    { name: 'Neurology', icon: '/assets/Departments/Neuro Sciences.png', path: '/specialities/neuro-sciences' },
-    { name: 'ENT', icon: '/assets/Departments/ENT.png', path: '/specialities/ent' },
-    { name: 'Pulmonology', icon: '/assets/Departments/Pulmonology.png', path: '/specialities/pulmonology' },
-    { name: 'Obstetrics & Gynaecology', icon: '/assets/Departments/Mother & Child Care.png', path: '/specialities/gynaecology-and-obstetrics' },
-    { name: 'Paediatrics', icon: '/assets/Departments/Mother & Child Care.png', path: '/specialities/paediatrics' },
-    { name: 'Skin & Cosmetic Care', icon: '/assets/Departments/Dermatology & Cosmetic Care.png', path: '/specialities/dermatology' },
-    { name: 'Dental Care', icon: '/assets/Departments/Dental & Maxillofacial.png', path: '/specialities/dental-and-maxillofacial' },
-    { name: 'Oncology', icon: '/assets/Departments/Oncology.png', path: '/specialities/oncology' },
-    { name: 'Pain Management', icon: '/assets/Departments/Anaesthesia & Pain Management.png', path: '/specialities/pain-management' }
+    { name: 'Cardiology', icon: '/assets/Departments/Cardiac Sciences.png', path: '/specialities/cardiac-sciences/' },
+    { name: 'Orthopedics', icon: '/assets/Departments/Orthopaedics.png', path: '/specialities/orthopaedics/' },
+    { name: 'Robotic Surgery', icon: '/assets/Departments/Robotics Sciences.png', path: '/specialities/' },
+    { name: 'General Medicine', icon: '/assets/Departments/Internal Medicine.png', path: '/specialities/internal-medicine/' },
+    { name: 'Gastroenterology', icon: '/assets/Departments/Gastro Sciences.png', path: '/specialities/gastro-sciences/' },
+    { name: 'Nephrology', icon: '/assets/Departments/Nephrology.png', path: '/specialities/nephrology/' },
+    { name: 'Urology', icon: '/assets/Departments/Urology Icon.png', path: '/specialities/urology/' },
+    { name: 'Neurology', icon: '/assets/Departments/Neuro Sciences.png', path: '/specialities/neuro-sciences/' },
+    { name: 'ENT', icon: '/assets/Departments/ENT.png', path: '/specialities/ent/' },
+    { name: 'Pulmonology', icon: '/assets/Departments/Pulmonology.png', path: '/specialities/pulmonology/' },
+    { name: 'Obstetrics & Gynaecology', icon: '/assets/Departments/Mother & Child Care.png', path: '/specialities/gynaecology-and-obstetrics/' },
+    { name: 'Paediatrics', icon: '/assets/Departments/Mother & Child Care.png', path: '/specialities/paediatrics/' },
+    { name: 'Skin & Cosmetic Care', icon: '/assets/Departments/Dermatology & Cosmetic Care.png', path: '/specialities/dermatology/' },
+    { name: 'Dental Care', icon: '/assets/Departments/Dental & Maxillofacial.png', path: '/specialities/dental-and-maxillofacial/' },
+    { name: 'Oncology', icon: '/assets/Departments/Oncology.png', path: '/specialities/oncology/' },
+    { name: 'Pain Management', icon: '/assets/Departments/Anaesthesia & Pain Management.png', path: '/specialities/pain-management/' }
 ];
 
 export default function CRTherapeutics() {
