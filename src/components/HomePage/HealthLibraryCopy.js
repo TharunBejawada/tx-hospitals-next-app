@@ -12,7 +12,8 @@ export default function HealthLibrary() {
             try {
                 const res = await fetch("https://api.txhospitals.vgworld.in/blogs/getAllBlogs");
                 const data = await res.json();
-                setBlogs(data.Items || []);
+                const activeBlogs = (data.Items || []).filter(blog => (blog.status ? blog.status === "active" : blog.enabled !== false) && blog.status !== "inactive" && blog.enabled !== false);
+                setBlogs(activeBlogs);
             } catch (err) {
                 console.error("Error fetching blogs:", err);
             }
@@ -36,17 +37,25 @@ export default function HealthLibrary() {
                             {blogs.concat(blogs).map((blog, idx) => (
                                 <Link
                                     key={idx}
-                                    href={blog.url || "#"}
-                                    target="_blank"
+                                    href={blog.url && blog.url.trim() && blog.url !== "#" ? (blog.url.startsWith('/') ? blog.url : `/${blog.url}`) : "#"}
+                                    onClick={(e) => {
+                                        if (!blog.url || !blog.url.trim() || blog.url === "#") {
+                                            e.preventDefault();
+                                        }
+                                    }}
+                                    target={blog.url && blog.url.trim() && blog.url !== "#" ? "_blank" : "_self"}
                                     rel="noopener noreferrer"
-                                    className="flex-shrink-0 w-72 rounded-xl overflow-hidden shadow-md hover:shadow-lg hover:scale-105 transition-transform duration-300"
+                                    className={`flex-shrink-0 w-72 rounded-xl overflow-hidden shadow-md transition-transform duration-300 ${!blog.url || !blog.url.trim() || blog.url === "#" ? "cursor-default" : "hover:shadow-lg hover:scale-105 cursor-pointer"
+                                        }`}
                                 >
-                                    <div className="aspect-video w-full">
+                                    <div className="relative aspect-video w-full">
                                         <Image
                                             src={blog.blogImage}
-                                            alt={blog.blogTitle}
+                                            alt={blog.blogTitle || "Health Article"}
                                             width={400}
                                             height={250}
+                                            sizes="300px"
+                                            loading={idx < 4 ? "eager" : "lazy"}
                                             className="w-full h-full object-cover"
                                         />
                                     </div>

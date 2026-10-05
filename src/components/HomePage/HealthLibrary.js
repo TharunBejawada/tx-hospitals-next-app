@@ -30,7 +30,7 @@ export default function HealthLibrary() {
                 const response = await fetch(`${CONFIG.API_BASE_URL}/blogs/getAllBlogs`);
                 const data = await response.json();
                 const sortedAndFilteredBlogs = data?.Items
-                    ?.filter(blog => blog.enabled === true)
+                    ?.filter(blog => (blog.status ? blog.status === "active" : blog.enabled !== false) && blog.status !== "inactive" && blog.enabled !== false)
                     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
                 setBlogs(sortedAndFilteredBlogs?.slice(0, 6));
             } catch (err) {
@@ -41,6 +41,7 @@ export default function HealthLibrary() {
     }, []);
 
     const handleReadMore = async (blog) => {
+        if (!blog || !blog.url || !blog.url.trim() || blog.url === "#") return;
         try {
             router.push(`/${blog.url.replace(/^\/|\/$/g, '')}/`);
         } catch (err) {
@@ -76,7 +77,7 @@ export default function HealthLibrary() {
                     variants={containerVariants}
                     initial="hidden"
                     whileInView="visible"
-                    viewport={{ once: true }}
+                    viewport={{ once: true, margin: "200px" }}
                     className="grid gap-3 grid-cols-2 md:grid-cols-3 md:gap-6"
                 >
                     {blogs.map((blog, idx) => (
@@ -86,11 +87,14 @@ export default function HealthLibrary() {
                             whileHover={{ y: -8, scale: 1.02 }}
                             className="group relative rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 bg-white border border-pink-100"
                         >
-                            <div className="aspect-video cursor-pointer w-full overflow-hidden">
+                            <div className={`relative aspect-video w-full overflow-hidden ${!blog.url || !blog.url.trim() || blog.url === "#" ? "cursor-default" : "cursor-pointer"}`}>
                                 <Image
                                     src={blog.blogImage}
-                                    alt={blog.blogTitle}
+                                    alt={blog.blogTitle || "Health Article"}
                                     fill
+                                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 400px"
+                                    priority={idx < 3}
+                                    quality={80}
                                     className="object-cover transition-transform duration-500 group-hover:scale-110"
                                     onClick={() => handleReadMore(blog)}
                                 />

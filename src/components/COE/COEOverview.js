@@ -101,7 +101,7 @@ export default function COEOverview({ department: propDepartment }) {
                 const endpoint = `${CONFIG.API_BASE_URL}/blogs/getAllBlogs`;
                 const response = await axios.get(endpoint);
                 const sortedAndFilteredBlogs = response.data.Items?.filter(
-                    (blog) => blog.enabled === true
+                    (blog) => (blog.status ? blog.status === "active" : blog.enabled !== false) && blog.status !== "inactive" && blog.enabled !== false
                 ).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
                 const allCategories = sortedAndFilteredBlogs.flatMap(
                     (blog) => blog.categories || []
@@ -124,7 +124,7 @@ export default function COEOverview({ department: propDepartment }) {
                     `${CONFIG.API_BASE_URL}/blogs/getBlogsByCategory/${category}`
                 );
                 const sortedAndFilteredBlogs = response.data
-                    ?.filter((blog) => blog.enabled === true)
+                    ?.filter((blog) => (blog.status ? blog.status === "active" : blog.enabled !== false) && blog.status !== "inactive" && blog.enabled !== false)
                     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
                     .slice(0, 3);
                 setBlogs(sortedAndFilteredBlogs);
@@ -181,6 +181,7 @@ export default function COEOverview({ department: propDepartment }) {
     };
 
     const handleReadMore = (blog) => {
+        if (!blog || !blog.url || !blog.url.trim() || blog.url === "#") return;
         router.push(`/${blog.url.replace(/^\/|\/$/g, "")}/`);
     };
 

@@ -9,6 +9,7 @@ import DOMPurify from "dompurify";
 import ActionButtons from "@/components/Common/ActionButtons";
 import AppointmentForm from "@/components/Common/AppointmentForm";
 import BookAppointmentForm from "@/components/Blogs/BookAppointemntForm";
+import FAQSchema from "@/utils/FAQSchema";
 
 export default function BlogDetails({ blogData, departments }) {
 
@@ -17,6 +18,7 @@ export default function BlogDetails({ blogData, departments }) {
     const [currentUrl, setCurrentUrl] = useState("");
     const [showModal, setShowModal] = useState(false);
     const [open, setOpen] = useState(false);
+    const [faqOpenIndex, setFaqOpenIndex] = useState(-1);
 
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -219,6 +221,46 @@ export default function BlogDetails({ blogData, departments }) {
                                     </div>
                                 )
                             })}
+                            {blogData?.faqs && Array.isArray(blogData.faqs) && blogData.faqs.length > 0 && (
+                                <>
+                                    <FAQSchema faqs={blogData.faqs} />
+                                    <div className="mt-6 mb-4">
+                                        <h2 className="text-lg font-bold text-pink-700 mb-3">Frequently Asked Questions</h2>
+                                        <div className="space-y-3">
+                                            {blogData.faqs.map((faq, index) => {
+                                                const isOpen = faqOpenIndex === index;
+                                                const answerText = faq.answer || faq.description || "";
+                                                const sanitizedAnswer = DOMPurify.sanitize(answerText);
+                                                return (
+                                                    <div
+                                                        key={index}
+                                                        className={`border-2 rounded-lg overflow-hidden transition-all ${isOpen ? "border-pink-600" : "border-pink-300"
+                                                            }`}
+                                                    >
+                                                        <button
+                                                            className={`w-full p-3 flex justify-between items-center text-left font-medium text-sm ${isOpen ? "text-white bg-pink-600" : "text-pink-600 bg-white"
+                                                                }`}
+                                                            onClick={() => setFaqOpenIndex(isOpen ? -1 : index)}
+                                                        >
+                                                            <span>{faq.question}</span>
+                                                            {isOpen ? (
+                                                                <FaChevronUp className="text-white flex-shrink-0 ml-2" />
+                                                            ) : (
+                                                                <FaChevronDown className="text-pink-600 flex-shrink-0 ml-2" />
+                                                            )}
+                                                        </button>
+                                                        {isOpen && (
+                                                            <div className="p-3 text-black text-sm bg-white border-t border-pink-200">
+                                                                <div dangerouslySetInnerHTML={{ __html: sanitizedAnswer }} />
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                </>
+                            )}
                         </div>
                     </div>
                     {blogData?.tags && blogData.tags.length > 0 && (
@@ -295,6 +337,46 @@ export default function BlogDetails({ blogData, departments }) {
                                             </div>
                                         )
                                     })}
+                                    {blogData?.faqs && Array.isArray(blogData.faqs) && blogData.faqs.length > 0 && (
+                                        <>
+                                            <FAQSchema faqs={blogData.faqs} />
+                                            <div className="mt-8 mb-6">
+                                                <h2 className="text-2xl font-bold text-pink-700 mb-4">Frequently Asked Questions</h2>
+                                                <div className="space-y-4">
+                                                    {blogData.faqs.map((faq, index) => {
+                                                        const isOpen = faqOpenIndex === index;
+                                                        const answerText = faq.answer || faq.description || "";
+                                                        const sanitizedAnswer = DOMPurify.sanitize(answerText);
+                                                        return (
+                                                            <div
+                                                                key={index}
+                                                                className={`border-2 rounded-lg overflow-hidden transition-all ${isOpen ? "border-pink-600" : "border-pink-300"
+                                                                    }`}
+                                                            >
+                                                                <button
+                                                                    className={`w-full p-4 flex justify-between items-center text-left font-medium text-base ${isOpen ? "text-white bg-pink-600" : "text-pink-600 bg-white"
+                                                                        }`}
+                                                                    onClick={() => setFaqOpenIndex(isOpen ? -1 : index)}
+                                                                >
+                                                                    <span>{faq.question}</span>
+                                                                    {isOpen ? (
+                                                                        <FaChevronUp className="text-white flex-shrink-0 ml-2" />
+                                                                    ) : (
+                                                                        <FaChevronDown className="text-pink-600 flex-shrink-0 ml-2" />
+                                                                    )}
+                                                                </button>
+                                                                {isOpen && (
+                                                                    <div className="p-4 text-black text-base bg-white border-t border-pink-200">
+                                                                        <div dangerouslySetInnerHTML={{ __html: sanitizedAnswer }} />
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                        );
+                                                    })}
+                                                </div>
+                                            </div>
+                                        </>
+                                    )}
                                 </div>
                             </div>
                         </div>

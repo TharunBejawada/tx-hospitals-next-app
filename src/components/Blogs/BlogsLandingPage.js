@@ -40,7 +40,7 @@ export default function BlogsLandingPage() {
                 const endpoint = `${CONFIG.API_BASE_URL}/blogs/getAllBlogs`;
                 const response = await axios.get(endpoint);
                 const sortedAndFilteredBlogs = response.data.Items
-                    ?.filter(blog => blog.enabled === true)
+                    ?.filter(blog => (blog.status ? blog.status === "active" : blog.enabled !== false) && blog.status !== "inactive" && blog.enabled !== false)
                     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
                 setBlogs(sortedAndFilteredBlogs);
                 setFilteredBlogs(sortedAndFilteredBlogs);
@@ -50,8 +50,10 @@ export default function BlogsLandingPage() {
                 setDepartments(uniqueCategories);
                 const existingMap = JSON.parse(localStorage.getItem('slugMap') || '{}');
                 const newMap = { ...existingMap };
-                response.data.Items.forEach(blog => {
-                    newMap[blog.url.replace(/^\/|\/$/g, "")] = { id: blog.blogId, type: 'blog' };
+                sortedAndFilteredBlogs.forEach(blog => {
+                    if (blog.url) {
+                        newMap[blog.url.replace(/^\/|\/$/g, "")] = { id: blog.blogId, type: 'blog' };
+                    }
                 });
                 localStorage.setItem('slugMap', JSON.stringify(newMap));
             } catch (error) {
@@ -99,6 +101,7 @@ export default function BlogsLandingPage() {
     ];
 
     const handleReadMore = async (blog) => {
+        if (!blog || !blog.url || !blog.url.trim() || blog.url === "#") return;
         try {
             router.push(`/${blog.url.replace(/^\/|\/$/g, '')}/`);
         } catch (err) {
@@ -249,7 +252,7 @@ export default function BlogsLandingPage() {
                                                 initial={{ opacity: 0, y: 50 }}
                                                 animate={{ opacity: 1, y: 0 }}
                                                 transition={{ duration: 0.5, delay: index * 0.2 }}
-                                                className="w-full h-[98%] cursor-pointer"
+                                                className={`w-full h-[98%] ${!blog.url || !blog.url.trim() || blog.url === "#" ? "cursor-default" : "cursor-pointer"}`}
                                                 onClick={() => handleReadMore(blog)}
                                             >
                                                 <div className="mx-auto bg-white shadow-md overflow-hidden flex flex-col">
@@ -265,8 +268,18 @@ export default function BlogsLandingPage() {
                                                             {blog.blogTitle}
                                                         </h3>
                                                         <button
-                                                            className="mt-4 mx-auto py-2 px-2 bg-[#c72b5b] text-white font-semibold rounded-md hover:bg-[#a41e46] transition-all cursor-pointer"
-                                                            onClick={() => handleReadMore(blog)}
+                                                            disabled={!blog.url || !blog.url.trim() || blog.url === "#"}
+                                                            className={`mt-4 mx-auto py-2 px-2 bg-[#c72b5b] text-white font-semibold rounded-md transition-all ${!blog.url || !blog.url.trim() || blog.url === "#"
+                                                                    ? "opacity-50 cursor-not-allowed"
+                                                                    : "hover:bg-[#a41e46] cursor-pointer"
+                                                                }`}
+                                                            onClick={(e) => {
+                                                                if (!blog.url || !blog.url.trim() || blog.url === "#") {
+                                                                    e.stopPropagation();
+                                                                    return;
+                                                                }
+                                                                handleReadMore(blog);
+                                                            }}
                                                         >
                                                             Read More »
                                                         </button>

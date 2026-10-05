@@ -44,15 +44,28 @@ const MiyapurBlogs = () => {
                         Explore easy-to-read health articles from TX Hospitals specialists for informed and confident care decisions.
                     </p>
                 </div>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {blogs.map((blog, idx) => (
-                        <Link href={blog.slug} key={idx} className="flex flex-col rounded-xl bg-white overflow-hidden hover:shadow-md transition-shadow cursor-pointer group" style={{ border: '0.5px solid rgb(183, 183, 183)', boxShadow: 'rgba(0, 0, 0, 0.08) 0px 1px 1px' }}>
+                        <Link
+                            href={blog.slug && blog.slug.trim() && blog.slug !== "#" ? blog.slug : "#"}
+                            key={idx}
+                            onClick={(e) => {
+                                if (!blog.slug || !blog.slug.trim() || blog.slug === "#") {
+                                    e.preventDefault();
+                                }
+                            }}
+                            className={`flex flex-col rounded-xl bg-white overflow-hidden transition-all duration-300 group ${!blog.slug || !blog.slug.trim() || blog.slug === "#" ? "cursor-default" : "hover:shadow-md hover:-translate-y-0.5 cursor-pointer"
+                                }`}
+                            style={{ border: '0.5px solid rgb(215, 215, 215)', boxShadow: 'rgba(0, 0, 0, 0.05) 0px 4px 12px' }}
+                        >
                             <div className="overflow-hidden" style={{ height: '200px' }}>
-                                <img 
-                                    src={blog.image} 
-                                    alt={blog.title} 
-                                    className="w-full h-full object-cover transition-transform group-hover:scale-105 duration-300" 
+                                <img
+                                    src={blog.image}
+                                    alt={blog.title}
+                                    loading="eager"
+                                    decoding="async"
+                                    className="w-full h-full object-cover transition-transform group-hover:scale-105 duration-300"
                                 />
                             </div>
                             <div className="flex flex-col flex-1 p-5 gap-3">
@@ -66,7 +79,7 @@ const MiyapurBlogs = () => {
                                 </div>
                                 <h3 style={{ fontSize: '15px', fontWeight: 600, color: 'rgb(3, 2, 19)', lineHeight: 1.5, margin: '0px' }}>
                                     {blog.title}
-                               </h3>
+                                </h3>
                                 <p className="flex-1" style={{ fontSize: '13px', fontWeight: 400, color: 'rgb(108, 108, 108)', lineHeight: 1.65, margin: '0px' }}>
                                     {blog.description}
                                 </p>

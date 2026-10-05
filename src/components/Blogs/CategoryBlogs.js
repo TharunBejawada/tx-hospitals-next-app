@@ -58,7 +58,7 @@ export default function CategoryBlogs() {
             try {
                 const response = await axios.get(`${CONFIG.API_BASE_URL}/blogs/getBlogsByCategory/${category}`);
                 const sortedAndFilteredBlogs = response.data
-                    ?.filter(blog => blog.enabled === true)
+                    ?.filter(blog => (blog.status ? blog.status === "active" : blog.enabled !== false) && blog.status !== "inactive" && blog.enabled !== false)
                     .sort((a, b) => new Date(b.timeline) - new Date(a.timeline));
                 setBlogs(sortedAndFilteredBlogs);
                 setFilteredBlogs(sortedAndFilteredBlogs);
@@ -72,6 +72,7 @@ export default function CategoryBlogs() {
     }, [category]);
 
     const handleReadMore = async (blog) => {
+        if (!blog || !blog.url || !blog.url.trim() || blog.url === "#") return;
         try {
             router.push(`/${blog.url.replace(/^\/|\/$/g, '')}/`);
         } catch (err) {
@@ -189,8 +190,18 @@ export default function CategoryBlogs() {
                                                     )}
                                                 </p>
                                                 <button
-                                                    className="mt-4 mr-auto py-2 px-6 bg-pink-600 text-white font-semibold hover:bg-pink-700 transition-all cursor-pointer"
-                                                    onClick={() => handleReadMore(blog)}
+                                                    disabled={!blog.url || !blog.url.trim() || blog.url === "#"}
+                                                    className={`mt-4 mr-auto py-2 px-6 bg-pink-600 text-white font-semibold transition-all ${!blog.url || !blog.url.trim() || blog.url === "#"
+                                                            ? "opacity-50 cursor-not-allowed"
+                                                            : "hover:bg-pink-700 cursor-pointer"
+                                                        }`}
+                                                    onClick={(e) => {
+                                                        if (!blog.url || !blog.url.trim() || blog.url === "#") {
+                                                            e.stopPropagation();
+                                                            return;
+                                                        }
+                                                        handleReadMore(blog);
+                                                    }}
                                                 >
                                                     Read More
                                                 </button>

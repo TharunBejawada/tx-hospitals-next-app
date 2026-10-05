@@ -181,6 +181,10 @@ export const fetchRoutes = async (key, endpoint) => {
             return [];
         }
 
+        if (key === "blogs") {
+            data = data.filter(item => (item.status ? item.status === "active" : item.enabled !== false) && item.status !== "inactive" && item.enabled !== false);
+        }
+
         return data.map((item) => item.url).filter(Boolean);
     } catch (err) {
         console.error(err);

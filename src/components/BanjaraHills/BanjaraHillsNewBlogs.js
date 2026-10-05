@@ -47,16 +47,24 @@ const BanjaraHillsNewBlogs = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {blogs.map((blog, idx) => (
-                        <Link 
-                            href={blog.slug} 
-                            key={idx} 
-                            className="flex flex-col rounded-xl bg-white overflow-hidden hover:shadow-md transition-all duration-300 cursor-pointer group hover:-translate-y-0.5" 
+                        <Link
+                            href={blog.slug && blog.slug.trim() && blog.slug !== "#" ? blog.slug : "#"}
+                            key={idx}
+                            onClick={(e) => {
+                                if (!blog.slug || !blog.slug.trim() || blog.slug === "#") {
+                                    e.preventDefault();
+                                }
+                            }}
+                            className={`flex flex-col rounded-xl bg-white overflow-hidden transition-all duration-300 group ${!blog.slug || !blog.slug.trim() || blog.slug === "#" ? "cursor-default" : "hover:shadow-md hover:-translate-y-0.5 cursor-pointer"
+                                }`}
                             style={{ border: '0.5px solid rgb(215, 215, 215)', boxShadow: 'rgba(0, 0, 0, 0.05) 0px 4px 12px' }}
                         >
                             <div className="overflow-hidden relative" style={{ height: '200px' }}>
                                 <img
                                     src={blog.image}
                                     alt={`Health Article: ${blog.title}`}
+                                    loading="eager"
+                                    decoding="async"
                                     className="w-full h-full object-cover transition-transform group-hover:scale-105 duration-500"
                                 />
                             </div>

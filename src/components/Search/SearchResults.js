@@ -8,12 +8,12 @@ import CONFIG from "@/config";
 const ALPHABETS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
 const CATEGORIES = [
-    { key: "all",            label: "All Results",           icon: FiGrid },
-    { key: "DAT",            label: "Diseases & Treatments", icon: FiActivity },
-    { key: "SecondOpinion",  label: "Surgeries",             icon: FiFileText },
-    { key: "Blogs",          label: "Blogs",                 icon: FiBookOpen },
-    { key: "Procedures",     label: "Procedures",            icon: FiFileText },
-    { key: "HealthPackages", label: "Health Packages",       icon: FiPackage },
+    { key: "all", label: "All Results", icon: FiGrid },
+    { key: "DAT", label: "Diseases & Treatments", icon: FiActivity },
+    { key: "SecondOpinion", label: "Surgeries", icon: FiFileText },
+    { key: "Blogs", label: "Blogs", icon: FiBookOpen },
+    { key: "Procedures", label: "Procedures", icon: FiFileText },
+    { key: "HealthPackages", label: "Health Packages", icon: FiPackage },
 ];
 
 const RESULTS_PER_SECTION = 6;
@@ -162,7 +162,11 @@ export default function SearchResults({ initialQuery = "" }) {
         try {
             const encodedKeyword = keyword === "#" ? "%23" : encodeURIComponent(keyword);
             const res = await axios.get(`${CONFIG.API_BASE_URL}/getDataByKeyword/${encodedKeyword}`);
-            setResults(res.data);
+            const data = res.data;
+            if (data && Array.isArray(data.Blogs)) {
+                data.Blogs = data.Blogs.filter(blog => (blog.status ? blog.status === "active" : blog.enabled !== false) && blog.status !== "inactive" && blog.enabled !== false);
+            }
+            setResults(data);
         } catch (err) {
             console.error("Search error:", err);
             setError("Failed to fetch results. Please try again.");
@@ -371,11 +375,10 @@ export default function SearchResults({ initialQuery = "" }) {
                                 <button
                                     key={letter}
                                     onClick={() => handleAlphabetClick(letter)}
-                                    className={`w-8 h-8 rounded-full text-[11px] font-bold transition-all duration-150 ${
-                                        activeLetter === letter
+                                    className={`w-8 h-8 rounded-full text-[11px] font-bold transition-all duration-150 ${activeLetter === letter
                                             ? "bg-white text-pink-700 shadow-lg scale-110"
                                             : "text-white/80 hover:bg-white/20 border border-white/10"
-                                    }`}
+                                        }`}
                                     style={activeLetter === letter ? {} : { background: "rgba(255,255,255,0.08)" }}
                                 >
                                     {letter}
@@ -383,11 +386,10 @@ export default function SearchResults({ initialQuery = "" }) {
                             ))}
                             <button
                                 onClick={handleHashClick}
-                                className={`px-3 h-8 rounded-full text-[11px] font-bold transition-all duration-150 ${
-                                    activeLetter === "#"
+                                className={`px-3 h-8 rounded-full text-[11px] font-bold transition-all duration-150 ${activeLetter === "#"
                                         ? "bg-white text-pink-700 shadow-lg scale-110"
                                         : "text-white/80 hover:bg-white/20 border border-white/10"
-                                }`}
+                                    }`}
                                 style={activeLetter === "#" ? {} : { background: "rgba(255,255,255,0.08)" }}
                             >
                                 #
@@ -431,17 +433,15 @@ export default function SearchResults({ initialQuery = "" }) {
                                 <button
                                     key={key}
                                     onClick={() => setActiveTab(key)}
-                                    className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 border ${
-                                        activeTab === key
+                                    className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 border ${activeTab === key
                                             ? "bg-pink-700 text-white border-pink-700 shadow"
                                             : "bg-white text-gray-600 border-gray-200 hover:border-pink-700 hover:text-pink-700"
-                                    }`}
+                                        }`}
                                 >
                                     <Icon size={14} />
                                     {label}
-                                    <span className={`text-xs rounded-full px-1.5 py-0.5 ml-0.5 ${
-                                        activeTab === key ? "bg-pink-800 text-white" : "bg-pink-50 text-pink-700"
-                                    }`}>
+                                    <span className={`text-xs rounded-full px-1.5 py-0.5 ml-0.5 ${activeTab === key ? "bg-pink-800 text-white" : "bg-pink-50 text-pink-700"
+                                        }`}>
                                         {count}
                                     </span>
                                 </button>

@@ -77,7 +77,7 @@ export default function UniversalPage() {
                 apiCache.doctors = doctorsRes;
                 apiCache.opinions = soRes;
 
-                const blogs = blogsRes.data.Items?.filter(b => b.enabled === true) || [];
+                const blogs = blogsRes.data.Items?.filter(b => (b.status ? b.status === "active" : b.enabled !== false) && b.status !== "inactive" && b.enabled !== false) || [];
                 const doctors = doctorsRes.data;
                 const opinions = soRes.data.Items;
 
