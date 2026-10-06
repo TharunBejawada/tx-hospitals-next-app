@@ -77,12 +77,12 @@ export default function UniversalPage() {
                 apiCache.doctors = doctorsRes;
                 apiCache.opinions = soRes;
 
-                const blogs = blogsRes.data.Items?.filter(b => (b.status ? b.status === "active" : b.enabled !== false) && b.status !== "inactive" && b.enabled !== false) || [];
-                const doctors = doctorsRes.data;
-                const opinions = soRes.data.Items;
+                const blogs = blogsRes?.data?.Items?.filter(b => (b.status ? b.status === "active" : b.enabled !== false) && b.status !== "inactive" && b.enabled !== false) || [];
+                const doctors = Array.isArray(doctorsRes?.data) ? doctorsRes.data : [];
+                const opinions = soRes?.data?.Items || [];
 
                 // Check Blogs
-                const matchBlog = blogs.find(blog => cleanUrl === blog.url.replace(/^\/|\/$/g, ""));
+                const matchBlog = blogs.find(blog => blog?.url && cleanUrl === blog.url.replace(/^\/|\/$/g, ""));
                 if (matchBlog) {
                     const allCats = blogs.flatMap(b => b.categories || []);
                     setDepartments([...new Set(allCats)]);
@@ -93,7 +93,7 @@ export default function UniversalPage() {
                 }
 
                 // Check Doctors
-                const matchDoctor = doctors.find(d => cleanUrl === d.url.replace(/^\/|\/$/g, ""));
+                const matchDoctor = doctors.find(d => d?.url && cleanUrl === d.url.replace(/^\/|\/$/g, ""));
                 if (matchDoctor) {
                     try {
                         const res = await axios.get(`${CONFIG.API_BASE_URL}/doctors/${matchDoctor.id}`);
@@ -111,7 +111,7 @@ export default function UniversalPage() {
                 }
 
                 // Check Second Opinion
-                const matchOpinion = opinions.find(op => cleanUrl === op.url.replace(/^\/|\/$/g, ""));
+                const matchOpinion = opinions.find(op => op?.url && cleanUrl === op.url.replace(/^\/|\/$/g, ""));
                 if (matchOpinion) {
                     const res = await axios.get(`${CONFIG.API_BASE_URL}/new-secondopinion/getSecondOpinionbyId/${matchOpinion.soId}`);
                     setType("surgery");
