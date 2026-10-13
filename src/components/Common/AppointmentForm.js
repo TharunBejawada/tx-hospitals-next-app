@@ -79,9 +79,9 @@ export default function AppointmentForm({ department, doctorName }) {
                             checked={country === "India"}
                             onChange={() => {
                                 setCountry("India");
-                                setSelectedCountry(
-                                    countryOptions.find((c) => c.name === "India")
-                                );
+                                const india = countryOptions.find((c) => c.name === "India");
+                                setSelectedCountry(india);
+                                setFormData((prev) => ({ ...prev, mobile: "", whatsapp: "" }));
                             }}
                             className="h-4 w-4 accent-gray-700"
                         />
@@ -95,9 +95,9 @@ export default function AppointmentForm({ department, doctorName }) {
                             checked={country === "Other Countries"}
                             onChange={() => {
                                 setCountry("Other Countries");
-                                setSelectedCountry(
-                                    countryOptions.find((c) => c.name !== "India")
-                                );
+                                const first = countryOptions.find((c) => c.name !== "India");
+                                setSelectedCountry(first);
+                                setFormData((prev) => ({ ...prev, mobile: "", whatsapp: "" }));
                             }}
                             className="h-4 w-4 accent-gray-700"
                         />
@@ -138,11 +138,12 @@ export default function AppointmentForm({ department, doctorName }) {
                                     label: `${country.name} (${country.code})`,
                                     value: country.name
                                 }))}
-                            onChange={(e) =>
+                            onChange={(e) => {
                                 setSelectedCountry(
                                     countryOptions.find((c) => c.name === e.target.value)
-                                )
-                            }
+                                );
+                                setFormData((prev) => ({ ...prev, mobile: "", whatsapp: "" }));
+                            }}
                         />
                     )}
 
@@ -158,7 +159,7 @@ export default function AppointmentForm({ department, doctorName }) {
                                 width={20}
                                 height={14}
                             />
-                            <span>{selectedCountry.code}</span>
+                            <span className="text-sm font-medium text-gray-700">{selectedCountry.code}</span>
                         </div>
 
                         <div className="absolute left-20 h-[60%] border-l border-gray-400"></div>
@@ -169,7 +170,11 @@ export default function AppointmentForm({ department, doctorName }) {
                             placeholder="Phone Number"
                             required
                             value={formData.mobile}
-                            onChange={handleChange}
+                            onChange={(e) => {
+                                // Only allow digits in the local number part
+                                const digits = e.target.value.replace(/[^0-9]/g, "");
+                                setFormData((prev) => ({ ...prev, mobile: digits }));
+                            }}
                             className="w-full pl-20 outline-none bg-transparent"
                         />
                     </div>
@@ -189,16 +194,32 @@ export default function AppointmentForm({ department, doctorName }) {
 
                     {/* WhatsApp Field */}
                     {!whatsappSame && (
-                        <input
-                            type="tel"
-                            name="whatsapp"
-                            placeholder="WhatsApp Number"
-                            required
-                            value={formData.whatsapp}
-                            onChange={handleChange}
-                            className={`w-full border rounded-full mt-2 focus:outline-pink-300 ${isMobile ? "p-1" : "p-2"
-                                }`}
-                        />
+                        <div
+                            className={`relative bg-white flex items-center border rounded-full mt-2 ${isMobile ? "p-1" : "p-2"}`}
+                        >
+                            <div className="absolute left-2 flex items-center gap-1 pointer-events-none">
+                                <Image
+                                    src={selectedCountry.flag}
+                                    alt={selectedCountry.name}
+                                    width={20}
+                                    height={14}
+                                />
+                                <span className="text-sm font-medium text-gray-700">{selectedCountry.code}</span>
+                            </div>
+                            <div className="absolute left-20 h-[60%] border-l border-gray-400"></div>
+                            <input
+                                type="tel"
+                                name="whatsapp"
+                                placeholder="WhatsApp Number"
+                                required
+                                value={formData.whatsapp}
+                                onChange={(e) => {
+                                    const digits = e.target.value.replace(/[^0-9]/g, "");
+                                    setFormData((prev) => ({ ...prev, whatsapp: digits }));
+                                }}
+                                className="w-full pl-20 outline-none bg-transparent"
+                            />
+                        </div>
                     )}
 
                     {/* Message */}

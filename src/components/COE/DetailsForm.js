@@ -85,11 +85,12 @@ const DetailsForm = ({
                 <select
                     className={`w-full border focus:outline-pink-300 rounded-full ${small ? "p-1 mt-2" : "px-3 py-2 mt-2"}`}
                     value={selectedCountry.name}
-                    onChange={(e) =>
+                    onChange={(e) => {
                         setSelectedCountry(
                             countryOptions.find((c) => c.name === e.target.value)
-                        )
-                    }
+                        );
+                        setFormData((prev) => ({ ...prev, mobile: "", whatsapp: "" }));
+                    }}
                 >
                     {countryOptions
                         .filter((c) => c.name !== "India")
@@ -114,7 +115,7 @@ const DetailsForm = ({
                         height={14}
                         className="inline-block"
                     />
-                    <span>{selectedCountry.code}</span>
+                    <span className="text-sm font-medium text-gray-700">{selectedCountry.code}</span>
                 </div>
                 <div className="absolute left-20 h-[60%] border-l border-gray-400"></div>
                 <input
@@ -124,7 +125,10 @@ const DetailsForm = ({
                     placeholder="Phone Number"
                     required
                     value={formData.mobile}
-                    onChange={handleChange}
+                    onChange={(e) => {
+                        const digits = e.target.value.replace(/[^0-9]/g, "");
+                        setFormData((prev) => ({ ...prev, mobile: digits }));
+                    }}
                 />
             </div>
 
@@ -139,16 +143,33 @@ const DetailsForm = ({
             </div>
 
             {!whatsappSame && (
-                <input
-                    type="tel"
-                    name="whatsapp"
-                    placeholder="WhatsApp Number"
-                    className={`w-full border focus:outline-pink-300 rounded-full ${small ? "p-1 mt-2" : "p-2 mt-2"
-                        }`}
-                    required
-                    value={formData.whatsapp}
-                    onChange={handleChange}
-                />
+                <div
+                    className={`relative bg-white flex items-center border rounded-full ${small ? "p-1 mt-2" : "p-2 mt-2"}`}
+                >
+                    <div className="absolute left-2 flex items-center gap-1 pointer-events-none">
+                        <Image
+                            src={selectedCountry.flag}
+                            alt={selectedCountry.name}
+                            width={20}
+                            height={14}
+                            className="inline-block"
+                        />
+                        <span className="text-sm font-medium text-gray-700">{selectedCountry.code}</span>
+                    </div>
+                    <div className="absolute left-20 h-[60%] border-l border-gray-400"></div>
+                    <input
+                        type="tel"
+                        name="whatsapp"
+                        placeholder="WhatsApp Number"
+                        required
+                        value={formData.whatsapp}
+                        onChange={(e) => {
+                            const digits = e.target.value.replace(/[^0-9]/g, "");
+                            setFormData((prev) => ({ ...prev, whatsapp: digits }));
+                        }}
+                        className="w-full pl-20 outline-none bg-transparent"
+                    />
+                </div>
             )}
 
             <textarea

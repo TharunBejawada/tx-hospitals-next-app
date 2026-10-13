@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { submitMyKareLead } from '@/utils/leadService';
-
+import countryOptions from "@/utils/countryOptions";
+import Image from "next/image";
 import useIsMobile from "@/hooks/useIsMobile";
 import CONFIG from "@/config";
 import { useRouter } from "next/router";
@@ -13,6 +14,8 @@ export default function IPLandingPage() {
 
     const router = useRouter();
     const isMobile = useIsMobile();
+    const [selectedCountryObj, setSelectedCountryObj] = useState(null);
+
     const [whatsappSame, setWhatsappSame] = useState(false);
     const [formData, setFormData] = useState({
         name: "",
@@ -23,8 +26,6 @@ export default function IPLandingPage() {
         country: "",
     });
 
-    const countries = ["Yemen", "Sri Lanka", "Oman", "Nepal", "Bangladesh", "USA", "Sudan", "Djibouti", "South Sudan", "Somalia", "Nairobi", "Iraq", "Kenya", "Ethiopia", "UAE", "Nigeria"];
-
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({
@@ -33,13 +34,26 @@ export default function IPLandingPage() {
         }));
     };
 
+    const handleCountryChange = (e) => {
+        const selected = countryOptions.find((c) => c.name === e.target.value);
+        setSelectedCountryObj(selected || null);
+        setFormData((prev) => ({ ...prev, country: e.target.value, mobile: "", whatsapp: "" }));
+    };
+
+    const handleMobileChange = (e) => {
+        const digits = e.target.value.replace(/[^0-9]/g, "");
+        setFormData((prev) => ({ ...prev, mobile: digits }));
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         const payload = {
             name: formData.name,
             email: formData.email,
-            mobile: formData.mobile,
+            mobile: selectedCountryObj
+                ? `${selectedCountryObj.code} ${formData.mobile}`
+                : formData.mobile,
             country: formData.country,
             message: formData.message,
         };
@@ -105,36 +119,26 @@ export default function IPLandingPage() {
                         <div className="flex flex-col justify-between items-stretch gap-2 px-2 py-1 bg-white">
                             {/* Left Section - Benefits */}
                             <div className="bg-pink-800 text-white px-5 py-6 rounded-2xl w-full max-w-3xl">
-                                <div className="flex gap-6">
-
-                                    {/* Left Column: Icons */}
-                                    <div className="flex flex-col justify-between gap-6">
-                                        <img loading="lazy" src="/assets/International_Patients/JCI Logo.png" alt="JciIcon" className="w-14 h-14" />
+                                <div className="flex flex-col items-center gap-4 w-full">
+                                    {/* Top: 1 item centred */}
+                                    <div className="flex flex-col items-center text-center gap-2">
                                         <img loading="lazy" src="/assets/International_Patients/30 years Experienced  Icon.png" alt="DoctorIcon" className="w-14 h-14" />
-                                        <img loading="lazy" src="/assets/International_Patients/Long Standing Resources Icon.png" alt="ResourcesIcon" className="w-14 h-14" />
-                                        <img loading="lazy" src="/assets/International_Patients/Patient Wider Countries Icon.png" alt="GlobeIcon" className="w-14 h-14" />
+                                        <p className="text-sm font-inter font-medium">30+ Years</p>
+                                        <p className="text-sm font-inter font-medium">Experienced Doctors</p>
                                     </div>
-
-                                    {/* Right Column: Texts */}
-                                    <div className="flex flex-col justify-between gap-6">
-                                        <div>
-                                            <p className="text-base font-inter font-medium">JCI</p>
-                                            <p className="text-base font-inter font-medium">Accredited</p>
+                                    {/* Bottom: 2 items side-by-side */}
+                                    <div className="flex justify-around w-full">
+                                        <div className="flex flex-col items-center text-center gap-2">
+                                            <img loading="lazy" src="/assets/International_Patients/Long Standing Resources Icon.png" alt="ResourcesIcon" className="w-14 h-14" />
+                                            <p className="text-sm font-inter font-medium">Long Standing</p>
+                                            <p className="text-sm font-inter font-medium">Resources</p>
                                         </div>
-                                        <div>
-                                            <p className="text-base font-inter font-medium">30+ Years</p>
-                                            <p className="text-base font-inter font-medium">Experienced Doctors</p>
-                                        </div>
-                                        <div>
-                                            <p className="text-base font-inter font-medium">Long</p>
-                                            <p className="text-base font-inter font-medium">Standing Resources</p>
-                                        </div>
-                                        <div>
-                                            <p className="text-base font-inter font-medium">Patients from</p>
-                                            <p className="text-base font-inter font-medium">Wider Countries</p>
+                                        <div className="flex flex-col items-center text-center gap-2">
+                                            <img loading="lazy" src="/assets/International_Patients/Patient Wider Countries Icon.png" alt="GlobeIcon" className="w-14 h-14" />
+                                            <p className="text-sm font-inter font-medium">Patients from</p>
+                                            <p className="text-sm font-inter font-medium">Wider Countries</p>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
 
@@ -166,26 +170,41 @@ export default function IPLandingPage() {
                                     <select
                                         name="country"
                                         value={formData.country}
-                                        onChange={handleChange}
-                                        className="border border-gray-300 rounded-md px-4 py-2 flex items-center gap-2"
+                                        onChange={handleCountryChange}
+                                        className="border border-gray-300 rounded-md px-4 py-2"
                                         required
                                     >
                                         <option value="">Select Country</option>
-                                        {countries.map((country, idx) => (
-                                            <option key={idx} value={country}>
-                                                {country}
+                                        {countryOptions.map((c, idx) => (
+                                            <option key={idx} value={c.name}>
+                                                {c.name} ({c.code})
                                             </option>
                                         ))}
                                     </select>
-                                    <input
-                                        type="tel"
-                                        name="mobile"
-                                        placeholder="Phone Number*"
-                                        required
-                                        value={formData.mobile}
-                                        onChange={handleChange}
-                                        className="border font-inter border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-600"
-                                    />
+                                    {/* Phone field with locked dial code prefix */}
+                                    <div className="relative flex items-center border border-gray-300 rounded-md bg-white">
+                                        {selectedCountryObj && (
+                                            <div className="flex items-center gap-1 pl-3 pr-2 border-r border-gray-300 pointer-events-none select-none shrink-0">
+                                                <Image
+                                                    src={selectedCountryObj.flag}
+                                                    alt={selectedCountryObj.name}
+                                                    width={20}
+                                                    height={14}
+                                                    className="inline-block"
+                                                />
+                                                <span className="text-sm font-medium text-gray-700 whitespace-nowrap">{selectedCountryObj.code}</span>
+                                            </div>
+                                        )}
+                                        <input
+                                            type="tel"
+                                            name="mobile"
+                                            placeholder="Phone Number*"
+                                            required
+                                            value={formData.mobile}
+                                            onChange={handleMobileChange}
+                                            className="w-full px-3 py-2 outline-none bg-transparent focus:ring-2 focus:ring-pink-600 rounded-md"
+                                        />
+                                    </div>
                                     <div className="flex items-center mt-2">
                                         <input
                                             type="checkbox"
@@ -196,15 +215,32 @@ export default function IPLandingPage() {
                                         <span>Yes same as WhatsApp Number</span>
                                     </div>
                                     {!whatsappSame && (
-                                        <input
-                                            type="tel"
-                                            name="whatsapp"
-                                            placeholder="WhatsApp Number"
-                                            className="w-full p-2 border rounded mt-2"
-                                            required
-                                            value={formData.whatsapp}
-                                            onChange={handleChange}
-                                        />
+                                        <div className="relative flex items-center border border-gray-300 rounded-md bg-white">
+                                            {selectedCountryObj && (
+                                                <div className="flex items-center gap-1 pl-3 pr-2 border-r border-gray-300 pointer-events-none select-none shrink-0">
+                                                    <Image
+                                                        src={selectedCountryObj.flag}
+                                                        alt={selectedCountryObj.name}
+                                                        width={20}
+                                                        height={14}
+                                                        className="inline-block"
+                                                    />
+                                                    <span className="text-sm font-medium text-gray-700 whitespace-nowrap">{selectedCountryObj.code}</span>
+                                                </div>
+                                            )}
+                                            <input
+                                                type="tel"
+                                                name="whatsapp"
+                                                placeholder="WhatsApp Number"
+                                                required
+                                                value={formData.whatsapp}
+                                                onChange={(e) => {
+                                                    const digits = e.target.value.replace(/[^0-9]/g, "");
+                                                    setFormData((prev) => ({ ...prev, whatsapp: digits }));
+                                                }}
+                                                className="w-full px-3 py-2 outline-none bg-transparent focus:ring-2 focus:ring-pink-600 rounded-md"
+                                            />
+                                        </div>
                                     )}
                                     <textarea
                                         name="message"
@@ -265,36 +301,25 @@ export default function IPLandingPage() {
                             </div>
                         </div>
                         <div className="flex flex-row justify-between items-stretch gap-4 px-14 py-5 bg-white">
-                            <div className="bg-pink-800 text-white px-10 py-8 rounded-2xl w-full max-w-3xl flex flex-col justify-between">
-                                <div className="flex items-center justify-between px-4 pt-14">
-                                    <div className="flex items-start gap-4">
-                                        <img loading="lazy" src="/assets/International_Patients/JCI Logo.png" alt="JciIcon" className="w-24 h-24" />
-                                        <div>
-                                            <p className="text-2xl font-medium font-inter">JCI</p>
-                                            <p className="text-2xl font-inter font-medium">Accredited</p>
-                                        </div>
-                                    </div>
-                                    <div className="flex items-start gap-4">
+                            <div className="bg-pink-800 text-white px-10 py-8 rounded-2xl w-full max-w-3xl flex items-center justify-center">
+                                <div className="flex flex-col items-center gap-8 w-full">
+                                    {/* Top: 1 item centred */}
+                                    <div className="flex flex-col items-center text-center gap-3">
                                         <img loading="lazy" src="/assets/International_Patients/30 years Experienced  Icon.png" alt="DoctorIcon" className="w-24 h-24" />
-                                        <div>
-                                            <p className="text-2xl font-inter font-medium">30+ Years</p>
-                                            <p className="text-2xl font-inter font-medium">Experienced Doctors</p>
-                                        </div>
+                                        <p className="text-xl font-inter font-medium">30+ Years</p>
+                                        <p className="text-xl font-inter font-medium">Experienced Doctors</p>
                                     </div>
-                                </div>
-                                <div className="flex items-center justify-between px-4 pb-14">
-                                    <div className="flex items-start gap-4">
-                                        <img loading="lazy" src="/assets/International_Patients/Long Standing Resources Icon.png" alt="ResourcesIcon" className="w-24 h-24" />
-                                        <div>
-                                            <p className="text-2xl font-inter font-medium">Long</p>
-                                            <p className="text-2xl font-inter font-medium">Standing Resources</p>
+                                    {/* Bottom: 2 items side-by-side */}
+                                    <div className="flex justify-around w-full">
+                                        <div className="flex flex-col items-center text-center gap-3">
+                                            <img loading="lazy" src="/assets/International_Patients/Long Standing Resources Icon.png" alt="ResourcesIcon" className="w-24 h-24" />
+                                            <p className="text-xl font-inter font-medium">Long Standing</p>
+                                            <p className="text-xl font-inter font-medium">Resources</p>
                                         </div>
-                                    </div>
-                                    <div className="flex items-start gap-4">
-                                        <img loading="lazy" src="/assets/International_Patients/Patient Wider Countries Icon.png" alt="GlobeIcon" className="w-24 h-24" />
-                                        <div>
-                                            <p className="text-2xl font-inter font-medium">Patients from</p>
-                                            <p className="text-2xl font-inter font-medium">Wider Countries</p>
+                                        <div className="flex flex-col items-center text-center gap-3">
+                                            <img loading="lazy" src="/assets/International_Patients/Patient Wider Countries Icon.png" alt="GlobeIcon" className="w-24 h-24" />
+                                            <p className="text-xl font-inter font-medium">Patients from</p>
+                                            <p className="text-xl font-inter font-medium">Wider Countries</p>
                                         </div>
                                     </div>
                                 </div>
@@ -326,26 +351,41 @@ export default function IPLandingPage() {
                                     <select
                                         name="country"
                                         value={formData.country}
-                                        onChange={handleChange}
+                                        onChange={handleCountryChange}
                                         className="border border-gray-300 rounded-md px-4 py-2 flex items-center gap-2"
                                         required
                                     >
                                         <option value="">Select Country</option>
-                                        {countries.map((country, idx) => (
-                                            <option key={idx} value={country}>
-                                                {country}
+                                        {countryOptions.map((c, idx) => (
+                                            <option key={idx} value={c.name}>
+                                                {c.name} ({c.code})
                                             </option>
                                         ))}
                                     </select>
-                                    <input
-                                        type="tel"
-                                        name="mobile"
-                                        placeholder="Phone Number*"
-                                        required
-                                        value={formData.mobile}
-                                        onChange={handleChange}
-                                        className="border font-inter border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-600"
-                                    />
+                                    {/* Phone field with locked dial code prefix */}
+                                    <div className="relative flex items-center border border-gray-300 rounded-md bg-white">
+                                        {selectedCountryObj && (
+                                            <div className="flex items-center gap-1 pl-3 pr-2 border-r border-gray-300 pointer-events-none select-none shrink-0">
+                                                <Image
+                                                    src={selectedCountryObj.flag}
+                                                    alt={selectedCountryObj.name}
+                                                    width={20}
+                                                    height={14}
+                                                    className="inline-block"
+                                                />
+                                                <span className="text-sm font-medium text-gray-700 whitespace-nowrap">{selectedCountryObj.code}</span>
+                                            </div>
+                                        )}
+                                        <input
+                                            type="tel"
+                                            name="mobile"
+                                            placeholder="Phone Number*"
+                                            required
+                                            value={formData.mobile}
+                                            onChange={handleMobileChange}
+                                            className="w-full px-3 py-2 outline-none bg-transparent focus:ring-2 focus:ring-pink-600 rounded-md"
+                                        />
+                                    </div>
                                     <div className="flex items-center mt-2">
                                         <input
                                             type="checkbox"
@@ -356,15 +396,32 @@ export default function IPLandingPage() {
                                         <span>Yes same as WhatsApp Number</span>
                                     </div>
                                     {!whatsappSame && (
-                                        <input
-                                            type="tel"
-                                            name="whatsapp"
-                                            placeholder="WhatsApp Number"
-                                            className="w-full p-2 border rounded mt-2"
-                                            required
-                                            value={formData.whatsapp}
-                                            onChange={handleChange}
-                                        />
+                                        <div className="relative flex items-center border border-gray-300 rounded-md bg-white">
+                                            {selectedCountryObj && (
+                                                <div className="flex items-center gap-1 pl-3 pr-2 border-r border-gray-300 pointer-events-none select-none shrink-0">
+                                                    <Image
+                                                        src={selectedCountryObj.flag}
+                                                        alt={selectedCountryObj.name}
+                                                        width={20}
+                                                        height={14}
+                                                        className="inline-block"
+                                                    />
+                                                    <span className="text-sm font-medium text-gray-700 whitespace-nowrap">{selectedCountryObj.code}</span>
+                                                </div>
+                                            )}
+                                            <input
+                                                type="tel"
+                                                name="whatsapp"
+                                                placeholder="WhatsApp Number"
+                                                required
+                                                value={formData.whatsapp}
+                                                onChange={(e) => {
+                                                    const digits = e.target.value.replace(/[^0-9]/g, "");
+                                                    setFormData((prev) => ({ ...prev, whatsapp: digits }));
+                                                }}
+                                                className="w-full px-3 py-2 outline-none bg-transparent focus:ring-2 focus:ring-pink-600 rounded-md"
+                                            />
+                                        </div>
                                     )}
                                     <textarea
                                         name="message"

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { submitMyKareLead } from '@/utils/leadService';
-
+import Image from "next/image";
+import countryOptions from "@/utils/countryOptions";
 import useIsMobile from "@/hooks/useIsMobile";
 import { countryFlags } from "@/utils/countryFlags";
 import { useRouter } from "next/router";
@@ -13,10 +14,12 @@ export default function MedicalOpinion() {
     const router = useRouter();
     const isMobile = useIsMobile();
     const [videos, setVideos] = useState([]);
+    const [selectedCountryObj, setSelectedCountryObj] = useState(null);
     const [formData, setFormData] = useState({
         name: "",
         email: "",
         whatsapp: "",
+        country: "",
         query: "",
         fileUrl: "",
     });
@@ -27,7 +30,7 @@ export default function MedicalOpinion() {
                 const response = await fetch(`${CONFIG.API_BASE_URL}/patient-testimonials`);
                 const data = await response.json();
                 const formattedVideos = data.videos
-                    .slice(0, 3) // Only take top 3 videos
+                    .slice(0, 3)
                     .map((url) => {
                         const videoId = new URL(url).pathname.split("/").pop();
                         return { id: videoId, title: "Patient Testimonial" };
@@ -47,6 +50,17 @@ export default function MedicalOpinion() {
             ...prev,
             [name]: value,
         }));
+    };
+
+    const handleCountryChange = (e) => {
+        const selected = countryOptions.find((c) => c.name === e.target.value);
+        setSelectedCountryObj(selected || null);
+        setFormData((prev) => ({ ...prev, country: e.target.value, whatsapp: "" }));
+    };
+
+    const handleWhatsappChange = (e) => {
+        const digits = e.target.value.replace(/[^0-9]/g, "");
+        setFormData((prev) => ({ ...prev, whatsapp: digits }));
     };
 
     const handleFileUpload = async (e) => {
@@ -70,20 +84,53 @@ export default function MedicalOpinion() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            const payload = {
+                ...formData,
+                whatsapp: selectedCountryObj
+                    ? `${selectedCountryObj.code} ${formData.whatsapp}`
+                    : formData.whatsapp,
+            };
             const res = await fetch(`${CONFIG.API_BASE_URL}/send-email/international-patients-query-form`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(formData),
+                body: JSON.stringify(payload),
             });
-            submitMyKareLead(formData);
+            submitMyKareLead(payload);
 
             router.push("/thank-you/");
         } catch (err) {
             console.error("Submission error:", err);
         }
     };
+
+    // Reusable WhatsApp field with locked dial code prefix
+    const WhatsAppField = ({ className = "" }) => (
+        <div className={`relative flex items-center border border-gray-300 rounded bg-white ${className}`}>
+            {selectedCountryObj && (
+                <div className="flex items-center gap-1 pl-2 pr-2 border-r border-gray-300 pointer-events-none select-none shrink-0">
+                    <Image
+                        src={selectedCountryObj.flag}
+                        alt={selectedCountryObj.name}
+                        width={18}
+                        height={13}
+                        className="inline-block"
+                    />
+                    <span className="text-sm font-medium text-gray-700 whitespace-nowrap">{selectedCountryObj.code}</span>
+                </div>
+            )}
+            <input
+                type="tel"
+                name="whatsapp"
+                placeholder="WhatsApp No*"
+                required
+                value={formData.whatsapp}
+                onChange={handleWhatsappChange}
+                className="w-full px-2 py-2 font-inter outline-none bg-transparent"
+            />
+        </div>
+    );
 
     return (
         <>
@@ -122,15 +169,23 @@ export default function MedicalOpinion() {
                                             onChange={handleChange}
                                             className="border font-inter p-2 rounded"
                                         />
-                                        <input
-                                            type="text"
-                                            name="whatsapp"
-                                            placeholder="WhatsApp No*"
+                                        {/* Country Dropdown */}
+                                        <select
+                                            name="country"
+                                            value={formData.country}
+                                            onChange={handleCountryChange}
                                             required
-                                            value={formData.whatsapp}
-                                            onChange={handleChange}
-                                            className="border font-inter p-2 rounded"
-                                        />
+                                            className="border border-gray-300 font-inter p-2 rounded"
+                                        >
+                                            <option value="">Select Country*</option>
+                                            {countryOptions.map((c, idx) => (
+                                                <option key={idx} value={c.name}>
+                                                    {c.name} ({c.code})
+                                                </option>
+                                            ))}
+                                        </select>
+                                        {/* WhatsApp with locked dial code */}
+                                        <WhatsAppField />
                                         <input
                                             type="email"
                                             name="email"
@@ -227,15 +282,6 @@ export default function MedicalOpinion() {
                                         className="border font-inter p-2 rounded"
                                     />
                                     <input
-                                        type="text"
-                                        name="whatsapp"
-                                        placeholder="WhatsApp No*"
-                                        required
-                                        value={formData.whatsapp}
-                                        onChange={handleChange}
-                                        className="border font-inter p-2 rounded"
-                                    />
-                                    <input
                                         type="email"
                                         name="email"
                                         placeholder="Email*"
@@ -244,6 +290,27 @@ export default function MedicalOpinion() {
                                         onChange={handleChange}
                                         className="border font-inter p-2 rounded"
                                     />
+                                    {/* Country Dropdown - spans full width */}
+                                    <div className="col-span-2">
+                                        <select
+                                            name="country"
+                                            value={formData.country}
+                                            onChange={handleCountryChange}
+                                            required
+                                            className="w-full border border-gray-300 font-inter p-2 rounded"
+                                        >
+                                            <option value="">Select Country*</option>
+                                            {countryOptions.map((c, idx) => (
+                                                <option key={idx} value={c.name}>
+                                                    {c.name} ({c.code})
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    {/* WhatsApp with locked dial code - spans full width */}
+                                    <div className="col-span-2">
+                                        <WhatsAppField />
+                                    </div>
                                     <div className="col-span-2">
                                         <label className="block mb-1 font-inter text-sm font-medium">
                                             Upload Reports (pdf/doc/jpg):
