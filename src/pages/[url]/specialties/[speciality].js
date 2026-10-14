@@ -9,17 +9,23 @@ import SpecialistsSection from '@/components/BranchSpecialityLanding/Specialists
 import DiagnosticsAndWhenToSeeSection from '@/components/BranchSpecialityLanding/DiagnosticsAndWhenToSeeSection';
 import CTASection from '@/components/BranchSpecialityLanding/CTASection';
 import FAQSection from '@/components/BranchSpecialityLanding/FAQSection';
+import BranchBlogsSection from '@/components/Blogs/BranchBlogsSection';
+import { getBranchData } from '@/utils/branchLocationData';
 import CONFIG from '@/config';
 
 const BranchSpecialtyPage = ({ pageData, error, targetLocation, targetSpeciality, wasBracketUrl }) => {
     const router = useRouter();
     const { url: location, speciality } = router.query;
 
+    // Resolve the blog-friendly location name from the URL slug
+    const currentLoc = location || targetLocation || 'uppal';
+    const currentSpec = speciality || targetSpeciality || 'cardiology';
+    const branch = getBranchData(currentLoc);
+    const blogLocation = branch.blogLocation;
+
     useEffect(() => {
         if (!router.isReady) return;
 
-        const currentLoc = location || targetLocation || 'uppal';
-        const currentSpec = speciality || targetSpeciality || 'cardiology';
         const hasBracketInQuery = currentLoc.includes('[') || currentLoc.includes(']') || currentSpec.includes('[') || currentSpec.includes(']');
 
         if (wasBracketUrl || hasBracketInQuery) {
@@ -35,7 +41,7 @@ const BranchSpecialtyPage = ({ pageData, error, targetLocation, targetSpeciality
         } else if (error) {
             router.replace("/");
         }
-    }, [pageData, error, location, speciality, targetLocation, targetSpeciality, wasBracketUrl, router]);
+    }, [pageData, error, currentLoc, currentSpec, targetLocation, targetSpeciality, wasBracketUrl, router]);
 
     if (error || !pageData) {
         return (
@@ -48,8 +54,6 @@ const BranchSpecialtyPage = ({ pageData, error, targetLocation, targetSpeciality
         );
     }
 
-    const currentLoc = location || targetLocation || 'uppal';
-    const currentSpec = speciality || targetSpeciality || 'cardiology';
     const defaultTitle = currentSpec ? `${currentSpec} at TX Hospitals ${currentLoc}` : 'Specialty | TX Hospitals';
     const defaultDescription = `Expert ${currentSpec} care at TX Hospitals ${currentLoc}.`;
 
@@ -92,9 +96,12 @@ const BranchSpecialtyPage = ({ pageData, error, targetLocation, targetSpeciality
                         <CTASection data={content.cta} />
                     )}
 
-                    {/* 7. FAQ Section */}
+                    {/* 7. Blogs Section */}
+                    <BranchBlogsSection location={blogLocation} maxCards={3} />
+
+                    {/* 8. FAQ + Map Section */}
                     {content.faqs && (
-                        <FAQSection data={content.faqs} />
+                        <FAQSection data={content.faqs} location={currentLoc} />
                     )}
                 </main>
             </SecondaryLayout>

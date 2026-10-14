@@ -7,6 +7,8 @@ import SpecialistsSection from './SpecialistsSection';
 import DiagnosticsAndWhenToSeeSection from './DiagnosticsAndWhenToSeeSection';
 import CTASection from './CTASection';
 import FAQSection from './FAQSection';
+import BranchBlogsSection from '@/components/Blogs/BranchBlogsSection';
+import { getBranchData } from '@/utils/branchLocationData';
 import CONFIG from '@/config';
 import Head from 'next/head';
 
@@ -14,6 +16,10 @@ const BranchSpecialityLanding = ({ location, speciality }) => {
     const router = useRouter();
     const [pageData, setPageData] = useState(null);
     const [loading, setLoading] = useState(true);
+
+    // Resolve the blog-friendly location name from the URL slug
+    const branch = getBranchData(location);
+    const blogLocation = branch.blogLocation;
 
     useEffect(() => {
         if (!location || !speciality) return;
@@ -106,9 +112,12 @@ const BranchSpecialityLanding = ({ location, speciality }) => {
                 <CTASection data={content.cta} />
             )}
 
-            {/* 7. FAQ Section */}
+            {/* 7. Blogs Section */}
+            <BranchBlogsSection location={blogLocation} maxCards={3} />
+
+            {/* 8. FAQ + Map Section */}
             {content.faqs && (
-                <FAQSection data={content.faqs} />
+                <FAQSection data={content.faqs} location={location} />
             )}
 
             {/* Upcoming Sections will be placed here */}

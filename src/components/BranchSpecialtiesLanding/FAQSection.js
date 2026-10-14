@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, MapPin, Phone } from 'lucide-react';
 import FAQSchema from '@/utils/FAQSchema';
+import dynamic from 'next/dynamic';
+import { getBranchData } from '@/utils/branchLocationData';
+
+const MapClient = dynamic(
+    () => import('@/components/ContactUs/MapClient'),
+    { ssr: false }
+);
 
 const FAQSection = ({ location }) => {
     const [openIndex, setOpenIndex] = useState(-1);
@@ -11,6 +18,11 @@ const FAQSection = ({ location }) => {
     };
 
     const formattedLocation = formatString(location) || 'Miyapur';
+
+    // ── Resolve branch map data from the shared utility ──
+    const branch = getBranchData(location);
+    const mapCoords = branch.coords;
+    const mapName = branch.mapName;
 
     const miyapurFaqs = [
         {
@@ -54,7 +66,7 @@ const FAQSection = ({ location }) => {
         },
         {
             question: `What medical specialties are available at TX Hospitals Kachiguda?`,
-            answer: `TX Hospitals Kachiguda offers specialist care in Cardiology, Orthopaedics, Gastroenterology, Neurology, Nephrology, Urology, Pulmonology, ENT, Women’s Health, Paediatrics, Oncology and other major departments.`
+            answer: `TX Hospitals Kachiguda offers specialist care in Cardiology, Orthopaedics, Gastroenterology, Neurology, Nephrology, Urology, Pulmonology, ENT, Women's Health, Paediatrics, Oncology and other major departments.`
         },
         {
             question: `How do I choose the right specialist for my symptoms?`,
@@ -62,11 +74,11 @@ const FAQSection = ({ location }) => {
         },
         {
             question: `Can I consult different specialists during the same treatment journey?`,
-            answer: `Yes. When a health condition requires expertise from multiple departments, our doctors can coordinate the patient’s evaluation and treatment plan.`
+            answer: `Yes. When a health condition requires expertise from multiple departments, our doctors can coordinate the patient's evaluation and treatment plan.`
         },
         {
             question: `Does TX Hospitals Kachiguda provide diagnostic services?`,
-            answer: `Yes. Diagnostic support is available to help specialists assess the patient’s condition and plan suitable treatment based on clinical requirements.`
+            answer: `Yes. Diagnostic support is available to help specialists assess the patient's condition and plan suitable treatment based on clinical requirements.`
         },
         {
             question: `Is emergency care available at TX Hospitals Kachiguda?`,
@@ -97,11 +109,11 @@ const FAQSection = ({ location }) => {
         },
         {
             question: "Can I consult more than one specialist at TX Hospitals Uppal?",
-            answer: "Yes. When a medical condition requires evaluation by doctors from different specialties, coordinated consultations can be arranged depending on the patient’s clinical needs."
+            answer: "Yes. When a medical condition requires evaluation by doctors from different specialties, coordinated consultations can be arranged depending on the patient's clinical needs."
         },
         {
             question: "Does TX Hospitals Uppal provide diagnostic facilities?",
-            answer: "Yes. Diagnostic support is available to help doctors evaluate medical conditions and plan further treatment based on the patient’s symptoms and clinical findings."
+            answer: "Yes. Diagnostic support is available to help doctors evaluate medical conditions and plan further treatment based on the patient's symptoms and clinical findings."
         },
         {
             question: "Which doctor should I consult for chest pain or heart problems?",
@@ -135,47 +147,95 @@ const FAQSection = ({ location }) => {
         setOpenIndex(openIndex === index ? -1 : index);
     };
 
+    const openGoogleMaps = () => {
+        window.open(`https://www.google.com/maps/dir/?api=1&destination=${mapCoords[0]},${mapCoords[1]}`, "_blank");
+    };
+
     return (
-        <section className="py-10 md:py-12" style={{ background: 'rgb(243, 243, 245)' }}>
+        <section className="py-10 md:py-16" style={{ background: 'rgb(243, 243, 245)' }}>
             <FAQSchema faqs={faqs} />
             <div className="max-w-[1170px] mx-auto px-6">
+
+                {/* Section Header */}
                 <div className="text-center mb-10">
-                    <h2 className="mb-3 text-2xl md:text-3xl lg:text-4xl font-bold" style={{ color: 'rgb(3, 2, 19)' }}>
-                        Frequently Asked <span style={{ color: 'rgb(189, 56, 92)' }}>Questions</span>
+                    <h2 className="mb-3 font-bold" style={{ fontSize: 'clamp(24px, 3vw, 36px)', color: 'rgb(3, 2, 19)' }}>
+                        Find Us &amp; <span style={{ color: 'rgb(189, 56, 92)' }}>FAQs</span>
                     </h2>
+                    <p className="max-w-[560px] mx-auto text-gray-500" style={{ fontSize: 15, lineHeight: 1.7 }}>
+                        Visit TX Hospitals {formattedLocation} or get answers to your most common questions below.
+                    </p>
                 </div>
 
-                <div className="max-w-[820px] mx-auto flex flex-col gap-3">
-                    {faqs.map((faq, index) => {
-                        const isOpen = openIndex === index;
-                        return (
-                            <div key={index} className="rounded-lg overflow-hidden transition-all duration-300 bg-white" style={{ border: '0.5px solid rgb(215, 215, 215)', boxShadow: 'rgba(0, 0, 0, 0.03) 0px 4px 12px' }}>
-                                <button
-                                    onClick={() => toggleFAQ(index)}
-                                    className="w-full flex items-center justify-between px-6 py-4 text-left transition-colors"
-                                    style={{ background: isOpen ? 'rgb(189, 56, 92)' : 'rgb(255, 255, 255)' }}
-                                >
-                                    <span style={{ fontSize: '15px', fontWeight: 500, color: isOpen ? 'rgb(255, 255, 255)' : 'rgb(3, 2, 19)', lineHeight: 1.5 }}>
-                                        {faq.question}
-                                    </span>
-                                    <ChevronDown
-                                        className={`flex-shrink-0 ml-4 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
-                                        style={{ color: isOpen ? '#fff' : '#BD385C' }}
-                                        size={18}
-                                        strokeWidth={2.5}
-                                    />
-                                </button>
+                {/* Two-column: FAQs left | Map right */}
+                <div className="flex flex-col lg:flex-row gap-8 items-start">
 
-                                {isOpen && (
-                                    <div className="px-6 py-4" style={{ background: 'rgb(254, 236, 236)' }}>
-                                        <p style={{ fontSize: '14px', fontWeight: 400, color: 'rgb(30, 30, 30)', lineHeight: 1.7, margin: 0 }}>
-                                            {faq.answer}
-                                        </p>
-                                    </div>
-                                )}
+                    {/* ── LEFT: FAQ accordion ── */}
+                    <div className="w-full lg:w-[58%] flex flex-col gap-3 order-2 lg:order-1">
+                        {faqs.map((faq, index) => {
+                            const isOpen = openIndex === index;
+                            return (
+                                <div key={index} className="rounded-lg overflow-hidden transition-all duration-300 bg-white"
+                                    style={{ border: '0.5px solid rgb(215,215,215)', boxShadow: 'rgba(0,0,0,0.03) 0px 4px 12px' }}>
+                                    <button
+                                        onClick={() => toggleFAQ(index)}
+                                        className="w-full flex items-center justify-between px-5 py-4 text-left transition-colors"
+                                        style={{ background: isOpen ? 'rgb(189,56,92)' : 'rgb(255,255,255)' }}
+                                    >
+                                        <span style={{ fontSize: 15, fontWeight: 500, color: isOpen ? '#fff' : 'rgb(3,2,19)', lineHeight: 1.5 }}>
+                                            {faq.question}
+                                        </span>
+                                        <ChevronDown
+                                            className={`flex-shrink-0 ml-4 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
+                                            style={{ color: isOpen ? '#fff' : 'rgb(189,56,92)' }}
+                                            size={18}
+                                            strokeWidth={2.5}
+                                        />
+                                    </button>
+                                    {isOpen && (
+                                        <div className="px-5 py-4" style={{ background: 'rgb(254,236,236)' }}>
+                                            <p style={{ fontSize: 14, fontWeight: 400, color: 'rgb(30,30,30)', lineHeight: 1.7, margin: 0 }}>
+                                                {faq.answer}
+                                            </p>
+                                        </div>
+                                    )}
+                                </div>
+                            );
+                        })}
+                    </div>
+
+                    {/* ── RIGHT: Map card (sticky) ── */}
+                    <div className="w-full lg:w-[42%] lg:sticky lg:top-24 flex flex-col rounded-2xl overflow-hidden bg-white order-1 lg:order-2"
+                        style={{ border: '0.5px solid rgb(215,215,215)', boxShadow: 'rgba(0,0,0,0.07) 0px 8px 24px' }}>
+
+                        <div className="w-full relative z-0" style={{ height: 280 }}>
+                            <MapClient coords={mapCoords} name={mapName} />
+                        </div>
+
+                        <div className="p-5 flex flex-col gap-3">
+                            <h3 className="font-bold text-base" style={{ color: 'rgb(3,2,19)' }}>
+                                TX Hospitals — {branch.displayName}
+                            </h3>
+                            <div className="flex items-start gap-2.5">
+                                <MapPin className="mt-0.5 flex-shrink-0 w-4 h-4" style={{ color: 'rgb(189,56,92)' }} />
+                                <span className="text-gray-600" style={{ fontSize: 13, lineHeight: 1.65 }}>
+                                    {branch.address}
+                                </span>
                             </div>
-                        );
-                    })}
+                            <div className="flex items-center gap-2.5">
+                                <Phone className="flex-shrink-0 w-4 h-4" style={{ color: 'rgb(189,56,92)' }} />
+                                <a href={branch.phoneHref} className="hover:underline font-medium" style={{ fontSize: 13, color: 'rgb(189,56,92)' }}>
+                                    {branch.phone}
+                                </a>
+                            </div>
+                            <button
+                                onClick={openGoogleMaps}
+                                className="mt-1 inline-flex items-center justify-center gap-2 rounded-lg py-2.5 font-semibold text-white transition-opacity hover:opacity-90 cursor-pointer"
+                                style={{ background: 'rgb(189,56,92)', fontSize: 13 }}
+                            >
+                                <MapPin className="w-4 h-4" /> Get Directions
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
