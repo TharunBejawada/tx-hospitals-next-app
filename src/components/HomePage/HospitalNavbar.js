@@ -9,11 +9,13 @@ import Image from "next/image";
 import LanguageDropdown from "@/components/HomePage/LanguageDropdown";
 import useIsMobile from "@/hooks/useIsMobile";
 import { dropdowns, quickLinks, managementNames, directorsNames, locations, departments, healthConditions, treatmetnAndProcedures, diagnosticsGuide, symptomsGuide, medicineGuide, medicalTechnology, secondOpinion, healthPackages } from "@/utils/dropdownValues";
+import { useNavigationConfig } from "@/context/NavigationConfigContext";
 
 export default function HospitalNavbar({ variant = "primary", forceSecondary = false, setForceSecondary }) {
 
     const navRef = useRef(null);
     const router = useRouter();
+    const { getLinkTarget } = useNavigationConfig();
     const isMobile = useIsMobile();
     const [openMenu, setOpenMenu] = useState(null);
     const [hoveredAboutItem, setHoveredAboutItem] = useState(null);
@@ -54,6 +56,19 @@ export default function HospitalNavbar({ variant = "primary", forceSecondary = f
     };
 
     const handleMenuClick = (path, scrollId = null) => {
+        if (!path) return;
+
+        // Check if URL should open in New Tab (_blank) or Same Page (_self)
+        const target = getLinkTarget(path);
+        if (target === "_blank") {
+            handleClose();
+            if (typeof window !== "undefined") {
+                window.open(path, "_blank", "noopener,noreferrer");
+            }
+            return;
+        }
+
+        // Default: Open in Same Page (_self)
         if (router.pathname === path) {
             handleClose();
 
@@ -69,6 +84,7 @@ export default function HospitalNavbar({ variant = "primary", forceSecondary = f
                 }
             }
         } else {
+            handleClose();
             router.push(path).then(() => {
                 if (scrollId) {
                     const element = document.getElementById(scrollId);

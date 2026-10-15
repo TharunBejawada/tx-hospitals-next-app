@@ -4,6 +4,8 @@ import { PiDeviceMobileThin } from "react-icons/pi";
 import { GrMapLocation } from "react-icons/gr";
 import { FaSquareWhatsapp, FaXTwitter } from "react-icons/fa6";
 import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { useNavigationConfig } from "@/context/NavigationConfigContext";
 
 const aboutLinks = [
     { label: "Chairman’s Message", path: "#" },
@@ -150,6 +152,21 @@ const healthPackages = [
 ];
 
 export default function Footer() {
+    const router = useRouter();
+    const { getLinkTarget } = useNavigationConfig();
+
+    const navigate = (urlPath) => {
+        if (!urlPath || urlPath === "#") return;
+        const target = getLinkTarget(urlPath);
+        if (target === "_blank") {
+            if (typeof window !== "undefined") {
+                window.open(urlPath, "_blank", "noopener,noreferrer");
+            }
+        } else {
+            router.push(urlPath);
+        }
+    };
+
     return (
         <footer className="bg-pink-50 py-12 px-6">
             <div className="max-w-7xl mx-auto grid grid-cols-6 gap-1">
@@ -231,7 +248,7 @@ export default function Footer() {
                         {specialtiesLinks.map((item, idx) => (
                             <li
                                 key={idx}
-
+                                onClick={() => item.path && navigate(item.path)}
                                 className="flex items-center hover:text-pink-600 cursor-pointer"
                             >
                                 {item.label}

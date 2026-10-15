@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import useIsMobile from "@/hooks/useIsMobile";
 import { FaWhatsapp, FaFacebookF, FaInstagram, FaLinkedinIn, FaYoutube } from 'react-icons/fa';
 import { FaXTwitter } from "react-icons/fa6";
+import { useNavigationConfig } from "@/context/NavigationConfigContext";
 
 export default function CallbackFooterSection() {
     const [footerData, setFooterData] = useState(null);
@@ -16,6 +17,7 @@ export default function CallbackFooterSection() {
 
     const router = useRouter();
     const isMobile = useIsMobile();
+    const { getLinkTarget } = useNavigationConfig();
 
     useEffect(() => {
         const fetchFooter = async () => {
@@ -46,7 +48,14 @@ export default function CallbackFooterSection() {
 
     const handleNavigation = (urlPath) => {
         if (urlPath && urlPath.trim() !== "") {
-            router.push(urlPath);
+            const target = getLinkTarget(urlPath);
+            if (target === "_blank") {
+                if (typeof window !== "undefined") {
+                    window.open(urlPath, "_blank", "noopener,noreferrer");
+                }
+            } else {
+                router.push(urlPath);
+            }
         }
     };
 
