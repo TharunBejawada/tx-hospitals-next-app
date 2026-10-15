@@ -500,8 +500,15 @@ export default function HospitalNavbar({ variant = "primary", forceSecondary = f
     };
 
     const handleNavigate = (path) => {
-        router.push(path);
+        const target = getLinkTarget(path);
         setIsMenuOpen(false);
+        if (target === "_blank") {
+            if (typeof window !== "undefined") {
+                window.open(path, "_blank", "noopener,noreferrer");
+            }
+            return;
+        }
+        router.push(path);
     };
 
     return (

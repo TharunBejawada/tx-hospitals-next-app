@@ -3,13 +3,28 @@ import CONFIG from "@/config";
 // In-memory cache for fast, synchronous lookups
 let inMemoryConfigMap = null;
 let fetchPromise = null;
+const listeners = new Set();
 
-// Normalize path to ensure consistent matching regardless of trailing slashes or case
+// Subscribe to config updates
+export const subscribeNavigationConfig = (callback) => {
+  listeners.add(callback);
+  return () => listeners.delete(callback);
+};
+
+const notifyListeners = (map) => {
+  listeners.forEach((fn) => {
+    try {
+      fn(map);
+    } catch (_) {}
+  });
+};
+
+// Normalize path to ensure consistent matching regardless of trailing slashes, leading slashes, origins, or case
 export const normalizePath = (urlPath) => {
   if (!urlPath || typeof urlPath !== "string") return "";
   let clean = urlPath.trim().toLowerCase();
 
-  // Strip full origin if present (e.g., https://txhospitals.in/find-doctor/ -> /find-doctor/)
+  // Strip full origin if present (e.g., https://txhospitals.in/about-us/ -> /about-us/)
   try {
     if (clean.startsWith("http://") || clean.startsWith("https://")) {
       const parsed = new URL(clean);
@@ -19,6 +34,11 @@ export const normalizePath = (urlPath) => {
 
   // Standardize multiple slashes
   clean = clean.replace(/\/+/g, "/");
+
+  // Ensure leading slash for regular web routes if not an anchor or protocol
+  if (!clean.startsWith("/") && !clean.startsWith("#") && !clean.includes("://")) {
+    clean = "/" + clean;
+  }
 
   return clean;
 };
@@ -33,15 +53,28 @@ export const buildTargetsMap = (categories) => {
       cat.links.forEach((link) => {
         if (link && link.path) {
           const norm = normalizePath(link.path);
-          // Only map if enabled (or default true)
           if (link.enabled !== false) {
-            map[norm] = link.target === "_blank" ? "_blank" : "_self";
+            const target = link.target === "_blank" ? "_blank" : "_self";
+            map[norm] = target;
 
-            // Also map without trailing slash for convenience
+            // Map with and without trailing slash
             if (norm.endsWith("/") && norm.length > 1) {
-              map[norm.slice(0, -1)] = map[norm];
+              const withoutTrailing = norm.slice(0, -1);
+              map[withoutTrailing] = target;
+              if (withoutTrailing.startsWith("/")) {
+                map[withoutTrailing.slice(1)] = target;
+              }
             } else if (!norm.endsWith("/")) {
-              map[norm + "/"] = map[norm];
+              const withTrailing = norm + "/";
+              map[withTrailing] = target;
+              if (norm.startsWith("/")) {
+                map[norm.slice(1)] = target;
+                map[norm.slice(1) + "/"] = target;
+              }
+            }
+
+            if (norm.startsWith("/")) {
+              map[norm.slice(1)] = target;
             }
           }
         }
@@ -52,28 +85,35 @@ export const buildTargetsMap = (categories) => {
   return map;
 };
 
-// Fetch navigation configuration from backend API (with localStorage caching)
-export const fetchNavigationConfig = async () => {
-  if (inMemoryConfigMap) return inMemoryConfigMap;
-
+// Fetch navigation configuration from backend API (with localStorage caching and cache-busting)
+export const fetchNavigationConfig = async (forceRefresh = false) => {
   // Try local storage cache first on browser for instant availability
-  if (typeof window !== "undefined") {
+  if (typeof window !== "undefined" && !inMemoryConfigMap) {
     try {
       const cached = localStorage.getItem("tx_navigation_targets_cache");
       if (cached) {
         const parsed = JSON.parse(cached);
-        if (parsed && typeof parsed === "object") {
+        if (parsed && typeof parsed === "object" && Object.keys(parsed).length > 0) {
           inMemoryConfigMap = parsed;
         }
       }
     } catch (_) {}
   }
 
-  if (fetchPromise) return fetchPromise;
+  if (fetchPromise && !forceRefresh) return fetchPromise;
 
   fetchPromise = (async () => {
     try {
-      const res = await fetch(`${CONFIG.API_BASE_URL}/navigation-config`);
+      // Use cache-busting timestamp to bypass browser/proxy caching
+      const timestamp = Date.now();
+      const res = await fetch(`${CONFIG.API_BASE_URL}/navigation-config?_t=${timestamp}`, {
+        cache: "no-store",
+        headers: {
+          "Pragma": "no-cache",
+          "Cache-Control": "no-cache"
+        }
+      });
+
       if (res.ok) {
         const data = await res.json();
         const categories = Array.isArray(data?.categories) ? data.categories : [];
@@ -85,11 +125,14 @@ export const fetchNavigationConfig = async () => {
               localStorage.setItem("tx_navigation_targets_cache", JSON.stringify(map));
             } catch (_) {}
           }
+          notifyListeners(map);
           return map;
         }
       }
     } catch (err) {
       console.warn("Navigation config fetch warning (defaulting to _self):", err?.message);
+    } finally {
+      fetchPromise = null;
     }
 
     if (!inMemoryConfigMap) inMemoryConfigMap = {};
@@ -111,26 +154,49 @@ export const getNavigationTarget = (urlPath, overrideMap = null) => {
   if (!urlPath) return "_self";
 
   const map = overrideMap || inMemoryConfigMap;
-  if (!map) return "_self";
+  if (!map || Object.keys(map).length === 0) return "_self";
 
   const norm = normalizePath(urlPath);
 
   // 1. Exact match with normalized path
   if (map[norm]) return map[norm];
 
+  // Also check without trailing slash or with trailing slash
+  if (norm.endsWith("/") && norm.length > 1 && map[norm.slice(0, -1)]) {
+    return map[norm.slice(0, -1)];
+  }
+  if (!norm.endsWith("/") && map[norm + "/"]) {
+    return map[norm + "/"];
+  }
+
   // 2. Match without hash fragment (e.g., /about-us/#chairmans-message -> /about-us/)
   if (norm.includes("#")) {
     const baseWithoutHash = norm.split("#")[0];
     if (map[baseWithoutHash]) return map[baseWithoutHash];
+    if (baseWithoutHash.endsWith("/") && map[baseWithoutHash.slice(0, -1)]) {
+      return map[baseWithoutHash.slice(0, -1)];
+    }
+    if (!baseWithoutHash.endsWith("/") && map[baseWithoutHash + "/"]) {
+      return map[baseWithoutHash + "/"];
+    }
   }
 
   // 3. Match without query string (e.g., /search?q=cardiac -> /search)
-  if (norm.includes("?")) {
-    const baseWithoutQuery = norm.split("?")[0];
-    if (map[baseWithoutQuery]) return map[baseWithoutQuery];
+  let cleanNoQuery = norm.split("?")[0];
+  if (cleanNoQuery.includes("#")) cleanNoQuery = cleanNoQuery.split("#")[0];
+  if (map[cleanNoQuery]) return map[cleanNoQuery];
+  if (cleanNoQuery.endsWith("/") && map[cleanNoQuery.slice(0, -1)]) {
+    return map[cleanNoQuery.slice(0, -1)];
+  }
+  if (!cleanNoQuery.endsWith("/") && map[cleanNoQuery + "/"]) {
+    return map[cleanNoQuery + "/"];
   }
 
-  // 4. Default: If a URL doesn't have a specific navigation config, it MUST be _self
+  // 4. Match without leading slash if stored that way
+  const noLeading = norm.startsWith("/") ? norm.slice(1) : norm;
+  if (map[noLeading]) return map[noLeading];
+
+  // 5. Default: If a URL doesn't have a specific navigation config, it MUST be _self
   return "_self";
 };
 
