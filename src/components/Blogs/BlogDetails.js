@@ -3,13 +3,31 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import useIsMobile from "@/hooks/useIsMobile";
-import { FaChevronDown, FaChevronUp, FaTags } from "react-icons/fa";
+import { FaChevronDown, FaChevronUp, FaTags, FaInfoCircle } from "react-icons/fa";
 import { motion } from "framer-motion";
 import DOMPurify from "dompurify";
 import ActionButtons from "@/components/Common/ActionButtons";
 import AppointmentForm from "@/components/Common/AppointmentForm";
 import BookAppointmentForm from "@/components/Blogs/BookAppointemntForm";
 import FAQSchema from "@/utils/FAQSchema";
+
+function BlogDisclaimer() {
+    return (
+        <div className="mt-8 mb-6 p-4 sm:p-5 bg-pink-50/70 border-l-4 border-pink-600 rounded-r-lg shadow-sm">
+            <div className="flex items-start gap-3">
+                <FaInfoCircle className="text-pink-600 text-lg sm:text-xl flex-shrink-0 mt-0.5" />
+                <div className="space-y-1">
+                    <h4 className="text-sm sm:text-base font-semibold text-pink-800">
+                        Disclaimer
+                    </h4>
+                    <p className="text-xs sm:text-sm text-gray-700 leading-relaxed">
+                        The information provided in this blog is for general health awareness and educational purposes only. It should not be considered a substitute for professional medical advice, diagnosis or treatment. The content may not apply to every individual&apos;s health condition. Always consult a qualified healthcare professional for any medical concerns or treatment decisions. Do not ignore or delay medical advice based on the information shared in this blog.
+                    </p>
+                </div>
+            </div>
+        </div>
+    );
+}
 
 export default function BlogDetails({ blogData, departments }) {
 
@@ -261,6 +279,7 @@ export default function BlogDetails({ blogData, departments }) {
                                     </div>
                                 </>
                             )}
+                            <BlogDisclaimer />
                         </div>
                     </div>
                     {blogData?.tags && blogData.tags.length > 0 && (
@@ -377,6 +396,7 @@ export default function BlogDetails({ blogData, departments }) {
                                             </div>
                                         </>
                                     )}
+                                    <BlogDisclaimer />
                                 </div>
                             </div>
                         </div>
