@@ -10,6 +10,7 @@ import { FaRegCalendarAlt } from "react-icons/fa";
 import Head from "next/head";
 import Breadcrumb from "@/components/Common/Breadcrumb";
 import AppointmentForm from "@/components/Common/AppointmentForm";
+import { BlogListingSchema } from "@/utils/BlogSchema";
 
 export default function TagBlogs() {
 
@@ -118,10 +119,15 @@ export default function TagBlogs() {
     return (
         <>
             <Head>
-                <title>TX Hospitals Health Blog – Awareness, Tips & Medical Updates</title>
-                <meta name="description" content="Explore medical insights, health tips, and awareness posts by TX Hospitals in Hyderabad—your go-to health and wellness blog for expert healthcare guidance." />
-                <meta name="keywords" content="TX Hospitals health blog" />
+                <title>{category ? `${category} Blogs | TX Hospitals` : "TX Hospitals Health Blog – Awareness, Tips & Medical Updates"}</title>
+                <meta name="description" content={`Explore medical insights and articles tagged with ${category || "health"} by TX Hospitals.`} />
+                <meta name="keywords" content={`TX Hospitals ${category || "health"} blog`} />
             </Head>
+            <BlogListingSchema
+                title={category ? `${category} Blogs | TX Hospitals` : "TX Hospitals Health Blog"}
+                description={`Explore medical insights and articles tagged with ${category || "health"} by TX Hospitals.`}
+                url={currentUrl || "https://txhospitals.in/blog/"}
+            />
             {isMobile ? (
                 <></>
             ) : (

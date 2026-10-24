@@ -11,6 +11,7 @@ import AppointmentForm from "@/components/Common/AppointmentForm";
 import BookAppointmentForm from "@/components/Blogs/BookAppointemntForm";
 import FAQSchema from "@/utils/FAQSchema";
 import Breadcrumb from "@/components/Common/Breadcrumb";
+import BlogSchema from "@/utils/BlogSchema";
 
 function BlogDisclaimer() {
     return (
@@ -106,9 +107,10 @@ export default function BlogDetails({ blogData, departments }) {
         <>
             <Head>
                 <title>{blogData?.seoTitle}</title>
-                <meta name="description" content={blogData?.metaKeywords} />
-                <meta name="keywords" content={blogData?.metaDescription} />
+                <meta name="description" content={blogData?.metaDescription || blogData?.metaKeywords} />
+                <meta name="keywords" content={blogData?.metaKeywords || blogData?.metaDescription} />
             </Head>
+            <BlogSchema blogData={blogData} currentUrl={currentUrl} />
             {isMobile ? (
                 <div className="pt-3 px-2 font-inter">
                     <div className="pt-2 pb-1">
