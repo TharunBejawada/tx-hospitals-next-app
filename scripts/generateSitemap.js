@@ -187,8 +187,18 @@ const sitemapEndpoints = {
   coe: COERoutes,
   doctors: `${apiUrl}/getAllDoctors`,
   blogs: `${apiUrl}/blogs/getAllBlogs`,
-  healthPackages: `${apiUrl}/new-healthpackages/getAllHealthPackages`,
-  secondOpinion: `${apiUrl}/new-secondopinion/getAllSecondOpinion`,
+  "blogs-miyapur": `${apiUrl}/blogs/getBlogsByLocation/Miyapur`,
+  "blogs-uppal": `${apiUrl}/blogs/getBlogsByLocation/Uppal`,
+  "blogs-kachiguda": `${apiUrl}/blogs/getBlogsByLocation/Kachiguda`,
+  "blogs-banjara-hills": `${apiUrl}/blogs/getBlogsByLocation/${encodeURIComponent("Banjara Hills")}`,
+  "disease-and-treatments": `${apiUrl}/new-dieseasesandtreatments/getAllNewDAT`,
+  procedures: `${apiUrl}/new-procedures/getAllNewProcedures`,
+  healthpackages: `${apiUrl}/new-healthpackages/getAllHealthPackages`,
+  secondopinion: `${apiUrl}/new-secondopinion/getAllSecondOpinion`,
+  "localities-miyapur": `${apiUrl}/api/specialities/Miyapur`,
+  "localities-uppal": `${apiUrl}/api/specialities/Uppal`,
+  "localities-kachiguda": `${apiUrl}/api/specialities/Kachiguda`,
+  "localities-banjara-hills": `${apiUrl}/api/specialities/${encodeURIComponent("Banjara Hills")}`,
 };
 
 const fetchRoutes = async (key, endpointOrArray) => {
@@ -201,11 +211,48 @@ const fetchRoutes = async (key, endpointOrArray) => {
 
     switch (key) {
       case "doctors":
-        return response.data.map((item) => item.url);
+        return (response.data || []).map((item) => item.url).filter(Boolean);
       case "blogs":
-      case "healthPackages":
-      case "secondOpinion":
-        return response.data.Items.map((item) => item.url);
+      case "blogs-miyapur":
+      case "blogs-uppal":
+      case "blogs-kachiguda":
+      case "blogs-banjara-hills": {
+        const items = response.data?.Items || (Array.isArray(response.data) ? response.data : []);
+        return items
+          .filter(item => (item.status ? item.status === "active" : item.enabled !== false) && item.status !== "inactive" && item.enabled !== false)
+          .map((item) => item.url)
+          .filter(Boolean);
+      }
+      case "disease-and-treatments": {
+        const items = response.data?.Items || (Array.isArray(response.data) ? response.data : []);
+        const dynamicRoutes = items
+          .filter(item => (item.status ? item.status === "active" : item.enabled !== false) && item.status !== "inactive" && item.enabled !== false)
+          .map((item) => item.url)
+          .filter(Boolean);
+        const staticDAT = COERoutes.filter((r) => r.includes("/disease-and-treatment/"));
+        return [...staticDAT, ...dynamicRoutes];
+      }
+      case "procedures": {
+        const items = response.data?.Items || (Array.isArray(response.data) ? response.data : []);
+        const dynamicRoutes = items
+          .filter(item => (item.status ? item.status === "active" : item.enabled !== false) && item.status !== "inactive" && item.enabled !== false)
+          .map((item) => item.url)
+          .filter(Boolean);
+        const staticProc = COERoutes.filter((r) => r.includes("/procedures/"));
+        return [...staticProc, ...dynamicRoutes];
+      }
+      case "healthpackages":
+      case "secondopinion": {
+        const items = response.data?.Items || (Array.isArray(response.data) ? response.data : []);
+        return items.map((item) => item.url).filter(Boolean);
+      }
+      case "localities-miyapur":
+      case "localities-uppal":
+      case "localities-kachiguda":
+      case "localities-banjara-hills": {
+        const items = response.data?.value || (Array.isArray(response.data) ? response.data : []);
+        return items.map((item) => item.LandingPageUrl).filter(Boolean);
+      }
       default:
         return [];
     }
@@ -220,7 +267,11 @@ const generateSitemaps = async () => {
 
   for (const [key, source] of Object.entries(sitemapEndpoints)) {
     const routes = await fetchRoutes(key, source);
-    const uniqueRoutes = [...new Set(routes)];
+    const uniqueRoutes = [...new Set(routes.map(r => {
+      if (!r || typeof r !== "string") return null;
+      const trimmed = r.trim();
+      return trimmed.startsWith("/") ? trimmed : "/" + trimmed;
+    }).filter(Boolean))];
 
     const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

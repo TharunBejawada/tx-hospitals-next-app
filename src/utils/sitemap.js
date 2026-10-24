@@ -164,6 +164,9 @@ export const COERoutes = [
     "/kidney-transplantation-surgery/",
 ];
 
+export const diseaseAndTreatmentRoutes = COERoutes.filter(route => route.includes("/disease-and-treatment/"));
+export const procedureRoutes = COERoutes.filter(route => route.includes("/procedures/"));
+
 export const fetchRoutes = async (key, endpoint) => {
     try {
         const response = await axios.get(endpoint, {
@@ -181,23 +184,44 @@ export const fetchRoutes = async (key, endpoint) => {
             return [];
         }
 
-        if (key === "blogs") {
+        if (
+            key === "blogs" ||
+            (typeof key === "string" && key.startsWith("blogs-")) ||
+            key === "disease-and-treatments" ||
+            key === "procedures"
+        ) {
             data = data.filter(item => (item.status ? item.status === "active" : item.enabled !== false) && item.status !== "inactive" && item.enabled !== false);
         }
 
-        return data.map((item) => item.url).filter(Boolean);
+        return data.map((item) => {
+            if (!item?.url || typeof item.url !== "string") return null;
+            const trimmed = item.url.trim();
+            if (!trimmed) return null;
+            return trimmed.startsWith("/") ? trimmed : `/${trimmed}`;
+        }).filter(Boolean);
     } catch (err) {
-        console.error(err);
+        console.error(`Error in fetchRoutes for ${key}:`, err);
         return [];
     }
 };
 
 export const generateXML = (routes, errorMsg = "") => {
+    const formattedRoutes = (Array.isArray(routes) ? routes : [])
+        .map((route) => {
+            if (!route || typeof route !== "string") return null;
+            const trimmed = route.trim();
+            if (!trimmed) return null;
+            return trimmed.startsWith("/") ? trimmed : `/${trimmed}`;
+        })
+        .filter(Boolean);
+
+    const uniqueRoutes = [...new Set(formattedRoutes)];
+
     return `<?xml version="1.0" encoding="UTF-8"?>
 ${errorMsg ? `<!-- Error: ${errorMsg} -->` : ""}
   <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
-    ${routes
+    ${uniqueRoutes
             .map(
                 (route) => `
       <url>
