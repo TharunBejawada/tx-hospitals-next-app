@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import SecondaryLayout from '@/components/Layouts/SecondaryLayout';
 import BranchSpecialtiesLanding from '@/components/BranchSpecialtiesLanding/BranchSpecialtiesLanding';
 import LocalitySchema from '@/utils/LocalitySchema';
+import Breadcrumb from '@/components/Common/Breadcrumb';
 
 export default function BranchSpecialtiesPage({ location, wasBracketUrl }) {
     const router = useRouter();
@@ -20,6 +21,12 @@ export default function BranchSpecialtiesPage({ location, wasBracketUrl }) {
     const formattedLocation = cleanLocation
         .split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 
+    const breadcrumbItems = [
+        { label: "Home", href: "/" },
+        { label: formattedLocation, href: `/${cleanLocation}/` },
+        { label: "Specialties" },
+    ];
+
     return (
         <>
             <Head>
@@ -33,6 +40,9 @@ export default function BranchSpecialtiesPage({ location, wasBracketUrl }) {
                 pageUrl={`/${cleanLocation}/specialties/`}
             />
             <SecondaryLayout>
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2">
+                    <Breadcrumb items={breadcrumbItems} />
+                </div>
                 <BranchSpecialtiesLanding location={cleanLocation} />
             </SecondaryLayout>
         </>
