@@ -12,6 +12,7 @@ import FAQSection from '@/components/BranchSpecialityLanding/FAQSection';
 import BranchBlogsSection from '@/components/Blogs/BranchBlogsSection';
 import { getBranchData } from '@/utils/branchLocationData';
 import CONFIG from '@/config';
+import Breadcrumb from '@/components/Common/Breadcrumb';
 
 const BranchSpecialtyPage = ({ pageData, error, targetLocation, targetSpeciality, wasBracketUrl }) => {
     const router = useRouter();
@@ -59,6 +60,15 @@ const BranchSpecialtyPage = ({ pageData, error, targetLocation, targetSpeciality
 
     const content = pageData.PageData || {};
 
+    const formattedLocName = branch.name ? branch.name.replace("TX Hospitals, ", "") : currentLoc;
+    const formattedSpecName = currentSpec ? currentSpec.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') : 'Specialty';
+
+    const breadcrumbItems = [
+        { label: "Home", href: "/" },
+        { label: formattedLocName, href: `/${currentLoc}/` },
+        { label: formattedSpecName }
+    ];
+
     return (
         <>
             <Head>
@@ -68,7 +78,9 @@ const BranchSpecialtyPage = ({ pageData, error, targetLocation, targetSpeciality
             </Head>
 
             <SecondaryLayout>
-
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2">
+                    <Breadcrumb items={breadcrumbItems} />
+                </div>
                 <main className="w-full bg-white font-['Poppins']">
                     {/* 1. Hero / Header Section */}
                     <HeroSection pageData={content} location={currentLoc} speciality={currentSpec} />

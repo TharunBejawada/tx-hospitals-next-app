@@ -2,6 +2,7 @@
 import React from "react";
 import useIsMobile from "@/hooks/useIsMobile";
 import sanitize from "@/utils/sanitize";
+import Breadcrumb from "@/components/Common/Breadcrumb";
 
 const RoboticSurgeryHeader = ({ data, onBookNow }) => {
     const isMobile = useIsMobile();
@@ -27,6 +28,13 @@ const RoboticSurgeryHeader = ({ data, onBookNow }) => {
 
         return (
             <div className="relative w-full -mt-6 bg-white">
+                <div className="px-4 py-2 bg-gray-50 border-b border-gray-100">
+                    <Breadcrumb items={[
+                        { label: "Home", href: "/" },
+                        { label: "Specialities", href: "/specialities/" },
+                        { label: rsTitle }
+                    ]} />
+                </div>
                 {/* Image Section with Overlay Title */}
                 <div className="relative w-full h-[320px] overflow-hidden">
                     <img
@@ -102,6 +110,13 @@ const RoboticSurgeryHeader = ({ data, onBookNow }) => {
             {/* Content Container */}
             <div className="relative z-10 container mx-auto px-12 flex flex-col justify-center h-full">
                 <div className="max-w-xl">
+                    <div className="mb-4">
+                        <Breadcrumb items={[
+                            { label: "Home", href: "/" },
+                            { label: "Specialities", href: "/specialities/" },
+                            { label: rsTitle }
+                        ]} />
+                    </div>
                     <h1 className="text-5xl font-bold text-pink-700 mb-4 leading-tight">
                         {rsTitle}
                     </h1>

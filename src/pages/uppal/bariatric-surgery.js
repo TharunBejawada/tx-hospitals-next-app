@@ -15,6 +15,7 @@ import BariatricFAQ from '@/components/Uppal/BariatricSurgery/BariatricFAQ';
 import BariatricFooter from '@/components/Uppal/BariatricSurgery/BariatricFooter';
 import SocialSidebar from '@/components/HomePage/SocialSidebar';
 import BookAppointmentForm from '@/components/Blogs/BookAppointemntForm';
+import Breadcrumb from '@/components/Common/Breadcrumb';
 
 const BariatricSurgeryPage = () => {
     const router = useRouter();
@@ -79,6 +80,13 @@ const BariatricSurgeryPage = () => {
             </header>
 
             <main className="pt-16 md:pt-20">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-3 pb-1">
+                    <Breadcrumb items={[
+                        { label: "Home", href: "/" },
+                        { label: "Uppal", href: "/uppal" },
+                        { label: "Bariatric Surgery" }
+                    ]} />
+                </div>
                 {/* Hero Section */}
                 <BariatricHero {...heroData} />
 

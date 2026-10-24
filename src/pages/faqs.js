@@ -6,6 +6,7 @@ import sanitize from "@/utils/sanitize";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { faqs } from '@/utils/faqsData';
 import FAQSchema from '@/utils/FAQSchema';
+import Breadcrumb from '@/components/Common/Breadcrumb';
 
 export default function FAQs() {
 
@@ -23,6 +24,9 @@ export default function FAQs() {
                 <meta name="description" content="Find answers to frequently asked questions about TX Hospitals' healthcare packages, appointments, insurance, services, and more. Get all the information you need." />
             </Head>
             <SecondaryLayout>
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2">
+                    <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "FAQs" }]} />
+                </div>
                 {isMobile ? (
                     <div className="-mt-6 font-inter mb-2">
                         <h1 className="text-xl p-1 font-bold text-pink-700">FAQs</h1>

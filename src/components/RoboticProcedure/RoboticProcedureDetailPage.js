@@ -17,6 +17,7 @@ import RPWhyChoose from "@/components/RoboticProcedure/RPWhyChoose";
 import RPBooking from "@/components/RoboticProcedure/RPBooking";
 import RPFAQ from "@/components/RoboticProcedure/RPFAQ";
 import BookAppointmentForm from "@/components/Blogs/BookAppointemntForm";
+import Breadcrumb from "@/components/Common/Breadcrumb";
 
 export default function RoboticProcedureDetailPage() {
     const router = useRouter();
@@ -86,6 +87,13 @@ export default function RoboticProcedureDetailPage() {
                 <meta name="keywords" content={data.metaKeywords} />
             </Head>
             <SecondaryLayout>
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2">
+                    <Breadcrumb items={[
+                        { label: "Home", href: "/" },
+                        { label: "Specialities", href: "/specialities/" },
+                        { label: data.rpTitle || "Robotic Procedure" }
+                    ]} />
+                </div>
                 <div className="pb-10">
                     {/* Hero Section */}
                     {data && <RPHeader data={data} onBookNow={() => setShowModal(true)} />}

@@ -12,6 +12,7 @@ import WhyChooseSection from '@/components/LiverTransplant/WhyChooseSection';
 import FinalCtaSection from '@/components/LiverTransplant/FinalCtaSection';
 import BookAppointmentForm from "@/components/Blogs/BookAppointemntForm";
 import TransplantSurgeons from '@/components/LiverTransplant/TransplantSurgeons';
+import Breadcrumb from "@/components/Common/Breadcrumb";
 
 export default function KidneyTransplantationSurgery() {
     // State Management
@@ -283,7 +284,14 @@ export default function KidneyTransplantationSurgery() {
                 <meta name="description" content="TX Hospitals offers advanced kidney transplantation surgery in Hyderabad with expert surgeons and world-class facilities. Book your appointment today." />
             </Head>
             <SecondaryLayout>
-                <div className="pt-4">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2">
+                    <Breadcrumb items={[
+                        { label: "Home", href: "/" },
+                        { label: "Specialities", href: "/specialities/" },
+                        { label: "Kidney Transplantation Surgery" }
+                    ]} />
+                </div>
+                <div>
                     <HeroSection
                         title={heroData.title}
                         highlightedTitle={heroData.highlightedTitle}

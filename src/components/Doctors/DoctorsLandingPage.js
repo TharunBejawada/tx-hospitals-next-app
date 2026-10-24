@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import BreadcrumbArrow from "@/utils/BreadcrumbArrow";
+import Breadcrumb from "@/components/Common/Breadcrumb";
 import DoctorsHeader from "@/components/Doctors/DoctorsHeader";
 import CONFIG from "@/config";
 import FiltersSidebar from "@/components/Doctors/FilterSidebar";
@@ -189,17 +190,8 @@ export default function DoctorsLandingPage() {
                 <div className="relative bg-gray-200 w-full min-h-full">
                     <div className="flex justify-between items-center pt-4 px-4">
                         {/* Breadcrumbs */}
-                        <div className="text-white">
-                            <nav className="flex items-center">
-                                <a
-                                    href="/"
-                                    className="text-gray-800 hover:text-gray-900 text-md font-semibold"
-                                >
-                                    Home
-                                </a>
-                                <BreadcrumbArrow />
-                                <span className="text-gray-950 text-md">Doctors</span>
-                            </nav>
+                        <div>
+                            <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Doctors" }]} />
                         </div>
                     </div>
                     <div className="p-4 max-w-full relative flex flex-col gap-6 items-start">
@@ -315,17 +307,8 @@ export default function DoctorsLandingPage() {
                 <div className="relative bg-gray-200 w-full min-h-full px-8">
                     <div className="flex justify-between items-center pt-4 px-4">
                         {/* Breadcrumbs */}
-                        <div className="text-white">
-                            <nav className="flex items-center">
-                                <a
-                                    href="/"
-                                    className="text-gray-800 hover:text-gray-900 text-md font-semibold"
-                                >
-                                    Home
-                                </a>
-                                <BreadcrumbArrow />
-                                <span className="text-gray-950 text-md">Doctors</span>
-                            </nav>
+                        <div>
+                            <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Doctors" }]} />
                         </div>
                     </div>
                     <div className="p-4 max-w-full relative flex gap-6 items-start">

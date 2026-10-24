@@ -64,6 +64,7 @@ import UppalNewTestimonials from '@/components/Uppal/UppalNewTestimonials';
 import UppalNewLocations from '@/components/Uppal/UppalNewLocations';
 import UppalNewBlogs from '@/components/Uppal/UppalNewBlogs';
 import UppalNewFAQ from '@/components/Uppal/UppalNewFAQ';
+import Breadcrumb from '@/components/Common/Breadcrumb';
 
 export default function UppalPage() {
     return (
@@ -143,6 +144,9 @@ export default function UppalPage() {
                 />
             </Head>
             <SecondaryLayout>
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2">
+                    <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Uppal" }]} />
+                </div>
                 <main>
                     {/* Hero Section */}
                     <UppalNewHero />

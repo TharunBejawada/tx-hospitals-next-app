@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import SecondaryLayout from "@/components/Layouts/SecondaryLayout";
 import useIsMobile from "@/hooks/useIsMobile";
+import Breadcrumb from "@/components/Common/Breadcrumb";
 
 // Importing components
 // import InPatients from "@/components/Patients&Visitors/In-Patients";
@@ -74,6 +75,13 @@ const PatientVisitorsPage = () => {
             </Head>
 
             <div className="min-h-screen bg-gray-50 pb-10">
+                <div className="max-w-[1180px] mx-auto px-4 pt-4 pb-2">
+                    <Breadcrumb items={[
+                        { label: "Home", href: "/" },
+                        { label: "Patient & Visitors", href: "/patient-and-visitors" },
+                        ...(selectedTab ? [{ label: selectedTab === "visitors" ? "Visitor's Guidelines" : selectedTab }] : [])
+                    ]} />
+                </div>
                 <BannerSection />
 
                 {/* Navigation Controls */}

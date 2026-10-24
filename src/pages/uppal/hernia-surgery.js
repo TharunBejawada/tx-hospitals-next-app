@@ -15,6 +15,7 @@ import HerniaFAQ from '@/components/Uppal/HerniaSurgery/HerniaFAQ';
 import HerniaSimpleCTA from '@/components/Uppal/HerniaSurgery/HerniaSimpleCTA';
 import HerniaFooter from '@/components/Uppal/HerniaSurgery/HerniaFooter';
 import BookAppointmentForm from '@/components/Blogs/BookAppointemntForm';
+import Breadcrumb from '@/components/Common/Breadcrumb';
 
 const HerniaSurgeryPage = () => {
     const router = useRouter();
@@ -63,6 +64,13 @@ const HerniaSurgeryPage = () => {
             </header>
 
             <main className="pt-16 md:pt-20">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-3 pb-1">
+                    <Breadcrumb items={[
+                        { label: "Home", href: "/" },
+                        { label: "Uppal", href: "/uppal" },
+                        { label: "Hernia Surgery" }
+                    ]} />
+                </div>
                 {/* 1. Hero Section */}
                 <HerniaHero onBookClick={() => handleBookAppointment()} />
 

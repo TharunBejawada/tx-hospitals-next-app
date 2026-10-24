@@ -2,6 +2,7 @@ import React from "react";
 import Head from "next/head";
 import SecondaryLayout from "@/components/Layouts/SecondaryLayout";
 import HealthAwarenessCalendar from "@/components/HealthAwarenessCalendar/HealthAwarenessCalendar";
+import Breadcrumb from "@/components/Common/Breadcrumb";
 
 export default function HealthAwarenessCalendarPage() {
     const currentYear = new Date().getFullYear();
@@ -20,6 +21,9 @@ export default function HealthAwarenessCalendarPage() {
                 />
             </Head>
             <SecondaryLayout>
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2">
+                    <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Health Awareness Calendar" }]} />
+                </div>
                 <HealthAwarenessCalendar />
             </SecondaryLayout>
         </>

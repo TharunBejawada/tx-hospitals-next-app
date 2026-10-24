@@ -12,6 +12,7 @@ import BanjaraHillsNewTestimonials from '@/components/BanjaraHills/BanjaraHillsN
 import BanjaraHillsNewLocations from '@/components/BanjaraHills/BanjaraHillsNewLocations';
 import BanjaraHillsNewBlogs from '@/components/BanjaraHills/BanjaraHillsNewBlogs';
 import BanjaraHillsNewFAQ from '@/components/BanjaraHills/BanjaraHillsNewFAQ';
+import Breadcrumb from '@/components/Common/Breadcrumb';
 
 export default function BanjaraHillsPage() {
     return (
@@ -26,6 +27,9 @@ export default function BanjaraHillsPage() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <SecondaryLayout>
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2">
+                    <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Banjara Hills" }]} />
+                </div>
                 <main>
                     {/* First Section: Hero Section with Appointment Form & Background Image */}
                     <BanjaraHillsNewHero />

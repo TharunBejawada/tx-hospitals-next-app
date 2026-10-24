@@ -10,6 +10,7 @@ import ActionButtons from "@/components/Common/ActionButtons";
 import AppointmentForm from "@/components/Common/AppointmentForm";
 import BookAppointmentForm from "@/components/Blogs/BookAppointemntForm";
 import FAQSchema from "@/utils/FAQSchema";
+import Breadcrumb from "@/components/Common/Breadcrumb";
 
 function BlogDisclaimer() {
     return (
@@ -95,6 +96,12 @@ export default function BlogDetails({ blogData, departments }) {
         router.push(`/tag/${slug}/`);
     };
 
+    const breadcrumbItems = [
+        { label: "Home", href: "/" },
+        { label: "Blogs", href: "/blog" },
+        { label: blogData?.blogTitle || "Blog" },
+    ];
+
     return (
         <>
             <Head>
@@ -104,7 +111,10 @@ export default function BlogDetails({ blogData, departments }) {
             </Head>
             {isMobile ? (
                 <div className="-mt-8 px-2 font-inter">
-                    <h1 className="text-xl text-pink-700 font-bold mt-4">{blogData?.blogTitle}</h1>
+                    <div className="pt-2 pb-1">
+                        <Breadcrumb items={breadcrumbItems} />
+                    </div>
+                    <h1 className="text-xl text-pink-700 font-bold mt-2">{blogData?.blogTitle}</h1>
                     <div className="flex flex-col gap-2 p-1">
                         <div>
                             <h2 className="text-lg mt-1 font-bold mb-2 border-b-2 border-pink-600 inline-block">
@@ -303,7 +313,10 @@ export default function BlogDetails({ blogData, departments }) {
                 </div>
             ) : (
                 <div className="mt-7 px-4 font-inter">
-                    <h1 className="text-4xl text-pink-700 font-bold pl-6 mt-4">{blogData?.blogTitle}</h1>
+                    <div className="pl-6 mb-2">
+                        <Breadcrumb items={breadcrumbItems} />
+                    </div>
+                    <h1 className="text-4xl text-pink-700 font-bold pl-6 mt-2">{blogData?.blogTitle}</h1>
                     <div className="flex gap-4 p-3">
                         <div className="flex-1 w-[65%]">
                             <div className="relative w-full min-h-full">

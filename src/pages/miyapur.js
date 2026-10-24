@@ -12,6 +12,7 @@ import MiyapurBookConsultation from '@/components/Miyapur/MiyapurBookConsultatio
 import MiyapurLocations from '@/components/Miyapur/MiyapurLocations';
 import MiyapurBlogs from '@/components/Miyapur/MiyapurBlogs';
 import MiyapurFAQ from '@/components/Miyapur/MiyapurFAQ';
+import Breadcrumb from '@/components/Common/Breadcrumb';
 
 export default function MiyapurPage() {
     return (
@@ -22,6 +23,9 @@ export default function MiyapurPage() {
                 <meta name="keywords" content="TX Hospitals Miyapur, Best Hospital in Miyapur, Multi Specialty Hospital in Miyapur, Hospital in Miyapur Hyderabad, Best Hospital Near Miyapur, Emergency Hospital in Miyapur, 24/7 Hospital in Miyapur, Healthcare Services in Miyapur, Best Doctors in Miyapur, Super Specialty Hospital in Miyapur, Cashless Hospital in Miyapur, Hospital Near Hafeezpet, Hospital Near Chandanagar, Hospital Near Madinaguda, Hospital Near Kukatpally, Hospital Near Nizampet, Advanced Healthcare in Miyapur" />
             </Head>
             <SecondaryLayout>
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2">
+                    <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Miyapur" }]} />
+                </div>
                 <main>
                     {/* Hero Section */}
                     <MiyapurHero />

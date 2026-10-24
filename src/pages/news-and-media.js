@@ -5,6 +5,7 @@ import Gallery from "@/components/NewsAndMedia/Gallery";
 import PrintMedia from "@/components/NewsAndMedia/PrintMedia";
 import DigitalMedia from "@/components/NewsAndMedia/DigitalMedia";
 import SecondaryLayout from '@/components/Layouts/SecondaryLayout';
+import Breadcrumb from '@/components/Common/Breadcrumb';
 
 const NewsAndMedia = () => {
 
@@ -37,6 +38,9 @@ const NewsAndMedia = () => {
       </Head>
       <SecondaryLayout>
         <div className="w-full font-inter">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2">
+            <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "News & Media" }]} />
+          </div>
           {/* Banner matching the rest of the application */}
           <div className="bg-gray-50 text-center py-8 border-b border-gray-200">
             <h1 className="text-3xl md:text-4xl font-semibold text-pink-700">News & Media</h1>

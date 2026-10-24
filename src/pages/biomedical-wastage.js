@@ -5,6 +5,7 @@ import CONFIG from '../config';
 import Head from "next/head";
 import SecondaryLayout from '@/components/Layouts/SecondaryLayout';
 import useIsMobile from "@/hooks/useIsMobile";
+import Breadcrumb from "@/components/Common/Breadcrumb";
 
 const BioMedicalWastage = () => {
 
@@ -71,7 +72,10 @@ const BioMedicalWastage = () => {
                 <meta name="description" content="Check Bio Medical Wastage data for TX Hospitals branches in Banjara Hills, Kachiguda, and Uppal." />
             </Head>
             <SecondaryLayout>
-                <div className="lg:max-w-7xl sm:w-full mx-auto px-2 lg:px-12 lg:py-10">
+                <div className="lg:max-w-7xl sm:w-full mx-auto px-4 lg:px-12 pt-4 pb-2">
+                    <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Bio Medical Wastage" }]} />
+                </div>
+                <div className="lg:max-w-7xl sm:w-full mx-auto px-2 lg:px-12 lg:py-6">
                     {!isMobile && (
                         <div className="font-inter">
                             <h1 className="text-5xl text-left font-bold pl-5 text-pink-700 mb-8">

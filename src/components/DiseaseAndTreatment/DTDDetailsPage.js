@@ -19,6 +19,7 @@ import WhenToSeekMedicalHelpDT from "@/components/DiseaseAndTreatment/WhenToSeek
 import WhyChooseUsDT from "@/components/DiseaseAndTreatment/WhyChooseUsDT";
 import TakeFirstStepDT from "@/components/DiseaseAndTreatment/TakeFirstStepDT";
 import FAQDT from "@/components/DiseaseAndTreatment/FAQDT";
+import Breadcrumb from "@/components/Common/Breadcrumb";
 
 export default function DTDDetailsPage({ url }) {
     const router = useRouter();
@@ -76,7 +77,14 @@ export default function DTDDetailsPage({ url }) {
             </Head>
 
             {(data.dtTitle || data.dtdescription) && (
-                <div className="max-w-7xl mx-auto md:px-12 px-4 py-10 md:py-7">
+                <div className="max-w-7xl mx-auto md:px-12 px-4 pt-6 pb-2">
+                    <div className="mb-4">
+                        <Breadcrumb items={[
+                            { label: "Home", href: "/" },
+                            { label: "Specialities", href: "/specialities/" },
+                            { label: data.dtTitle || "Diseases & Treatments" }
+                        ]} />
+                    </div>
                     <div className="flex flex-col lg:flex-row gap-8 lg:gap-16 items-start border border-gray-200 rounded-2xl shadow-sm p-6 md:p-10 bg-white">
                         <DTHeroSection
                             dtTitle={data.dtTitle}

@@ -14,6 +14,7 @@ import GastroFAQ from '@/components/Uppal/GastroHospital/GastroFAQ';
 import GastroFinalCTA from '@/components/Uppal/GastroHospital/GastroFinalCTA';
 import GastroFooter from '@/components/Uppal/GastroHospital/GastroFooter';
 import BookAppointmentForm from '@/components/Blogs/BookAppointemntForm';
+import Breadcrumb from '@/components/Common/Breadcrumb';
 
 const GastroHospitalPage = () => {
     const router = useRouter();
@@ -62,6 +63,13 @@ const GastroHospitalPage = () => {
             </header>
 
             <main className="pt-16 md:pt-20">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-3 pb-1">
+                    <Breadcrumb items={[
+                        { label: "Home", href: "/" },
+                        { label: "Uppal", href: "/uppal" },
+                        { label: "Gastroenterology" }
+                    ]} />
+                </div>
                 {/* 1. Hero Section */}
                 <GastroHero onBookClick={() => handleBookAppointment()} />
 

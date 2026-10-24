@@ -2,6 +2,7 @@ import React from 'react';
 import Head from "next/head";
 import SecondaryLayout from '@/components/Layouts/SecondaryLayout';
 import Management from '@/components/Management/Management';
+import Breadcrumb from '@/components/Common/Breadcrumb';
 
 export default function Management_Page() {
     return (
@@ -12,6 +13,13 @@ export default function Management_Page() {
                 <meta name="keywords" content="TX Hospitals Hyderabad, Multi-specialty hospital Hyderabad, Super specialty hospital Hyderabad, Best hospital in Hyderabad, Top Hospitals in Hyderabad" />
             </Head>
             <SecondaryLayout>
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2">
+                    <Breadcrumb items={[
+                        { label: "Home", href: "/" },
+                        { label: "About Us", href: "/about-us" },
+                        { label: "Management Team" }
+                    ]} />
+                </div>
                 <Management />
             </SecondaryLayout>
         </>

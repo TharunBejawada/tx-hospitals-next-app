@@ -61,6 +61,7 @@ import KachigudaNewCTA from '@/components/Kachiguda/KachigudaNewCTA';
 import KachigudaNewLocations from '@/components/Kachiguda/KachigudaNewLocations';
 import KachigudaNewBlogs from '@/components/Kachiguda/KachigudaNewBlogs';
 import KachigudaNewFAQ from '@/components/Kachiguda/KachigudaNewFAQ';
+import Breadcrumb from '@/components/Common/Breadcrumb';
 
 export default function KachigudaPage() {
     return (
@@ -70,6 +71,9 @@ export default function KachigudaPage() {
                 <meta name="description" content="TX Hospitals Kachiguda offers world-class multi-specialty healthcare, 24/7 emergency, and top doctors. Book your free consultation today!" />
             </Head>
             <SecondaryLayout>
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2">
+                    <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Kachiguda" }]} />
+                </div>
                 <main>
                     {/* Hero Section */}
                     <KachigudaNewHero />

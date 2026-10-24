@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { locations } from "@/components/ContactUs/locations";
 import useIsMobile from "@/hooks/useIsMobile";
 import dynamic from "next/dynamic";
+import Breadcrumb from "@/components/Common/Breadcrumb";
 const MapClient = dynamic(
     () => import("@/components/ContactUs/MapClient"),
     { ssr: false }
@@ -71,6 +72,13 @@ export default function ContactUs() {
                 <meta name="description" content={selectedLocation.seoDescription} />
                 <meta name="keywords" content={selectedLocation.seoKeywords} />
             </Head>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2">
+                <Breadcrumb items={[
+                    { label: "Home", href: "/" },
+                    { label: "Contact Us", href: "/contact-us/" },
+                    ...(selectedLocation?.name ? [{ label: selectedLocation.name }] : [])
+                ]} />
+            </div>
             {isMobile ? (
                 <>
                     <h1 className="text-3xl font-inter text-center font-bold -mt-5">Contact Us</h1>
