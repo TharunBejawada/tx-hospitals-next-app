@@ -3,9 +3,10 @@ import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import useIsMobile from "@/hooks/useIsMobile";
-import FAQSchema from "@/utils/FAQSchema";
 import Breadcrumb from "@/components/Common/Breadcrumb";
 import DoctorDetails from "@/components/Doctors/DoctorDetails";
+import DoctorBlogs from "@/components/Doctors/DoctorBlogs";
+import DoctorFAQAndLocation from "@/components/Doctors/DoctorFAQAndLocation";
 import AppointmentModal from "@/components/Doctors/AppointmentModal";
 import { FaCalendarAlt, FaPhoneAlt, FaWhatsapp } from 'react-icons/fa';
 import DoctorAvailability from "@/components/Common/DoctorAvailability";
@@ -13,12 +14,7 @@ import DoctorAvailability from "@/components/Common/DoctorAvailability";
 export default function ViewProfile({ doctorData }) {
     const router = useRouter();
     const isMobile = useIsMobile();
-    const [openIndex, setOpenIndex] = useState(null);
     const [open, setOpen] = useState(false);
-
-    const toggleFAQ = (index) => {
-        setOpenIndex(openIndex === index ? null : index);
-    };
 
     if (!doctorData) {
         return (
@@ -46,7 +42,7 @@ export default function ViewProfile({ doctorData }) {
             </Head>
             {/* PC VIEW */}
             {isMobile ? (
-                <div className="font-inter -mt-6">
+                <div className="font-inter">
                     {/* TOP SECTION */}
                     <section className="w-full bg-[#f4f4f4] py-4 px-3">
                         <Breadcrumb items={breadcrumbItems} />
@@ -119,50 +115,11 @@ export default function ViewProfile({ doctorData }) {
 
                     <DoctorDetails doctorData={doctorData} />
 
-                    {/* FAQ */}
-                    <div className="rounded-2xl px-2 mt-4 mb-2">
-                        <h2 className="text-xl text-center font-bold mb-2 text-pink-700"> Frequently Asked Questions (FAQs)</h2>
-                        <FAQSchema faqs={doctorData?.faqs} />
-                        <div className="text-gray-700 leading-relaxed">
-                            <div className="space-y-2">
-                                {doctorData?.faqs.map((faq, idx) => (
-                                    <div key={idx}>
-                                        <button
-                                            onClick={() => toggleFAQ(idx)}
-                                            className={`w-full flex justify-between items-center px-3 py-2 rounded-full border text-left transition
-                  ${openIndex === idx
-                                                    ? "bg-pink-700 text-white font-medium"
-                                                    : "border-pink-600 text-pink-700 hover:bg-pink-50"
-                                                }`}
-                                        >
-                                            <span className="text-sm">{faq.question}</span>
-                                            <svg
-                                                className={`w-5 h-5 transform transition-transform ${openIndex === idx ? "rotate-180" : ""
-                                                    }`}
-                                                fill="none"
-                                                alt="Image"
-                                                stroke="currentColor"
-                                                viewBox="0 0 24 24"
-                                            >
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    strokeWidth={2}
-                                                    d="M19 9l-7 7-7-7"
-                                                />
-                                            </svg>
-                                        </button>
+                    {/* Department Blogs */}
+                    <DoctorBlogs department={doctorData?.department} doctorName={doctorData?.name} />
 
-                                        {openIndex === idx && (
-                                            <div className="px-3 py-1 text-sm bg-gray-50 text-gray-700 rounded-full">
-                                                <p dangerouslySetInnerHTML={{ __html: faq.description }} />
-                                            </div>
-                                        )}
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
+                    {/* FAQ & Location Section */}
+                    <DoctorFAQAndLocation doctorData={doctorData} />
                 </div>
             ) : (
                 <div className="mt-6 font-inter">
@@ -236,50 +193,11 @@ export default function ViewProfile({ doctorData }) {
 
                     <DoctorDetails doctorData={doctorData} />
 
-                    {/* FAQ */}
-                    <div className="rounded-2xl px-12 mt-8 mb-4">
-                        <h2 className="text-3xl text-center font-bold mb-4 text-pink-700"> Frequently Asked Questions (FAQs)</h2>
-                        <FAQSchema faqs={doctorData?.faqs} />
-                        <div className="text-gray-700 leading-relaxed">
-                            <div className="space-y-4">
-                                {doctorData?.faqs.map((faq, idx) => (
-                                    <div key={idx}>
-                                        <button
-                                            onClick={() => toggleFAQ(idx)}
-                                            className={`w-full flex justify-between items-center px-6 py-4 rounded-full border text-left transition
-                  ${openIndex === idx
-                                                    ? "bg-pink-700 text-white font-medium"
-                                                    : "border-pink-600 text-pink-700 hover:bg-pink-50"
-                                                }`}
-                                        >
-                                            <span>{faq.question}</span>
-                                            <svg
-                                                className={`w-5 h-5 transform transition-transform ${openIndex === idx ? "rotate-180" : ""
-                                                    }`}
-                                                fill="none"
-                                                alt="Image"
-                                                stroke="currentColor"
-                                                viewBox="0 0 24 24"
-                                            >
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    strokeWidth={2}
-                                                    d="M19 9l-7 7-7-7"
-                                                />
-                                            </svg>
-                                        </button>
+                    {/* Department Blogs */}
+                    <DoctorBlogs department={doctorData?.department} doctorName={doctorData?.name} />
 
-                                        {openIndex === idx && (
-                                            <div className="px-6 py-4 bg-gray-50 text-gray-700 rounded-full">
-                                                <p dangerouslySetInnerHTML={{ __html: faq.description }} />
-                                            </div>
-                                        )}
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
+                    {/* FAQ & Location Section */}
+                    <DoctorFAQAndLocation doctorData={doctorData} />
                 </div>
             )}
             {open && <AppointmentModal doctorData={doctorData} closeModal={() => setOpen(false)} />}
