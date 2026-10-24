@@ -13,6 +13,7 @@ import BranchBlogsSection from '@/components/Blogs/BranchBlogsSection';
 import { getBranchData } from '@/utils/branchLocationData';
 import CONFIG from '@/config';
 import Breadcrumb from '@/components/Common/Breadcrumb';
+import LocalitySchema from '@/utils/LocalitySchema';
 
 const BranchSpecialtyPage = ({ pageData, error, targetLocation, targetSpeciality, wasBracketUrl }) => {
     const router = useRouter();
@@ -69,6 +70,8 @@ const BranchSpecialtyPage = ({ pageData, error, targetLocation, targetSpeciality
         { label: formattedSpecName }
     ];
 
+    const canonicalPageUrl = pageData?.seo?.url || pageData?.seo?.Url || pageData?.seoUrl || `/${currentLoc}/specialties/${currentSpec}/`;
+
     return (
         <>
             <Head>
@@ -76,6 +79,14 @@ const BranchSpecialtyPage = ({ pageData, error, targetLocation, targetSpeciality
                 <meta name="description" content={content?.seo?.metaDescription || defaultDescription} key="description" />
                 {content?.seo?.keywords && <meta name="keywords" content={content.seo.keywords} key="keywords" />}
             </Head>
+
+            <LocalitySchema
+                location={currentLoc}
+                speciality={formattedSpecName}
+                pageTitle={content?.seo?.title || defaultTitle}
+                description={content?.seo?.metaDescription || defaultDescription}
+                pageUrl={canonicalPageUrl}
+            />
 
             <SecondaryLayout>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2">

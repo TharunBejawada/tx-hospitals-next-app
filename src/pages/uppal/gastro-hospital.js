@@ -15,6 +15,7 @@ import GastroFinalCTA from '@/components/Uppal/GastroHospital/GastroFinalCTA';
 import GastroFooter from '@/components/Uppal/GastroHospital/GastroFooter';
 import BookAppointmentForm from '@/components/Blogs/BookAppointemntForm';
 import Breadcrumb from '@/components/Common/Breadcrumb';
+import LocalitySchema from '@/utils/LocalitySchema';
 
 const GastroHospitalPage = () => {
     const router = useRouter();
@@ -49,6 +50,13 @@ const GastroHospitalPage = () => {
                 <title>Best Gastroenterology Hospital in Uppal, Hyderabad</title>
                 <meta name="description" content="TX Hospitals is Uppal's trusted gastroenterology hospital, located near the bus stop. Expert treatment for digestive, liver & GI conditions. Consult today." />
             </Head>
+            <LocalitySchema
+                location="uppal"
+                speciality="Gastroenterology"
+                pageTitle="Best Gastroenterology Hospital in Uppal, Hyderabad | TX Hospitals"
+                description="TX Hospitals is Uppal's trusted gastroenterology hospital, located near the bus stop. Expert treatment for digestive, liver & GI conditions."
+                pageUrl="/uppal/gastro-hospital/"
+            />
 
             {/* Header with Logo Only */}
             <header className="fixed top-0 left-0 w-full z-50 bg-white/95 backdrop-blur-sm shadow-sm py-3 px-6 md:px-12 flex justify-between items-center transition-all">

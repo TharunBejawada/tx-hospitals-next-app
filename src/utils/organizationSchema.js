@@ -86,7 +86,115 @@ export const organizationSchema = {
             "closes": "23:59"
         }
     ],
+    "areaServed": [
+        {
+            "@type": "AdministrativeArea",
+            "name": "Banjara Hills, Hyderabad"
+        },
+        {
+            "@type": "AdministrativeArea",
+            "name": "Uppal, Hyderabad"
+        },
+        {
+            "@type": "AdministrativeArea",
+            "name": "Kachiguda, Hyderabad"
+        },
+        {
+            "@type": "AdministrativeArea",
+            "name": "Miyapur, Hyderabad"
+        },
+        {
+            "@type": "City",
+            "name": "Hyderabad"
+        },
+        {
+            "@type": "State",
+            "name": "Telangana"
+        },
+        {
+            "@type": "Country",
+            "name": "India"
+        }
+    ],
     "department": [
+        {
+            "@type": "Hospital",
+            "name": "TX Hospitals, Banjara Hills",
+            "url": "https://txhospitals.in/banjara-hills/",
+            "telephone": "040-66529999",
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "8-2-680/A, Road No. 12, Sri Ram Nagar Colony, Banjara Hills",
+                "addressLocality": "Banjara Hills, Hyderabad",
+                "addressRegion": "Telangana",
+                "postalCode": "500028",
+                "addressCountry": "IN"
+            },
+            "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": 17.408587,
+                "longitude": 78.444494
+            }
+        },
+        {
+            "@type": "Hospital",
+            "name": "TX Hospitals, Uppal",
+            "url": "https://txhospitals.in/uppal/",
+            "telephone": "+91-40-43 108 108",
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "# 2-6-71, Bharath Nagar Colony, Near Masjid Uppal",
+                "addressLocality": "Uppal, Hyderabad",
+                "addressRegion": "Telangana",
+                "postalCode": "500039",
+                "addressCountry": "IN"
+            },
+            "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": 17.402553,
+                "longitude": 78.566944
+            }
+        },
+        {
+            "@type": "Hospital",
+            "name": "TX Hospitals, Kachiguda",
+            "url": "https://txhospitals.in/kachiguda/",
+            "telephone": "+91-40-48 108 108",
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "# 3-2-841/1, Kachiguda Station Rd, Mahalaxmi Nilayam, Kachiguda",
+                "addressLocality": "Kachiguda, Hyderabad",
+                "addressRegion": "Telangana",
+                "postalCode": "500027",
+                "addressCountry": "IN"
+            },
+            "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": 17.389778,
+                "longitude": 78.495443
+            }
+        },
+        {
+            "@type": "Hospital",
+            "name": "TX Hospitals, Miyapur",
+            "url": "https://txhospitals.in/miyapur/",
+            "telephone": "040-21999999",
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "Pillar No A 600, Plot 65 & 66, Miyapur Cross Road, Mathrusree Nagar, Hafeezpet",
+                "addressLocality": "Miyapur, Hyderabad",
+                "addressRegion": "Telangana",
+                "postalCode": "500059",
+                "addressCountry": "IN"
+            },
+            "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": 17.495941,
+                "longitude": 78.364664
+            }
+        }
+    ],
+    "subOrganization": [
         {
             "@type": "Hospital",
             "name": "TX Hospitals, Banjara Hills",

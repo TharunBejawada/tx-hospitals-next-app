@@ -13,6 +13,7 @@ import BanjaraHillsNewLocations from '@/components/BanjaraHills/BanjaraHillsNewL
 import BanjaraHillsNewBlogs from '@/components/BanjaraHills/BanjaraHillsNewBlogs';
 import BanjaraHillsNewFAQ from '@/components/BanjaraHills/BanjaraHillsNewFAQ';
 import Breadcrumb from '@/components/Common/Breadcrumb';
+import LocalitySchema from '@/utils/LocalitySchema';
 
 export default function BanjaraHillsPage() {
     return (
@@ -26,6 +27,12 @@ export default function BanjaraHillsPage() {
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
+            <LocalitySchema
+                location="banjara-hills"
+                pageTitle="Best Multi Speciality Hospital in Banjara Hills, Hyderabad | TX Hospitals"
+                description="Looking for the best hospital in Banjara Hills? TX Hospitals offers expert doctors, 24x7 emergency care, advanced ICU, cashless insurance, and specialist consultations."
+                pageUrl="/banjara-hills/"
+            />
             <SecondaryLayout>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2">
                     <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Banjara Hills" }]} />

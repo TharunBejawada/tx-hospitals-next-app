@@ -16,6 +16,7 @@ import HerniaSimpleCTA from '@/components/Uppal/HerniaSurgery/HerniaSimpleCTA';
 import HerniaFooter from '@/components/Uppal/HerniaSurgery/HerniaFooter';
 import BookAppointmentForm from '@/components/Blogs/BookAppointemntForm';
 import Breadcrumb from '@/components/Common/Breadcrumb';
+import LocalitySchema from '@/utils/LocalitySchema';
 
 const HerniaSurgeryPage = () => {
     const router = useRouter();
@@ -50,6 +51,13 @@ const HerniaSurgeryPage = () => {
                 <title>Hernia Surgery in Uppal, Hyderabad</title>
                 <meta name="description" content="Looking for hernia surgery in Uppal? TX Hospitals offers expert laparoscopic hernia repair, same-day discharge & with post surgery support. Consult today." />
             </Head>
+            <LocalitySchema
+                location="uppal"
+                speciality="Hernia Surgery"
+                pageTitle="Hernia Surgery in Uppal, Hyderabad | TX Hospitals"
+                description="Looking for hernia surgery in Uppal? TX Hospitals offers expert laparoscopic hernia repair, same-day discharge & with post surgery support."
+                pageUrl="/uppal/hernia-surgery/"
+            />
 
             {/* Header with Logo Only */}
             <header className="fixed top-0 left-0 w-full z-50 bg-white/95 backdrop-blur-sm shadow-sm py-3 px-6 md:px-12 flex justify-between items-center transition-all">

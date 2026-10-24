@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import SecondaryLayout from '@/components/Layouts/SecondaryLayout';
 import BranchSpecialtiesLanding from '@/components/BranchSpecialtiesLanding/BranchSpecialtiesLanding';
+import LocalitySchema from '@/utils/LocalitySchema';
 
 export default function BranchSpecialtiesPage({ location, wasBracketUrl }) {
     const router = useRouter();
@@ -25,6 +26,12 @@ export default function BranchSpecialtiesPage({ location, wasBracketUrl }) {
                 <title>Specialties at TX Hospitals {formattedLocation}</title>
                 <meta name="description" content={`Explore all the medical specialties and advanced treatments available at TX Hospitals ${formattedLocation}.`} />
             </Head>
+            <LocalitySchema
+                location={cleanLocation}
+                pageTitle={`Specialties at TX Hospitals ${formattedLocation}`}
+                description={`Explore all the medical specialties and advanced treatments available at TX Hospitals ${formattedLocation}.`}
+                pageUrl={`/${cleanLocation}/specialties/`}
+            />
             <SecondaryLayout>
                 <BranchSpecialtiesLanding location={cleanLocation} />
             </SecondaryLayout>

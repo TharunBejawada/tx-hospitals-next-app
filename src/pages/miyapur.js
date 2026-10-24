@@ -13,6 +13,7 @@ import MiyapurLocations from '@/components/Miyapur/MiyapurLocations';
 import MiyapurBlogs from '@/components/Miyapur/MiyapurBlogs';
 import MiyapurFAQ from '@/components/Miyapur/MiyapurFAQ';
 import Breadcrumb from '@/components/Common/Breadcrumb';
+import LocalitySchema from '@/utils/LocalitySchema';
 
 export default function MiyapurPage() {
     return (
@@ -22,6 +23,12 @@ export default function MiyapurPage() {
                 <meta name="description" content="TX Hospitals Miyapur is a leading multi-specialty hospital in Miyapur, Hyderabad, offering expert doctors, 24/7 emergency care, advanced treatments, ICU facilities services." />
                 <meta name="keywords" content="TX Hospitals Miyapur, Best Hospital in Miyapur, Multi Specialty Hospital in Miyapur, Hospital in Miyapur Hyderabad, Best Hospital Near Miyapur, Emergency Hospital in Miyapur, 24/7 Hospital in Miyapur, Healthcare Services in Miyapur, Best Doctors in Miyapur, Super Specialty Hospital in Miyapur, Cashless Hospital in Miyapur, Hospital Near Hafeezpet, Hospital Near Chandanagar, Hospital Near Madinaguda, Hospital Near Kukatpally, Hospital Near Nizampet, Advanced Healthcare in Miyapur" />
             </Head>
+            <LocalitySchema
+                location="miyapur"
+                pageTitle="Best Hospital in Miyapur, Hyderabad | TX Hospitals Miyapur"
+                description="TX Hospitals Miyapur is a leading multi-specialty hospital in Miyapur, Hyderabad, offering expert doctors, 24/7 emergency care, advanced treatments, ICU facilities services."
+                pageUrl="/miyapur/"
+            />
             <SecondaryLayout>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2">
                     <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Miyapur" }]} />

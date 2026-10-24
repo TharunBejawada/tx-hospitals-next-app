@@ -16,6 +16,7 @@ import BariatricFooter from '@/components/Uppal/BariatricSurgery/BariatricFooter
 import SocialSidebar from '@/components/HomePage/SocialSidebar';
 import BookAppointmentForm from '@/components/Blogs/BookAppointemntForm';
 import Breadcrumb from '@/components/Common/Breadcrumb';
+import LocalitySchema from '@/utils/LocalitySchema';
 
 const BariatricSurgeryPage = () => {
     const router = useRouter();
@@ -66,6 +67,13 @@ const BariatricSurgeryPage = () => {
                 <title>Bariatric Surgery in Uppal, Hyderabad | TX Hospitals</title>
                 <meta name="description" content="TX Hospitals is the only dedicated bariatric hospital in Uppal with 25+ years of experienced surgeons, and minimally invasive procedures. Book now." />
             </Head>
+            <LocalitySchema
+                location="uppal"
+                speciality="Bariatric Surgery"
+                pageTitle="Bariatric Surgery in Uppal, Hyderabad | TX Hospitals"
+                description="TX Hospitals is the only dedicated bariatric hospital in Uppal with 25+ years of experienced surgeons, and minimally invasive procedures."
+                pageUrl="/uppal/bariatric-surgery/"
+            />
 
             {/* Header with Logo Only */}
             <header className="fixed top-0 left-0 w-full z-50 bg-white/95 backdrop-blur-sm shadow-sm py-3 px-6 md:px-12 flex justify-between items-center transition-all">
