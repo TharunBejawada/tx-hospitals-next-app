@@ -31,94 +31,6 @@ const VideoSection = dynamic(() => import('@/components/HomePage/VideoSection'),
 });
 
 export default function HomePage() {
-    const hospitalSchema = {
-        "@context": "https://schema.org",
-        "@type": "Hospital",
-        "name": "TX Hospitals",
-        "url": "https://txhospitals.in/",
-        "logo": "https://txhospitals.in/TXlogoWB.jpg",
-        "image": "https://txhospitals.in/TXlogoWB.jpg",
-        "description": "TX Hospitals offers world-class multi-specialty care in Hyderabad at Uppal, Kachiguda, Banjara Hills & Miyapur with expert doctors and advanced care.",
-        "telephone": "+91 9144514459",
-        "address": [
-            {
-                "@type": "PostalAddress",
-                "streetAddress": "# 2-6-71, Bharath Nagar Colony, Near Masjid Uppal",
-                "addressLocality": "Hyderabad",
-                "addressRegion": "Telangana",
-                "postalCode": "500039",
-                "addressCountry": "IN"
-            },
-            {
-                "@type": "PostalAddress",
-                "streetAddress": "# 3-2-841/1, Kachiguda Station Rd, Mahalaxmi Nilayam, Kachiguda",
-                "addressLocality": "Hyderabad",
-                "addressRegion": "Telangana",
-                "postalCode": "500027",
-                "addressCountry": "IN"
-            },
-            {
-                "@type": "PostalAddress",
-                "streetAddress": "# 8-2-680, Raichandani Construction, no:12, B Road, Sri Ram Nagar Colony, Banjara Hills",
-                "addressLocality": "Hyderabad",
-                "addressRegion": "Telangana",
-                "postalCode": "500028",
-                "addressCountry": "IN"
-            },
-            {
-                "@type": "PostalAddress",
-                "streetAddress": "Pillar No A 600, Plot 65 & 66, Miyapur Cross Road, Mathrusree Nagar, Hafeezpet",
-                "addressLocality": "Hyderabad",
-                "addressRegion": "Telangana",
-                "postalCode": "500059",
-                "addressCountry": "IN"
-            }
-        ],
-        "geo": [
-            {
-                "@type": "GeoCoordinates",
-                "latitude": 17.4019,
-                "longitude": 78.5602
-            },
-            {
-                "@type": "GeoCoordinates",
-                "latitude": 17.3872,
-                "longitude": 78.4907
-            },
-            {
-                "@type": "GeoCoordinates",
-                "latitude": 17.4144,
-                "longitude": 78.4419
-            },
-            {
-                "@type": "GeoCoordinates",
-                "latitude": 17.4959,
-                "longitude": 78.3647
-            }
-        ],
-        "openingHoursSpecification": {
-            "@type": "OpeningHoursSpecification",
-            "dayOfWeek": [
-                "Monday",
-                "Tuesday",
-                "Wednesday",
-                "Thursday",
-                "Friday",
-                "Saturday",
-                "Sunday"
-            ],
-            "opens": "00:00",
-            "closes": "23:59"
-        },
-        "sameAs": [
-            "https://www.facebook.com/txhospitals/",
-            "https://www.instagram.com/txhospitals/",
-            "https://www.youtube.com/@TXHOSPITALOfficial",
-            "https://www.linkedin.com/company/tx-hospitals",
-            "https://twitter.com/txhospitals"
-        ]
-    };
-
     return (
         <>
             <Head>
@@ -140,12 +52,6 @@ export default function HomePage() {
                 <meta name="twitter:description" content="TX Hospitals offers world-class multi-specialty care in Hyderabad at Uppal, Kachiguda, Banjara Hills & Miyapur with expert doctors and advanced care." />
                 <meta name="twitter:image" content="https://txhospitals.in/TXlogoWB.jpg" />
                 <meta name="twitter:site" content="@txhospitals" />
-
-                {/* Local Business Schema */}
-                <script
-                    type="application/ld+json"
-                    dangerouslySetInnerHTML={{ __html: JSON.stringify(hospitalSchema) }}
-                />
             </Head>
             <Layout>
                 <h1 className="sr-only">TX Hospitals | Leading Multi-Specialty Hospitals Hyderabad</h1>

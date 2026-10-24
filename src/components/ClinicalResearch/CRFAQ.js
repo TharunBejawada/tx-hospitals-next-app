@@ -1,7 +1,7 @@
-"use client";
 import { useState } from "react";
 import useIsMobile from "@/hooks/useIsMobile";
 import { motion } from "framer-motion";
+import FAQSchema from "@/utils/FAQSchema";
 
 const faqs = [
     {
@@ -57,76 +57,79 @@ export default function CRFAQ() {
     };
 
     return (
-        <section className={`bg-[#240c17] text-white w-full ${isMobile ? 'py-12 px-6' : 'py-20 px-12 md:px-24'}`}>
-            <div className="max-w-4xl mx-auto flex flex-col items-start text-left">
+        <>
+            <FAQSchema faqs={faqs} />
+            <section className={`bg-[#240c17] text-white w-full ${isMobile ? 'py-12 px-6' : 'py-20 px-12 md:px-24'}`}>
+                <div className="max-w-4xl mx-auto flex flex-col items-start text-left">
 
-                {/* Header */}
-                <div className="mb-12 w-full">
-                    <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        className="flex items-center gap-3 mb-4"
-                    >
-                        <div className="w-1.5 h-1.5 rounded-full bg-pink-600"></div>
-                        <span className="text-pink-600 font-bold uppercase tracking-[0.2em] text-xs md:text-sm">
-                            FAQS
-                        </span>
-                    </motion.div>
+                    {/* Header */}
+                    <div className="mb-12 w-full">
+                        <motion.div
+                            initial={{ opacity: 0, x: -20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            className="flex items-center gap-3 mb-4"
+                        >
+                            <div className="w-1.5 h-1.5 rounded-full bg-pink-600"></div>
+                            <span className="text-pink-600 font-bold uppercase tracking-[0.2em] text-xs md:text-sm">
+                                FAQS
+                            </span>
+                        </motion.div>
 
-                    <motion.h2
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.1 }}
-                        className={`font-serif mb-6 ${isMobile ? 'text-4xl' : 'text-5xl md:text-6xl'}`}
-                    >
-                        Frequently Asked Questions
-                    </motion.h2>
+                        <motion.h2
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.1 }}
+                            className={`font-serif mb-6 ${isMobile ? 'text-4xl' : 'text-5xl md:text-6xl'}`}
+                        >
+                            Frequently Asked Questions
+                        </motion.h2>
 
-                    <motion.div
-                        initial={{ opacity: 0, width: 0 }}
-                        whileInView={{ opacity: 1, width: "3rem" }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.2, duration: 0.5 }}
-                        className="h-[2px] bg-pink-700"
-                    ></motion.div>
-                </div>
+                        <motion.div
+                            initial={{ opacity: 0, width: 0 }}
+                            whileInView={{ opacity: 1, width: "3rem" }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.2, duration: 0.5 }}
+                            className="h-[2px] bg-pink-700"
+                        ></motion.div>
+                    </div>
 
-                {/* FAQs List */}
-                <div className="space-y-4 w-full">
-                    {faqs.map((faq, idx) => (
-                        <div key={idx} className="border border-white/10 rounded-2xl overflow-hidden bg-[#240c17]">
-                            <button
-                                onClick={() => toggleFAQ(idx)}
-                                className={`w-full flex justify-between items-center px-6 py-5 text-left transition-colors duration-300
+                    {/* FAQs List */}
+                    <div className="space-y-4 w-full">
+                        {faqs.map((faq, idx) => (
+                            <div key={idx} className="border border-white/10 rounded-2xl overflow-hidden bg-[#240c17]">
+                                <button
+                                    onClick={() => toggleFAQ(idx)}
+                                    className={`w-full flex justify-between items-center px-6 py-5 text-left transition-colors duration-300
                                     ${openIndex === idx ? "bg-pink-900/40 text-white" : "text-gray-200 hover:bg-white/5"}`}
-                            >
-                                <span className={`font-semibold pr-4 ${isMobile ? 'text-sm' : 'text-base'}`}>{faq.question}</span>
-                                <svg
-                                    className={`w-5 h-5 flex-shrink-0 text-pink-500 transform transition-transform duration-300 ${openIndex === idx ? "rotate-180" : ""}`}
-                                    fill="none"
-                                    alt="Image"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
                                 >
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                                </svg>
-                            </button>
+                                    <span className={`font-semibold pr-4 ${isMobile ? 'text-sm' : 'text-base'}`}>{faq.question}</span>
+                                    <svg
+                                        className={`w-5 h-5 flex-shrink-0 text-pink-500 transform transition-transform duration-300 ${openIndex === idx ? "rotate-180" : ""}`}
+                                        fill="none"
+                                        alt="Image"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
 
-                            {openIndex === idx && (
-                                <motion.div
-                                    initial={{ opacity: 0, height: 0 }}
-                                    animate={{ opacity: 1, height: 'auto' }}
-                                    className={`px-6 pb-5 pt-2 text-gray-400 bg-pink-900/40 ${isMobile ? 'text-xs' : 'text-sm leading-relaxed'}`}
-                                >
-                                    {faq.answer}
-                                </motion.div>
-                            )}
-                        </div>
-                    ))}
+                                {openIndex === idx && (
+                                    <motion.div
+                                        initial={{ opacity: 0, height: 0 }}
+                                        animate={{ opacity: 1, height: 'auto' }}
+                                        className={`px-6 pb-5 pt-2 text-gray-400 bg-pink-900/40 ${isMobile ? 'text-xs' : 'text-sm leading-relaxed'}`}
+                                    >
+                                        {faq.answer}
+                                    </motion.div>
+                                )}
+                            </div>
+                        ))}
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        </>
     );
 }

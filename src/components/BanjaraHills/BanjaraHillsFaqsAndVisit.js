@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MapPin, Phone, Mail, Clock, Plus, Minus, ExternalLink } from 'lucide-react';
+import FAQSchema from '@/utils/FAQSchema';
 
 const BanjaraHillsFaqsAndVisit = () => {
     // 5 FAQ Questions requested by the user
@@ -36,6 +37,7 @@ const BanjaraHillsFaqsAndVisit = () => {
 
     return (
         <section className="py-4 md:py-6 px-4 md:px-8 bg-white overflow-hidden">
+            <FAQSchema faqs={faqsData} />
             <div className="max-w-[1440px] mx-auto">
 
                 {/* Unified Premium Card exactly like the mockup */}

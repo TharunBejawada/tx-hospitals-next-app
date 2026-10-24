@@ -4,6 +4,7 @@ import { useState } from "react";
 import useIsMobile from "@/hooks/useIsMobile";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import FAQSchema from "@/utils/FAQSchema";
 
 const specialities = [
     {
@@ -180,6 +181,7 @@ export default function SpecialitiesHomepage({ isClinicalResearch = false }) {
 
     return (
         <main>
+            {!isClinicalResearch && <FAQSchema faqs={faqs} />}
             {isMobile ? (
                 <>
                     <section className="relative w-full -mt-8 h-[300px] flex items-center justify-center text-center overflow-hidden">
@@ -266,7 +268,7 @@ export default function SpecialitiesHomepage({ isClinicalResearch = false }) {
                                 <h2 className="text-lg font-bold mb-2">Ready to Experience Excellence in Healthcare?</h2>
                                 <p className="text-sm leading-relaxed mb-4">
                                     Schedule an appointment with our specialists or learn more about our
-                                    comprehensive medical services. We're here to provide you with
+                                    comprehensive medical services. We&apos;re here to provide you with
                                     personalized, compassionate care
                                 </p>
                                 <div className="flex items-center justify-center gap-2">
@@ -424,7 +426,7 @@ export default function SpecialitiesHomepage({ isClinicalResearch = false }) {
                                 <h2 className="text-4xl font-bold mb-4">Ready to Experience Excellence in Healthcare?</h2>
                                 <p className="text-xl leading-relaxed mb-8">
                                     Schedule an appointment with our specialists or learn more about our
-                                    comprehensive medical services. We're here to provide you with
+                                    comprehensive medical services. We&apos;re here to provide you with
                                     personalized, compassionate care
                                 </p>
                                 <div className="flex items-center justify-center gap-4">

@@ -7,6 +7,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import GoogleTranslateLoader from "@/components/GoogleTranslateLoader";
 import { NavigationConfigProvider } from "@/context/NavigationConfigContext";
+import organizationSchema from "@/utils/organizationSchema";
 
 export default function App({ Component, pageProps }) {
   const router = useRouter();
@@ -47,6 +48,14 @@ export default function App({ Component, pageProps }) {
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="canonical" href={canonicalUrl} key="canonical" />
+        {/* Google Organization Schema (Site-wide) */}
+        <script
+          type="application/ld+json"
+          key="organization-schema"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationSchema),
+          }}
+        />
       </Head>
       <Script
         id="gtm-script"

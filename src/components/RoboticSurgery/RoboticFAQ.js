@@ -79,6 +79,7 @@ const RoboticFAQ = ({ data }) => {
     // Desktop version
     return (
         <section className="py-10 px-6 md:px-12 font-inter bg-white">
+            <FAQSchema faqs={data} />
             <div className="container mx-auto max-w-4xl">
                 <h2 className="text-2xl md:text-3xl font-bold text-center mb-10 text-[#b02a44]">
                     Frequently Asked Questions (FAQs)
