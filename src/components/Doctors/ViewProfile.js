@@ -10,6 +10,7 @@ import DoctorFAQAndLocation from "@/components/Doctors/DoctorFAQAndLocation";
 import AppointmentModal from "@/components/Doctors/AppointmentModal";
 import { FaCalendarAlt, FaPhoneAlt, FaWhatsapp } from 'react-icons/fa';
 import DoctorAvailability from "@/components/Common/DoctorAvailability";
+import DoctorSchema from "@/utils/DoctorSchema";
 
 export default function ViewProfile({ doctorData }) {
     const router = useRouter();
@@ -36,10 +37,17 @@ export default function ViewProfile({ doctorData }) {
     return (
         <>
             <Head>
-                <title>{doctorData?.seoTitle}</title>
+                <title>{doctorData?.seoTitle || `${doctorData?.name} | TX Hospitals`}</title>
                 <meta name="description" content={doctorData?.metaDescription} />
                 <meta name="keywords" content={doctorData?.metaKeywords} />
+                <meta property="og:type" content="profile" />
+                <meta property="og:title" content={doctorData?.seoTitle || `${doctorData?.name} | TX Hospitals`} />
+                <meta property="og:description" content={doctorData?.metaDescription} />
+                {doctorData?.image && <meta property="og:image" content={doctorData.image} />}
+                {doctorData?.url && <meta property="og:url" content={`https://txhospitals.in${doctorData.url.startsWith("/") ? doctorData.url : `/${doctorData.url}`}`} />}
+                <meta name="twitter:card" content="summary_large_image" />
             </Head>
+            <DoctorSchema doctorData={doctorData} />
             {/* PC VIEW */}
             {isMobile ? (
                 <div className="font-inter">
