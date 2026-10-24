@@ -27,7 +27,7 @@ const RoboticSurgeryHeader = ({ data, onBookNow }) => {
         }
 
         return (
-            <div className="relative w-full -mt-6 bg-white">
+            <div className="relative w-full pt-2 bg-white">
                 <div className="px-4 py-2 bg-gray-50 border-b border-gray-100">
                     <Breadcrumb items={[
                         { label: "Home", href: "/" },

@@ -141,7 +141,7 @@ export default function CenterOfExcellencePage() {
     return (
         <SecondaryLayout>
             {!isMobile ? (
-                <div className="mt-10 font-inter mx-[5%]">
+                <div className="pt-4 pb-2 font-inter mx-[5%]">
                     <Breadcrumb items={breadcrumbItems} />
                     <h2 className="text-4xl font-bold text-pink-700 text-center">{title}</h2>
                     <img src={image} alt={title} className="w-full h-full mt-2" />
@@ -188,7 +188,7 @@ export default function CenterOfExcellencePage() {
                     </AnimatePresence>
                 </div>
             ) : (
-                <div className="-mt-4 font-inter">
+                <div className="pt-4 pb-2 px-4 font-inter">
                     <Breadcrumb items={breadcrumbItems} />
                     <h2 className="text-2xl font-bold text-pink-700 text-center">{title}</h2>
                     <img src={image} alt={title} className="w-full h-full" />

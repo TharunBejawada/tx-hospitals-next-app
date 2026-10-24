@@ -50,7 +50,7 @@ const PatientVisitorsPage = () => {
     ];
 
     const BannerSection = () => (
-        <div className={`relative w-full overflow-hidden shadow-2xl ${isMobile ? "h-24 -mt-6 mb-5" : "max-w-[1180px] mx-auto h-[200px] mb-10 rounded-3xl mt-6"}`}>
+        <div className={`relative w-full overflow-hidden shadow-2xl ${isMobile ? "h-24 mt-2 mb-5" : "max-w-[1180px] mx-auto h-[200px] mb-10 rounded-3xl mt-6"}`}>
             {/* Base Image */}
             <img
                 loading="lazy"

@@ -25,7 +25,7 @@ export default function Specialities() {
                 <meta name="keywords" content="Best Speciality Hospitals in Hyderabad" />
             </Head>
             <SecondaryLayout isClinicalResearch={isClinicalResearch}>
-                <div className={`ml-4 absolute z-20 ${isMobile ? "-mt-3" : "mt-8"}`}>
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2">
                     <Breadcrumb items={breadcrumbItems} />
                 </div>
                 <SpecialitiesHomepage isClinicalResearch={isClinicalResearch} />

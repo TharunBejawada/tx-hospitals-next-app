@@ -21,7 +21,7 @@ const RPHeader = ({ data, onBookNow }) => {
 
     if (isMobile) {
         return (
-            <div className="relative w-full -mt-6 bg-white">
+            <div className="relative w-full pt-2 bg-white">
                 {/* Image / Gradient Section */}
                 <div
                     className="relative w-full h-[280px] overflow-hidden flex items-end"

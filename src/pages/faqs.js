@@ -28,7 +28,7 @@ export default function FAQs() {
                     <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "FAQs" }]} />
                 </div>
                 {isMobile ? (
-                    <div className="-mt-6 font-inter mb-2">
+                    <div className="mt-2 font-inter mb-2">
                         <h1 className="text-xl p-1 font-bold text-pink-700">FAQs</h1>
                         <FAQSchema faqs={faqs} />
                         <div className="text-gray-700 p-1 leading-relaxed">

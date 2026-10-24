@@ -78,7 +78,7 @@ export default function IPLandingPage() {
         <>
             {isMobile ? (
                 <>
-                    <div className="-mt-6 mb-1">
+                    <div className="mt-2 mb-1">
                         <div className="relative w-full h-full overflow-hidden mb-2">
                             {/* Background Image */}
                             <img loading="lazy"

@@ -213,7 +213,7 @@ const BioMedicalWastage = () => {
                         </div>
                     )}
                     {isMobile && (
-                        <div className="-mt-4 font-inter">
+                        <div className="mt-2 font-inter">
                             <h1 className="text-2xl text-center font-bold text-pink-700 mb-2 px-4">
                                 Bio Medical Wastage
                             </h1>

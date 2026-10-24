@@ -77,7 +77,7 @@ export default function ProcedureDetailsPage({ url }) {
 
             <div className="font-inter bg-white text-black text-left">
                 {/* Hero Section */}
-                <div className="max-w-7xl mx-auto md:px-12 px-2 -mt-4 md:pt-6">
+                <div className="max-w-7xl mx-auto md:px-12 px-4 pt-4 md:pt-6">
                     <div className="mb-4">
                         <Breadcrumb items={[
                             { label: "Home", href: "/" },

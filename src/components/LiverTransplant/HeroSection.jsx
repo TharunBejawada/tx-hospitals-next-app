@@ -19,7 +19,7 @@ const HeroSection = ({
         const bookButton = buttons.find(btn => btn.text === "Book An Appointment");
 
         return (
-            <section className="w-full bg-[#fde8e8] -mt-12 px-4 py-4 overflow-hidden">
+            <section className="w-full bg-[#fde8e8] mt-2 px-4 py-4 overflow-hidden">
                 <div className="max-w-md mx-auto flex flex-col items-center">
                     {/* Title */}
                     <h1 className="text-2xl font-bold text-center leading-tight">

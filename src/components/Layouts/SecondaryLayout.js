@@ -33,7 +33,7 @@ export default function SecondaryLayout({ children, hideFooter = false, isClinic
                 variant="secondary"
             />
             <SocialSidebar isClinicalResearch={isClinicalResearch} />
-            <main className="pt-20 md:pt-24">
+            <main className="pt-20 md:pt-32">
                 {children}
             </main>
             {!hideFooter && !isClinicalResearch && <CallbackFooterSection />}

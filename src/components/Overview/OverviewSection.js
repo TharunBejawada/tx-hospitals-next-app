@@ -8,7 +8,7 @@ export default function OverviewSection() {
     return (
         <>
             {isMobile ? (
-                <section className="w-full -mt-8">
+                <section className="w-full mt-2">
                     <div className="bg-gray-50 text-center py-3">
                         <h1 className="text-2xl font-semibold text-pink-700">Overview</h1>
                     </div>

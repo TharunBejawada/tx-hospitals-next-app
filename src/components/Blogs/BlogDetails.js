@@ -110,7 +110,7 @@ export default function BlogDetails({ blogData, departments }) {
                 <meta name="keywords" content={blogData?.metaDescription} />
             </Head>
             {isMobile ? (
-                <div className="-mt-8 px-2 font-inter">
+                <div className="pt-3 px-2 font-inter">
                     <div className="pt-2 pb-1">
                         <Breadcrumb items={breadcrumbItems} />
                     </div>
