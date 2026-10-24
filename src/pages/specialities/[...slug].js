@@ -13,6 +13,11 @@ import { getDepartmentDetails } from "@/utils/departmentUtils";
 import Breadcrumb from "@/components/Common/Breadcrumb";
 import DTDDetailsPage from "@/components/DiseaseAndTreatment/DTDDetailsPage";
 import ProcedureDetailsPage from "@/components/Procedures/ProcedureDetailsPage";
+import dynamic from "next/dynamic";
+
+const OurLocations = dynamic(() => import("@/components/HomePage/OurLocations"), {
+    loading: () => <div className="w-full min-h-[200px] animate-pulse bg-white" />
+});
 
 export default function CenterOfExcellencePage() {
     const router = useRouter();
@@ -126,6 +131,9 @@ export default function CenterOfExcellencePage() {
         return (
             <SecondaryLayout>
                 <DTDDetailsPage url={url} />
+                <div className="mt-8 md:mt-12">
+                    <OurLocations />
+                </div>
             </SecondaryLayout>
         );
     }
@@ -134,6 +142,9 @@ export default function CenterOfExcellencePage() {
         return (
             <SecondaryLayout>
                 <ProcedureDetailsPage url={url} />
+                <div className="mt-8 md:mt-12">
+                    <OurLocations />
+                </div>
             </SecondaryLayout>
         );
     }
@@ -231,6 +242,9 @@ export default function CenterOfExcellencePage() {
                     </AnimatePresence>
                 </div>
             )}
+            <div className="mt-8 md:mt-12">
+                <OurLocations />
+            </div>
         </SecondaryLayout>
     );
 }

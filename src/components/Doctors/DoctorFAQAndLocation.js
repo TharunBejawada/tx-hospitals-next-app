@@ -28,7 +28,7 @@ function getDoctorBranches(locationStr) {
 }
 
 export default function DoctorFAQAndLocation({ doctorData }) {
-    const [openIndex, setOpenIndex] = useState(0);
+    const [openIndex, setOpenIndex] = useState(-1);
     const [activeBranchIndex, setActiveBranchIndex] = useState(0);
 
     const branches = getDoctorBranches(doctorData?.location);

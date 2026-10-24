@@ -14,6 +14,11 @@ import RoboticRecovery from "@/components/RoboticSurgery/RoboticRecovery";
 import RoboticFirstStep from "@/components/RoboticSurgery/RoboticFirstStep";
 import RoboticFAQ from "@/components/RoboticSurgery/RoboticFAQ";
 import BookAppointmentForm from "@/components/Blogs/BookAppointemntForm";
+import dynamic from "next/dynamic";
+
+const OurLocations = dynamic(() => import("@/components/HomePage/OurLocations"), {
+    loading: () => <div className="w-full min-h-[200px] animate-pulse bg-white" />
+});
 
 export default function RoboticUrologicSurgeryPage() {
     const [data, setData] = useState(null);
@@ -82,6 +87,10 @@ export default function RoboticUrologicSurgeryPage() {
                     <RoboticRecovery data={data.recovery} />
                     <RoboticFirstStep data={data.firstSteps} onBookNow={() => setShowModal(true)} />
                     <RoboticFAQ data={data.faqs} />
+                </div>
+
+                <div className="mt-8 md:mt-12">
+                    <OurLocations />
                 </div>
 
                 <BookAppointmentForm showModal={showModal} setShowModal={setShowModal} />

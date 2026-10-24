@@ -5,6 +5,11 @@ import SecondaryLayout from '@/components/Layouts/SecondaryLayout';
 import Breadcrumb from "@/components/Common/Breadcrumb";
 import useIsMobile from '@/hooks/useIsMobile';
 import { useRouter } from 'next/router';
+import dynamic from 'next/dynamic';
+
+const OurLocations = dynamic(() => import('@/components/HomePage/OurLocations'), {
+    loading: () => <div className="w-full min-h-[200px] animate-pulse bg-white" />
+});
 
 export default function Specialities() {
 
@@ -29,6 +34,11 @@ export default function Specialities() {
                     <Breadcrumb items={breadcrumbItems} />
                 </div>
                 <SpecialitiesHomepage isClinicalResearch={isClinicalResearch} />
+                {!isClinicalResearch && (
+                    <div className="mt-8 md:mt-12">
+                        <OurLocations />
+                    </div>
+                )}
             </SecondaryLayout>
         </>
     );

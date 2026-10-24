@@ -18,6 +18,11 @@ import RPBooking from "@/components/RoboticProcedure/RPBooking";
 import RPFAQ from "@/components/RoboticProcedure/RPFAQ";
 import BookAppointmentForm from "@/components/Blogs/BookAppointemntForm";
 import Breadcrumb from "@/components/Common/Breadcrumb";
+import dynamic from "next/dynamic";
+
+const OurLocations = dynamic(() => import("@/components/HomePage/OurLocations"), {
+    loading: () => <div className="w-full min-h-[200px] animate-pulse bg-white" />
+});
 
 export default function RoboticProcedureDetailPage() {
     const router = useRouter();
@@ -127,6 +132,10 @@ export default function RoboticProcedureDetailPage() {
 
                     {/* Frequently Asked Questions (FAQs) */}
                     {data.faqs && data.faqs.length > 0 && <RPFAQ data={data.faqs} />}
+                </div>
+
+                <div className="mt-8 md:mt-12">
+                    <OurLocations />
                 </div>
 
                 <BookAppointmentForm showModal={showModal} setShowModal={setShowModal} />

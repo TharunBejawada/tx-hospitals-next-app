@@ -14,6 +14,11 @@ import RoboticRecovery from "@/components/RoboticSurgery/RoboticRecovery";
 import RoboticFirstStep from "@/components/RoboticSurgery/RoboticFirstStep";
 import RoboticFAQ from "@/components/RoboticSurgery/RoboticFAQ";
 import BookAppointmentForm from "@/components/Blogs/BookAppointemntForm";
+import dynamic from "next/dynamic";
+
+const OurLocations = dynamic(() => import("@/components/HomePage/OurLocations"), {
+    loading: () => <div className="w-full min-h-[200px] animate-pulse bg-white" />
+});
 
 export default function RoboticOrthopaedicSurgeryPage() {
     const [data, setData] = useState(null);
@@ -84,6 +89,10 @@ export default function RoboticOrthopaedicSurgeryPage() {
                     <RoboticFAQ data={data.faqs} />
 
                     {/* Other components will be added here one by one as screenshots are provided */}
+                </div>
+
+                <div className="mt-8 md:mt-12">
+                    <OurLocations />
                 </div>
 
                 <BookAppointmentForm showModal={showModal} setShowModal={setShowModal} />
