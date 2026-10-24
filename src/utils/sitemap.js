@@ -170,6 +170,7 @@ export const procedureRoutes = COERoutes.filter(route => route.includes("/proced
 export const fetchRoutes = async (key, endpoint) => {
     try {
         const response = await axios.get(endpoint, {
+            timeout: 10000,
             headers: {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
             }
@@ -200,7 +201,7 @@ export const fetchRoutes = async (key, endpoint) => {
             return trimmed.startsWith("/") ? trimmed : `/${trimmed}`;
         }).filter(Boolean);
     } catch (err) {
-        console.error(`Error in fetchRoutes for ${key}:`, err);
+        console.error(`Error in fetchRoutes for ${key}:`, err?.message || err);
         return [];
     }
 };
@@ -215,7 +216,11 @@ export const generateXML = (routes, errorMsg = "") => {
         })
         .filter(Boolean);
 
-    const uniqueRoutes = [...new Set(formattedRoutes)];
+    let uniqueRoutes = [...new Set(formattedRoutes)];
+
+    if (uniqueRoutes.length === 0) {
+        uniqueRoutes = ["/"];
+    }
 
     return `<?xml version="1.0" encoding="UTF-8"?>
 ${errorMsg ? `<!-- Error: ${errorMsg} -->` : ""}
