@@ -19,7 +19,17 @@ const cleanText = (val) => {
 };
 
 /**
- * Builds Schema.org Physician / MedicalOrganization schema for a doctor.
+ * Extracts list items (li) from HTML string
+ */
+const extractListItems = (html) => {
+    if (!html || typeof html !== "string") return [];
+    const matches = html.match(/<li[^>]*>(.*?)<\/li>/gi);
+    if (!matches) return [];
+    return matches.map((m) => cleanText(m)).filter(Boolean);
+};
+
+/**
+ * Builds Schema.org Physician, MedicalOrganization, and Person schema graph for a doctor profile page.
  */
 export function buildDoctorSchema(doctorData) {
     if (!doctorData || typeof doctorData !== "object") return null;
@@ -50,6 +60,7 @@ export function buildDoctorSchema(doctorData) {
     // Resolve branch data
     const locationStr = doctorData.location || "Banjara Hills";
     const branch = getBranchData(locationStr);
+    const branchSlug = branch.displayName ? branch.displayName.toLowerCase().replace(/\s+/g, "-") : "banjara-hills";
 
     // Extract qualifications / education
     const alumniList = [];
@@ -60,51 +71,105 @@ export function buildDoctorSchema(doctorData) {
         });
     }
 
+    // Extract procedures / available services from extraFields if present
+    const availableServices = [];
+    if (Array.isArray(doctorData.extraFields)) {
+        const treatmentsField = doctorData.extraFields.find((f) =>
+            f.heading && (f.heading.toLowerCase().includes("treatment") || f.heading.toLowerCase().includes("expertise"))
+        );
+        if (treatmentsField?.description) {
+            const items = extractListItems(treatmentsField.description);
+            items.slice(0, 8).forEach((item) => {
+                availableServices.push({
+                    "@type": "MedicalProcedure",
+                    "name": item,
+                });
+            });
+        }
+    }
+    if (availableServices.length === 0 && department) {
+        availableServices.push({
+            "@type": "MedicalProcedure",
+            "name": `${department} Consultation & Treatments`,
+        });
+    }
+
     const imageUrl = doctorData.image || "https://txhospitals.in/TXlogoWB.jpg";
 
     return {
         "@context": "https://schema.org",
-        "@type": ["Physician", "MedicalOrganization", "Person"],
-        "@id": `${canonicalUrl}#physician`,
-        "name": name,
-        "url": canonicalUrl,
-        "image": imageUrl,
-        "description": bio,
-        "jobTitle": designation,
-        "medicalSpecialty": department,
-        "telephone": branch.phone || "+91 9144514459",
-        "email": "info@txhospitals.in",
-        "priceRange": "₹₹",
-        "address": {
-            "@type": "PostalAddress",
-            "streetAddress": branch.address,
-            "addressLocality": `${branch.displayName}, Hyderabad`,
-            "addressRegion": "Telangana",
-            "addressCountry": "IN",
-        },
-        ...(branch.coords ? {
-            "geo": {
-                "@type": "GeoCoordinates",
-                "latitude": branch.coords[0],
-                "longitude": branch.coords[1],
-            }
-        } : {}),
-        "hospitalAffiliation": {
-            "@type": "Hospital",
-            "@id": "https://txhospitals.in/#organization",
-            "name": `TX Hospitals, ${branch.displayName}`,
-            "url": `https://txhospitals.in/${branch.displayName.toLowerCase().replace(/\s+/g, "-")}/`,
-        },
-        "worksFor": {
-            "@type": "MedicalOrganization",
-            "@id": "https://txhospitals.in/#organization",
-            "name": "TX Hospitals",
-            "url": "https://txhospitals.in/",
-            "logo": "https://txhospitals.in/TXlogoWB.jpg",
-        },
-        ...(alumniList.length > 0 ? { "alumniOf": alumniList } : {}),
-        "knowsAbout": [department, "Healthcare", "Surgery", "Patient Care"],
-        "hasMap": `https://maps.google.com/?q=${encodeURIComponent(branch.mapName || "TX Hospitals")}`,
+        "@graph": [
+            {
+                "@type": "Physician",
+                "@id": `${canonicalUrl}#physician`,
+                "name": name,
+                "url": canonicalUrl,
+                "image": imageUrl,
+                "description": bio,
+                "telephone": branch.phone || "+91 9144514459",
+                "email": "info@txhospitals.in",
+                "priceRange": "₹₹",
+                "currenciesAccepted": "INR",
+                "paymentAccepted": "Cash, Credit Card, Debit Card, Insurance",
+                "isAcceptingNewPatients": "True",
+                "medicalSpecialty": department,
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": branch.address,
+                    "addressLocality": `${branch.displayName}, Hyderabad`,
+                    "addressRegion": "Telangana",
+                    "postalCode": branch.postalCode || "500028",
+                    "addressCountry": "IN",
+                },
+                ...(branch.coords ? {
+                    "geo": {
+                        "@type": "GeoCoordinates",
+                        "latitude": branch.coords[0],
+                        "longitude": branch.coords[1],
+                    }
+                } : {}),
+                "openingHoursSpecification": [
+                    {
+                        "@type": "OpeningHoursSpecification",
+                        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+                        "opens": "09:00",
+                        "closes": "18:00",
+                    },
+                ],
+                "hospitalAffiliation": {
+                    "@type": "Hospital",
+                    "@id": `https://txhospitals.in/${branchSlug}/#hospital`,
+                    "name": `TX Hospitals, ${branch.displayName}`,
+                    "url": `https://txhospitals.in/${branchSlug}/`,
+                },
+                "parentOrganization": {
+                    "@type": "MedicalOrganization",
+                    "@id": "https://txhospitals.in/#organization",
+                    "name": "TX Hospitals",
+                    "url": "https://txhospitals.in/",
+                    "logo": "https://txhospitals.in/TXlogoWB.jpg",
+                },
+                ...(availableServices.length > 0 ? { "availableService": availableServices } : {}),
+                "hasMap": `https://maps.google.com/?q=${encodeURIComponent(branch.mapName || "TX Hospitals")}`,
+            },
+            {
+                "@type": "Person",
+                "@id": `${canonicalUrl}#person`,
+                "name": name,
+                "jobTitle": designation,
+                "image": imageUrl,
+                "description": bio,
+                "url": canonicalUrl,
+                "worksFor": {
+                    "@type": "MedicalOrganization",
+                    "@id": "https://txhospitals.in/#organization",
+                    "name": "TX Hospitals",
+                    "url": "https://txhospitals.in/",
+                },
+                ...(alumniList.length > 0 ? { "alumniOf": alumniList } : {}),
+                "knowsAbout": [department, "Healthcare", "Surgery", "Patient Consultations"],
+            },
+        ],
     };
 }
 
