@@ -13,6 +13,11 @@ import FinalCtaSection from '@/components/LiverTransplant/FinalCtaSection';
 import BookAppointmentForm from "@/components/Blogs/BookAppointemntForm";
 import TransplantSurgeons from '@/components/LiverTransplant/TransplantSurgeons';
 import Breadcrumb from "@/components/Common/Breadcrumb";
+import dynamic from 'next/dynamic';
+
+const OurLocations = dynamic(() => import('@/components/HomePage/OurLocations'), {
+    loading: () => <div className="w-full min-h-[200px] animate-pulse bg-white" />
+});
 
 export default function LiverTransplantationSurgery() {
     // State Management
@@ -328,6 +333,9 @@ export default function LiverTransplantationSurgery() {
                         description={finalCtaData.description}
                         buttons={finalCtaData.buttons}
                     />
+                    <div className="mt-8 md:mt-12">
+                        <OurLocations />
+                    </div>
                     <BookAppointmentForm showModal={showModal} setShowModal={setShowModal} />
                 </div>
             </SecondaryLayout>
