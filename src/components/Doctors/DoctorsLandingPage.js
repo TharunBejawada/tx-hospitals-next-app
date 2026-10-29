@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -10,6 +10,7 @@ import FiltersSidebar from "@/components/Doctors/FilterSidebar";
 import useIsMobile from "@/hooks/useIsMobile";
 import AppointmentModal from "@/components/Doctors/AppointmentModal";
 import DoctorAvailability from "@/components/Common/DoctorAvailability";
+import { matchesDepartment, getDoctorSpecialities } from "@/utils/specialityAliases";
 
 const locations = [
     { value: "Uppal", label: "Uppal" },
@@ -42,29 +43,34 @@ export default function DoctorsLandingPage() {
         }
     }, [router.query.location]);
 
-    const filteredDoctors = doctorsData.filter((doctor) => {
-        const doctorCategory = doctor.category ? doctor.category.toLowerCase() : "";
-        const selectedCat = selectedSpeciality ? selectedSpeciality.toLowerCase() : "";
-        const doctorLoc = doctor.location ? doctor.location.toLowerCase() : "";
+    const filteredDoctors = useMemo(() => {
+        return doctorsData.filter((doctor) => {
+            const docSpecs = getDoctorSpecialities(doctor).map(s => s.toLowerCase());
+            const selectedCat = selectedSpeciality ? selectedSpeciality.toLowerCase() : "";
 
-        return (
-            (selectedCat === "" || doctorCategory === selectedCat) &&
-            (searchTerm === "" || (
+            const doctorLocs = [
+                ...(Array.isArray(doctor.locations) ? doctor.locations : []),
+                ...(doctor.location ? doctor.location.split(/[,/]+/).map(s => s.trim()) : [])
+            ].map(s => s.toLowerCase());
+
+            const matchesSpeciality = !selectedCat || docSpecs.includes(selectedCat) || matchesDepartment(selectedCat, doctor);
+            const matchesLocation = !selectedLocation || doctorLocs.some(loc => loc.includes(selectedLocation.toLowerCase()));
+            const matchesSearch = !searchTerm || (
                 (doctor.name && doctor.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
-                (doctorCategory && doctorCategory.includes(searchTerm.toLowerCase()))
-            )) &&
-            (selectedLocation === "" || selectedLocation === null || doctorLoc.includes(selectedLocation.toLowerCase()))
-        );
-    });
+                docSpecs.some(s => s.includes(searchTerm.toLowerCase())) ||
+                matchesDepartment(searchTerm.toLowerCase(), doctor)
+            );
 
-    const uniqueCategories = [...new Set(filteredDoctors.map(doctor => doctor.category))].filter(
-        (cat) => cat && cat !== "undefined" && cat !== "null" && cat.trim() !== ""
-    );
-    const filteredCategories = uniqueCategories.length === 1 ? uniqueCategories : departments;
+            return matchesSpeciality && matchesLocation && matchesSearch;
+        });
+    }, [doctorsData, selectedSpeciality, selectedLocation, searchTerm]);
 
     const categoryOrder = [
         "Cardiothoracic & Vascular Surgery",
         "Cardiac Sciences",
+        "Robotics Science",
+        "Robotic Surgery",
+        "Robotic Sciences",
         "Medical Gastroenterology",
         "Surgical Gastroenterology",
         "Nephrology",
@@ -86,18 +92,42 @@ export default function DoctorsLandingPage() {
         "Anaesthesia & Pain Management"
     ];
 
-    const sortedCategories = (uniqueCategories.length === 1 ? uniqueCategories : departments)
-        .filter((category) => filteredDoctors.some((doctor) => doctor.category?.toLowerCase() === category?.toLowerCase()))
-        .sort((a, b) => {
-            const indexA = categoryOrder.findIndex(cat => cat.toLowerCase() === a?.toLowerCase());
-            const indexB = categoryOrder.findIndex(cat => cat.toLowerCase() === b?.toLowerCase());
+    // Sorted and deduplicated doctors: each doctor appears EXACTLY ONCE
+    const sortedDoctors = useMemo(() => {
+        const getCategoryRank = (doc) => {
+            const specs = getDoctorSpecialities(doc).map(s => s.toLowerCase());
+            let minRank = Infinity;
+            for (const spec of specs) {
+                const idx = categoryOrder.findIndex(cat => cat.toLowerCase() === spec);
+                if (idx !== -1 && idx < minRank) {
+                    minRank = idx;
+                }
+            }
+            return minRank;
+        };
 
-            if (indexA === -1 && indexB === -1) return a.localeCompare(b);
-            if (indexA === -1) return 1;
-            if (indexB === -1) return -1;
+        const uniqueDocs = [];
+        const seen = new Set();
+        for (const doc of filteredDoctors) {
+            const key = doc.id || doc.name;
+            if (!seen.has(key)) {
+                seen.add(key);
+                uniqueDocs.push(doc);
+            }
+        }
 
-            return indexA - indexB;
+        return uniqueDocs.sort((a, b) => {
+            const rankA = getCategoryRank(a);
+            const rankB = getCategoryRank(b);
+            if (rankA !== rankB) return rankA - rankB;
+            return (Number(a.priorityOrder) || 999) - (Number(b.priorityOrder) || 999);
         });
+    }, [filteredDoctors]);
+
+    // Reset pagination when filter criteria changes
+    useEffect(() => {
+        setVisibleDoctors(20);
+    }, [selectedLocation, selectedSpeciality, searchTerm]);
 
     // Load more doctors when scrolling
     useEffect(() => {
@@ -116,20 +146,20 @@ export default function DoctorsLandingPage() {
             .then((response) => response.json())
             .then((data) => {
 
-                // Group doctors by department for dropdown
-                const groupedDoctors = data.reduce((acc, doctor) => {
-                    const { department } = doctor;
-                    if (!acc[department]) {
-                        acc[department] = [];
-                    }
-                    acc[department].push(doctor);
-                    return acc;
-                }, {});
-
-                // Extract unique department names for dropdown
-                const uniqueDepartments = Object.keys(groupedDoctors).filter(
-                    (dept) => dept && dept !== "undefined" && dept !== "null" && dept.trim() !== ""
-                );
+                // Extract unique department names for dropdown (case-insensitive deduplication)
+                const seenDepts = new Set();
+                const uniqueDepartments = [];
+                data.forEach((doc) => {
+                    getDoctorSpecialities(doc).forEach((dept) => {
+                        const cleaned = String(dept || "").trim();
+                        const lower = cleaned.toLowerCase();
+                        if (cleaned && cleaned !== "undefined" && cleaned !== "null" && !seenDepts.has(lower)) {
+                            seenDepts.add(lower);
+                            uniqueDepartments.push(cleaned);
+                        }
+                    });
+                });
+                uniqueDepartments.sort((a, b) => a.localeCompare(b));
 
                 // Flatten the array for filtering & display
                 const flatDoctorsArray = data.map((doctor) => ({
@@ -209,92 +239,77 @@ export default function DoctorsLandingPage() {
                             setSpecialitySearch={setSpecialitySearch}
                         />
                         {/* Doctors Content */}
-                        <div className="flex-1">
-                            {sortedCategories.length > 0 ? (
-                                sortedCategories.map((category) => {
-                                    const doctorsInCategory = filteredDoctors
-                                        .filter((doctor) => doctor.category?.toLowerCase() === category?.toLowerCase())
-                                        .sort((a, b) => Number(a.priorityOrder) - Number(b.priorityOrder))
-                                        .slice(0, visibleDoctors); // Limit per scroll
+                        <div className="flex-1 w-full">
+                            {sortedDoctors.length > 0 ? (
+                                <div className="grid grid-cols-1 gap-4 mb-8">
+                                    {sortedDoctors.slice(0, visibleDoctors).map((doctor, i) => (
+                                        <div
+                                            className="bg-white rounded-lg shadow-lg border border-gray-500 p-2 flex flex-col justify-between"
+                                            key={doctor.id || i}
+                                        >
+                                            <motion.div
+                                                initial={{ opacity: 0, y: 50 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                transition={{ duration: 0.5, delay: (i % 6) * 0.1 }}
+                                                className="flex gap-2"
+                                            >
+                                                <div className="relative w-28 h-32 z-10">
+                                                    <img
+                                                        loading="lazy"
+                                                        src="/assets/Doctors/image.png"
+                                                        alt="Background"
+                                                        className="absolute inset-0 w-full h-full"
+                                                    />
+                                                    <motion.img
+                                                        src={doctor.image}
+                                                        alt={doctor.name}
+                                                        className="relative z-10 w-28 rounded-sm object-cover"
+                                                        whileHover={{ scale: 1.1 }}
+                                                        transition={{ duration: 0.3 }}
+                                                    />
+                                                </div>
 
-                                    return (
-                                        <div key={category} className="mb-8">
-                                            {/* Doctors Grid */}
-                                            <div className="grid grid-cols-1 gap-4">
-                                                {doctorsInCategory.length > 0 ? (
-                                                    doctorsInCategory.map((doctor, i) => (
-                                                        <div
-                                                            className="bg-white rounded-lg shadow-lg border border-gray-500 p-2 flex flex-col justify-between"
-                                                            key={i}
-                                                        >
-                                                            <motion.div
-                                                                initial={{ opacity: 0, y: 50 }}
-                                                                animate={{ opacity: 1, y: 0 }}
-                                                                transition={{ duration: 0.5, delay: i * 0.2 }}
-                                                                className="flex gap-2"
-                                                            >
-                                                                <div className="relative w-28 h-32 z-10">
-                                                                    <img
-                                                                        loading="lazy"
-                                                                        src="/assets/Doctors/image.png"
-                                                                        alt="Background"
-                                                                        className="absolute inset-0 w-full h-full"
-                                                                    />
-                                                                    <motion.img
-                                                                        src={doctor.image}
-                                                                        alt={doctor.name}
-                                                                        className="relative z-10 w-28 rounded-sm object-cover"
-                                                                        whileHover={{ scale: 1.1 }}
-                                                                        transition={{ duration: 0.3 }}
-                                                                    />
-                                                                </div>
-
-                                                                <div className="flex-1">
-                                                                    <h3 className="text-base pb-1 font-bold text-pink-700">{doctor.name}</h3>
-                                                                    <p className="text-xs pb-1 text-gray-600">{doctor.designation}</p>
-                                                                    <div className="text-xs p-1 bg-gray-200 rounded-lg text-gray-600">
-                                                                        {doctor.qualification}
-                                                                    </div>
-                                                                    <div className="text-gray-700 text-xs font-bold">
-                                                                        Experience: {doctor.experience}
-                                                                    </div>
-                                                                    <DoctorAvailability doctorId={doctor.id} />
-                                                                    <div className="flex items-center gap-3">
-                                                                        <Image
-                                                                            src="/assets/Doctors/Location Icon.webp"
-                                                                            alt="Location Icon"
-                                                                            width={10}
-                                                                            height={10}
-                                                                        />
-                                                                        <div>{doctor.location.split(",")[0]}</div>
-                                                                    </div>
-                                                                </div>
-                                                            </motion.div>
-                                                            <div className="flex flex-col justify-between mx-auto mt-4">
-                                                                <button
-                                                                    className="w-full py-1 px-4 border border-pink-700 text-pink-700 font-semibold rounded-lg hover:scale-105 transition"
-                                                                    onClick={() => setOpen(true)}
-                                                                >
-                                                                    Book Appointment
-                                                                </button>
-                                                                <button
-                                                                    className="w-full py-2 text-pink-700 underline font-semibold rounded-lg hover:scale-105 transition"
-                                                                    onClick={() => router.push(`/${doctor.url.replace(/^\/|\/$/g, '')}/`)}
-                                                                >
-                                                                    View Profile
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    ))
-                                                ) : (
-                                                    <p className="text-center text-gray-600 col-span-2">
-                                                        No doctors found in {category}.
-                                                    </p>
-                                                )}
+                                                <div className="flex-1">
+                                                    <h3 className="text-base pb-1 font-bold text-pink-700">{doctor.name}</h3>
+                                                    <p className="text-xs pb-1 text-gray-600">{doctor.designation}</p>
+                                                    <div className="text-xs p-1 bg-gray-200 rounded-lg text-gray-600">
+                                                        {doctor.qualification}
+                                                    </div>
+                                                    <div className="text-gray-700 text-xs font-bold">
+                                                        Experience: {doctor.experience}
+                                                    </div>
+                                                    <DoctorAvailability doctorId={doctor.id} />
+                                                    <div className="flex items-center gap-3">
+                                                        <Image
+                                                            src="/assets/Doctors/Location Icon.webp"
+                                                            alt="Location Icon"
+                                                            width={10}
+                                                            height={10}
+                                                        />
+                                                        <div>{selectedLocation || (doctor.location ? doctor.location.split(/[,/]+/).map(s => s.trim())[0] : "")}</div>
+                                                    </div>
+                                                </div>
+                                            </motion.div>
+                                            <div className="flex flex-col justify-between mx-auto mt-4">
+                                                <button
+                                                    className="w-full py-1 px-4 border border-pink-700 text-pink-700 font-semibold rounded-lg hover:scale-105 transition"
+                                                    onClick={() => {
+                                                        setSelectedDoctor(doctor);
+                                                        setOpen(true);
+                                                    }}
+                                                >
+                                                    Book Appointment
+                                                </button>
+                                                <button
+                                                    className="w-full py-2 text-pink-700 underline font-semibold rounded-lg hover:scale-105 transition"
+                                                    onClick={() => router.push(`/${doctor.url.replace(/^\/|\/$/g, '')}/`)}
+                                                >
+                                                    View Profile
+                                                </button>
                                             </div>
                                         </div>
-                                    );
-                                })
+                                    ))}
+                                </div>
                             ) : (
                                 <div className="text-center py-10">
                                     <p className="text-gray-600 text-lg font-medium">No doctors found matching your criteria.</p>
@@ -327,96 +342,78 @@ export default function DoctorsLandingPage() {
                         />
                         {/* Doctors Content */}
                         <div className="flex-1">
-                            {sortedCategories.length > 0 ? (
-                                sortedCategories.map((category) => {
-                                    const doctorsInCategory = filteredDoctors
-                                        .filter((doctor) => doctor.category?.toLowerCase() === category?.toLowerCase())
-                                        .sort((a, b) => Number(a.priorityOrder) - Number(b.priorityOrder))
-                                        .slice(0, visibleDoctors); // Limit per scroll
+                            {sortedDoctors.length > 0 ? (
+                                <div className="grid grid-cols-2 gap-4 mb-8">
+                                    {sortedDoctors.slice(0, visibleDoctors).map((doctor, i) => (
+                                        <div
+                                            className="bg-white rounded-lg shadow-lg border border-gray-500 p-4 flex flex-col justify-between"
+                                            key={doctor.id || i}
+                                        >
+                                            <motion.div
+                                                initial={{ opacity: 0, y: 50 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                transition={{ duration: 0.5, delay: (i % 6) * 0.1 }}
+                                                className="flex gap-4"
+                                            >
+                                                <div className="relative w-32 h-36 z-10">
+                                                    <img
+                                                        loading="lazy"
+                                                        src="/assets/Doctors/image.png"
+                                                        alt="Background"
+                                                        className="absolute inset-0 w-full h-full"
+                                                    />
+                                                    <motion.img
+                                                        src={doctor.image}
+                                                        alt={doctor.name}
+                                                        className="relative z-10 w-32 h-34 rounded-sm object-cover"
+                                                        whileHover={{ scale: 1.1 }}
+                                                        transition={{ duration: 0.3 }}
+                                                    />
+                                                </div>
 
-                                    return (
-                                        <div key={category} className="mb-8">
-                                            {/* Doctors Grid */}
-                                            <div className="grid grid-cols-2 gap-4">
-                                                {doctorsInCategory.length > 0 ? (
-                                                    doctorsInCategory.map((doctor, i) => (
-                                                        <div
-                                                            className="bg-white rounded-lg shadow-lg border border-gray-500 p-4 flex flex-col justify-between"
-                                                            key={i}
-                                                        >
-                                                            <motion.div
-                                                                initial={{ opacity: 0, y: 50 }}
-                                                                animate={{ opacity: 1, y: 0 }}
-                                                                transition={{ duration: 0.5, delay: i * 0.2 }}
-                                                                className="flex gap-4"
-                                                            >
-                                                                <div className="relative w-32 h-36 z-10">
-                                                                    <img
-                                                                        loading="lazy"
-                                                                        src="/assets/Doctors/image.png"
-                                                                        alt="Background"
-                                                                        className="absolute inset-0 w-full h-full"
-                                                                    />
-                                                                    <motion.img
-                                                                        src={doctor.image}
-                                                                        alt={doctor.name}
-                                                                        className="relative z-10 w-32 h-34 rounded-sm object-cover"
-                                                                        whileHover={{ scale: 1.1 }}
-                                                                        transition={{ duration: 0.3 }}
-                                                                    />
-                                                                </div>
+                                                <div className="flex-1">
+                                                    <h3 className="text-xl pb-2 font-bold text-pink-700">{doctor.name}</h3>
+                                                    <p className="text-sm pb-2 text-gray-600">{doctor.designation}</p>
+                                                    <div className="text-sm p-2 bg-gray-200 rounded-lg text-gray-600">
+                                                        {doctor.qualification}
+                                                    </div>
+                                                    <div className="text-gray-700 text-sm font-bold">
+                                                        Experience: {doctor.experience}
+                                                    </div>
+                                                    <DoctorAvailability doctorId={doctor.id} />
+                                                    <div className="flex items-center gap-3">
+                                                        <Image
+                                                            src="/assets/Doctors/Location Icon.webp"
+                                                            alt="Location Icon"
+                                                            width={12}
+                                                            height={12}
+                                                        />
+                                                        <div>{selectedLocation || (doctor.location ? doctor.location.split(/[,/]+/).map(s => s.trim())[0] : "")}</div>
+                                                    </div>
+                                                </div>
+                                            </motion.div>
 
-                                                                <div className="flex-1">
-                                                                    <h3 className="text-xl pb-2 font-bold text-pink-700">{doctor.name}</h3>
-                                                                    <p className="text-sm pb-2 text-gray-600">{doctor.designation}</p>
-                                                                    <div className="text-sm p-2 bg-gray-200 rounded-lg text-gray-600">
-                                                                        {doctor.qualification}
-                                                                    </div>
-                                                                    <div className="text-gray-700 text-sm font-bold">
-                                                                        Experience: {doctor.experience}
-                                                                    </div>
-                                                                    <DoctorAvailability doctorId={doctor.id} />
-                                                                    <div className="flex items-center gap-3">
-                                                                        <Image
-                                                                            src="/assets/Doctors/Location Icon.webp"
-                                                                            alt="Location Icon"
-                                                                            width={12}
-                                                                            height={12}
-                                                                        />
-                                                                        <div>{doctor.location.split(",")[0]}</div>
-                                                                    </div>
-                                                                </div>
-                                                            </motion.div>
-
-                                                            {/* Buttons */}
-                                                            <div className="flex flex-col justify-between mx-auto mt-4">
-                                                                <button
-                                                                    className="w-full py-1 px-4 border border-pink-700 text-pink-700 font-semibold rounded-lg hover:scale-105 transition"
-                                                                    onClick={() => {
-                                                                        setSelectedDoctor(doctor);
-                                                                        setOpen(true);
-                                                                    }}
-                                                                >
-                                                                    Book Appointment
-                                                                </button>
-                                                                <button
-                                                                    className="w-full py-2 text-pink-700 underline font-semibold rounded-lg hover:scale-105 transition"
-                                                                    onClick={() => router.push(`/${doctor.url.replace(/^\/|\/$/g, '')}/`)}
-                                                                >
-                                                                    View Profile
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    ))
-                                                ) : (
-                                                    <p className="text-center text-gray-600 col-span-2">
-                                                        No doctors found in {category}.
-                                                    </p>
-                                                )}
+                                            {/* Buttons */}
+                                            <div className="flex flex-col justify-between mx-auto mt-4">
+                                                <button
+                                                    className="w-full py-1 px-4 border border-pink-700 text-pink-700 font-semibold rounded-lg hover:scale-105 transition"
+                                                    onClick={() => {
+                                                        setSelectedDoctor(doctor);
+                                                        setOpen(true);
+                                                    }}
+                                                >
+                                                    Book Appointment
+                                                </button>
+                                                <button
+                                                    className="w-full py-2 text-pink-700 underline font-semibold rounded-lg hover:scale-105 transition"
+                                                    onClick={() => router.push(`/${doctor.url.replace(/^\/|\/$/g, '')}/`)}
+                                                >
+                                                    View Profile
+                                                </button>
                                             </div>
                                         </div>
-                                    );
-                                })
+                                    ))}
+                                </div>
                             ) : (
                                 <div className="text-center py-10">
                                     <p className="text-gray-600 text-lg font-medium">No doctors found matching your criteria.</p>

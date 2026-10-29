@@ -68,7 +68,11 @@ export default function Doctors({ department: propDepartment }) {
                 }
                 const endpoint = `${CONFIG.API_BASE_URL}/getdoctorsbydept/${encodedDept}`;
                 const response = await axios.get(endpoint);
-                setDoctorsData(response.data.Items);
+                const rawItems = response.data?.Items || [];
+                const uniqueDoctors = rawItems.filter(
+                    (doctor, index, self) => self.findIndex(d => (d.id || d.name) === (doctor.id || doctor.name)) === index
+                );
+                setDoctorsData(uniqueDoctors);
             } catch (err) {
                 setError("No data found!");
             } finally {

@@ -36,12 +36,16 @@ const SpecialistsSection = ({ data, location, speciality }) => {
                 if (res.data) {
                     const specKey = formattedSpeciality.toLowerCase();
                     const filtered = res.data.filter(doc => {
-                        if (!doc.location || !doc.department) return false;
-                        const locMatch = doc.location.toLowerCase().includes(formattedLocation.toLowerCase());
-                        const deptMatch = matchesDepartment(specKey, doc.department.toLowerCase());
+                        if (!doc) return false;
+                        const locMatch = !formattedLocation || (doc.location && doc.location.toLowerCase().includes(formattedLocation.toLowerCase()));
+                        const deptMatch = matchesDepartment(specKey, doc);
                         return locMatch && deptMatch;
                     });
-                    setDoctorsList(filtered);
+                    // Deduplicate doctors
+                    const uniqueFiltered = filtered.filter((doc, idx, arr) =>
+                        arr.findIndex(d => (d.id || d.name) === (doc.id || doc.name)) === idx
+                    );
+                    setDoctorsList(uniqueFiltered);
                 }
             } catch (error) {
                 console.error("Error fetching doctors:", error);

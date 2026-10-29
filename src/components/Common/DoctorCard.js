@@ -33,10 +33,15 @@ const DoctorCard = ({
 
             {/* Content Section */}
             <div className="p-5 flex flex-col flex-grow">
-                <div className="mb-2">
-                    <span className="inline-block max-w-full bg-pink-700 text-white text-[9px] sm:text-[10px] font-bold px-2 sm:px-3 py-1 rounded-lg sm:rounded-full shadow-sm truncate">
-                        {specialty}
-                    </span>
+                <div className="mb-2 flex flex-wrap gap-1">
+                    {(Array.isArray(specialty)
+                        ? specialty
+                        : (specialty ? String(specialty).split(/[,/]+/).map(s => s.trim()).filter(Boolean) : [])
+                    ).slice(0, 2).map((item, idx) => (
+                        <span key={idx} className="inline-block max-w-full bg-pink-700 text-white text-[9px] sm:text-[10px] font-bold px-2 sm:px-3 py-1 rounded-lg sm:rounded-full shadow-sm truncate">
+                            {item}
+                        </span>
+                    ))}
                 </div>
                 <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-1 line-clamp-2 leading-tight group-hover:text-pink-700 transition-colors duration-300">{name}</h3>
                 <p className="text-xs sm:text-sm text-gray-600 font-semibold mb-4 line-clamp-2">{designation}</p>
