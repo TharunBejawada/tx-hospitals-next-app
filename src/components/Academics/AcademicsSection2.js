@@ -12,7 +12,7 @@ const ICON_MAP = {
 const ACADEMIC_PROGRAMS = [
     {
         id: "dnb-broad",
-        title: "DrNB Broad Specialty Courses",
+        title: "DNB Broad Specialty Courses",
         description: "Broad-based specialty training with rigorous mentorship across core clinical disciplines.",
         duration: "3 Years",
         icon: "stethoscope",
@@ -44,7 +44,7 @@ const ACADEMIC_PROGRAMS = [
     },
     {
         id: "dnb-diploma",
-        title: "DrNB Diploma Courses",
+        title: "DNB Diploma Courses",
         description: "Structured diploma programs delivering focused clinical competence.",
         duration: "2 Years",
         icon: "bookOpen",
@@ -111,7 +111,7 @@ const AcademicsSection2 = () => {
                 <div className="max-w-2xl">
                     <p className="text-xs font-semibold uppercase tracking-[0.2em] text-pink-700">Programs &amp; Seats</p>
                     <h2 className="mt-3 text-3xl font-semibold leading-tight md:text-4xl text-gray-900">Accredited pathways across every stage of a medical career.</h2>
-                    <p className="mt-4 text-gray-600">From DrNB Broad and DrNB Super Specialty tracks to fellowships and diplomas — explore current seats and accreditations across our campuses.</p>
+                    <p className="mt-4 text-gray-600">From DNB Broad and DrNB Super Specialty tracks to fellowships and diplomas — explore current seats and accreditations across our campuses.</p>
                 </div>
                 <div className="mt-12 space-y-8">
                     {ACADEMIC_PROGRAMS.map((program) => {
