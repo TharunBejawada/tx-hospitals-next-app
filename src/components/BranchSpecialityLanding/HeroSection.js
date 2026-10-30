@@ -14,14 +14,14 @@ const HeroSection = ({ pageData, location, speciality }) => {
 
     const formatString = (str) => {
         if (!str) return '';
-        return str.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+        return str.split(/[-_]+/).map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
     };
 
-    // Strip trailing facility-type words so e.g. "Orthopedic Hospital" → "Orthopedic"
+    // Strip trailing facility-type and location words so e.g. "Orthopedic Hospital Banjara Hills" → "Orthopedic"
     const cleanSpeciality = (str) => {
         if (!str) return '';
-        const stopWords = /\b(hospital|hospitals|centre|center|department|clinic|clinics|care|unit|services?)\b/gi;
-        return str.replace(stopWords, '').replace(/\s+/g, ' ').trim();
+        const stopWords = /\b(hospital|hospitals|centre|center|department|departments|clinic|clinics|care|unit|units|services?|specialists?|banjara hills|kachiguda|miyapur|uppal|hyderabad)\b/gi;
+        return str.replace(stopWords, ' ').replace(/\s+/g, ' ').trim();
     };
 
     const formattedLocation = formatString(location);
@@ -38,17 +38,26 @@ const HeroSection = ({ pageData, location, speciality }) => {
     const [doctorsList, setDoctorsList] = useState([]);
 
     useEffect(() => {
-        if (!formattedLocation || !formattedSpeciality) return;
+        if (!formattedLocation && !formattedSpeciality) return;
 
         const fetchDoctors = async () => {
             try {
                 const res = await axios.get(`${CONFIG.API_BASE_URL}/getAllDoctors`);
                 if (res.data) {
-                    const specKey = formattedSpeciality.toLowerCase();
+                    const specKey = formattedSpeciality || speciality;
                     const filtered = res.data.filter(doc => {
                         if (!doc) return false;
-                        const locMatch = !formattedLocation || (doc.location && doc.location.toLowerCase().includes(formattedLocation.toLowerCase()));
-                        const deptMatch = matchesDepartment(specKey, doc);
+                        const locMatch = !formattedLocation || (() => {
+                            const targetLoc = formattedLocation.toLowerCase().trim();
+                            const docLocs = [
+                                ...(Array.isArray(doc.locations) ? doc.locations : []),
+                                ...(typeof doc.location === 'string' ? doc.location.split(/[,/]+/) : [])
+                            ].map(l => String(l || '').toLowerCase().trim()).filter(Boolean);
+
+                            return docLocs.length === 0 || docLocs.some(l => l.includes(targetLoc) || targetLoc.includes(l));
+                        })();
+
+                        const deptMatch = matchesDepartment(specKey, doc) || matchesDepartment(speciality, doc);
                         return locMatch && deptMatch;
                     });
                     const uniqueFiltered = filtered.filter((doc, idx, arr) =>
@@ -61,7 +70,7 @@ const HeroSection = ({ pageData, location, speciality }) => {
             }
         };
         fetchDoctors();
-    }, [formattedLocation, formattedSpeciality]);
+    }, [formattedLocation, formattedSpeciality, speciality]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;

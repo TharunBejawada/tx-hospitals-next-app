@@ -12,6 +12,7 @@ import FAQSchema from "@/utils/FAQSchema";
 import useIsMobile from "@/hooks/useIsMobile";
 import BacklinkSection from "@/components/COE/BacklinkSection";
 import AppointmentModal from "@/components/Doctors/AppointmentModal";
+import { matchesDepartment } from "@/utils/specialityAliases";
 
 export default function Doctors({ department: propDepartment }) {
     const router = useRouter();
@@ -41,14 +42,14 @@ export default function Doctors({ department: propDepartment }) {
 
     useEffect(() => {
         const fetchData = async () => {
+            if (!department) return;
             try {
                 const endpoint = `${CONFIG.API_BASE_URL}/coe/getCategoryData/${department}/Doctors`;
                 const response = await axios.get(endpoint);
                 setData(response.data);
             } catch (err) {
-                setError("No data found!");
-            } finally {
-                setLoading(false);
+                // Category data is optional for custom departments/specialities
+                setData(null);
             }
         };
 
@@ -57,6 +58,9 @@ export default function Doctors({ department: propDepartment }) {
 
     useEffect(() => {
         const fetchDoctorsData = async () => {
+            if (!department) return;
+            setLoading(true);
+            setError(null);
             try {
                 let encodedDept = department.replace(/-/g, "%20");
                 if (encodedDept === "mother%20child%20care") {
@@ -66,15 +70,40 @@ export default function Doctors({ department: propDepartment }) {
                 } else if (encodedDept === "cardiothoracic%20vascular%20surgery") {
                     encodedDept = "cardiothoracic%20&%20vascular%20surgery";
                 }
-                const endpoint = `${CONFIG.API_BASE_URL}/getdoctorsbydept/${encodedDept}`;
-                const response = await axios.get(endpoint);
-                const rawItems = response.data?.Items || [];
-                const uniqueDoctors = rawItems.filter(
+
+                let items = [];
+                try {
+                    const endpoint = `${CONFIG.API_BASE_URL}/getdoctorsbydept/${encodedDept}`;
+                    const response = await axios.get(endpoint);
+                    items = response.data?.Items || [];
+                } catch (deptErr) {
+                    // Fallback: fetch all doctors and match client-side
+                    const allRes = await axios.get(`${CONFIG.API_BASE_URL}/getAllDoctors`);
+                    if (allRes.data) {
+                        items = allRes.data.filter(doc => matchesDepartment(department, doc));
+                    }
+                }
+
+                if (!items || items.length === 0) {
+                    // Second fallback in case /getdoctorsbydept returned empty list
+                    const allRes = await axios.get(`${CONFIG.API_BASE_URL}/getAllDoctors`);
+                    if (allRes.data) {
+                        items = allRes.data.filter(doc => matchesDepartment(department, doc));
+                    }
+                }
+
+                const uniqueDoctors = (items || []).filter(
                     (doctor, index, self) => self.findIndex(d => (d.id || d.name) === (doctor.id || doctor.name)) === index
                 );
-                setDoctorsData(uniqueDoctors);
+
+                if (uniqueDoctors.length === 0) {
+                    setError("No doctors found for this department.");
+                } else {
+                    setDoctorsData(uniqueDoctors);
+                }
             } catch (err) {
-                setError("No data found!");
+                console.error("Error fetching doctors:", err);
+                setError("No doctors found for this department.");
             } finally {
                 setLoading(false);
             }

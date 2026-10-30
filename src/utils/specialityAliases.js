@@ -9,18 +9,50 @@ export const SPECIALITY_ALIASES = {
     'cardiology': ['cardiac sciences', 'cardiology', 'cardiac', 'cardiologist', 'heart', 'cardiothoracic & vascular surgery', 'cardiothoracic and vascular surgery', 'cardiothoracic vascular surgery'],
     'cardiac': ['cardiac sciences', 'cardiology', 'cardiac', 'heart'],
     'cardiac sciences': ['cardiac sciences', 'cardiology', 'cardiac', 'cardiologist', 'heart'],
+    'cardiac science': ['cardiac sciences', 'cardiology', 'cardiac', 'cardiologist', 'heart'],
     'cardiologist': ['cardiac sciences', 'cardiology', 'cardiac'],
     'heart': ['cardiac sciences', 'cardiology'],
     'cardiothoracic': ['cardiothoracic & vascular surgery', 'cardiothoracic and vascular surgery', 'cardiothoracic vascular surgery', 'cardiac sciences', 'cardiology'],
     'cardiothoracic & vascular surgery': ['cardiothoracic & vascular surgery', 'cardiothoracic and vascular surgery', 'cardiothoracic vascular surgery', 'cardiac sciences', 'cardiology'],
     'cardiothoracic vascular surgery': ['cardiothoracic & vascular surgery', 'cardiothoracic and vascular surgery', 'cardiothoracic vascular surgery', 'cardiac sciences', 'cardiology'],
 
-    // Robotics
+    // Robotics (general & compound specialties)
     'robotics': ['robotics science', 'robotic surgery', 'robotic sciences', 'robotic', 'robotics'],
     'robotic': ['robotics science', 'robotic surgery', 'robotic sciences', 'robotic', 'robotics'],
     'robotics science': ['robotics science', 'robotic surgery', 'robotic sciences', 'robotic', 'robotics'],
+    'robotic science': ['robotics science', 'robotic surgery', 'robotic sciences', 'robotic', 'robotics'],
     'robotic surgery': ['robotics science', 'robotic surgery', 'robotic sciences', 'robotic', 'robotics'],
     'robotic sciences': ['robotics science', 'robotic surgery', 'robotic sciences', 'robotic', 'robotics'],
+
+    // Robotic Orthopaedics
+    'robotic orthopaedics': ['robotic orthopaedics', 'robotic orthopaedic', 'robotic orthopedics', 'robotic orthopedic', 'robotic orthopaedic surgery', 'robotic orthopedic surgery', 'robotic surgery', 'orthopaedics', 'orthopedics', 'robotics', 'robotic'],
+    'robotic orthopaedic': ['robotic orthopaedics', 'robotic orthopaedic', 'robotic orthopedics', 'robotic orthopedic', 'robotic orthopaedic surgery', 'robotic orthopedic surgery', 'robotic surgery', 'orthopaedics', 'orthopedics', 'robotics', 'robotic'],
+    'robotic orthopedics': ['robotic orthopaedics', 'robotic orthopaedic', 'robotic orthopedics', 'robotic orthopedic', 'robotic orthopaedic surgery', 'robotic orthopedic surgery', 'robotic surgery', 'orthopaedics', 'orthopedics', 'robotics', 'robotic'],
+    'robotic orthopedic': ['robotic orthopaedics', 'robotic orthopaedic', 'robotic orthopedics', 'robotic orthopedic', 'robotic orthopaedic surgery', 'robotic orthopedic surgery', 'robotic surgery', 'orthopaedics', 'orthopedics', 'robotics', 'robotic'],
+    'robotic orthopaedic surgery': ['robotic orthopaedics', 'robotic orthopaedic', 'robotic orthopedics', 'robotic orthopedic', 'robotic orthopaedic surgery', 'robotic orthopedic surgery', 'robotic surgery', 'orthopaedics', 'orthopedics', 'robotics', 'robotic'],
+    'robotic orthopedic surgery': ['robotic orthopaedics', 'robotic orthopaedic', 'robotic orthopedics', 'robotic orthopedic', 'robotic orthopaedic surgery', 'robotic orthopedic surgery', 'robotic surgery', 'orthopaedics', 'orthopedics', 'robotics', 'robotic'],
+
+    // Robotic Gynaecology
+    'robotic gynaecology': ['robotic gynaecology', 'robotic gynecology', 'robotic gynaecology surgery', 'robotic gynecology surgery', 'robotic surgery', 'gynaecology', 'gynecology', 'robotics', 'robotic'],
+    'robotic gynecology': ['robotic gynaecology', 'robotic gynecology', 'robotic gynaecology surgery', 'robotic gynecology surgery', 'robotic surgery', 'gynaecology', 'gynecology', 'robotics', 'robotic'],
+    'robotic gynaecology surgery': ['robotic gynaecology', 'robotic gynecology', 'robotic gynaecology surgery', 'robotic gynecology surgery', 'robotic surgery', 'gynaecology', 'gynecology', 'robotics', 'robotic'],
+    'robotic gynecology surgery': ['robotic gynaecology', 'robotic gynecology', 'robotic gynaecology surgery', 'robotic gynecology surgery', 'robotic surgery', 'gynaecology', 'gynecology', 'robotics', 'robotic'],
+
+    // Robotic Urology
+    'robotic urology': ['robotic urology', 'robotic urology surgery', 'robotic urologic surgery', 'robotic surgery', 'urology', 'robotics', 'robotic'],
+    'robotic urology surgery': ['robotic urology', 'robotic urology surgery', 'robotic urologic surgery', 'robotic surgery', 'urology', 'robotics', 'robotic'],
+    'robotic urologic surgery': ['robotic urology', 'robotic urology surgery', 'robotic urologic surgery', 'robotic surgery', 'urology', 'robotics', 'robotic'],
+
+    // Robotic Oncology / Cancer Surgery
+    'robotic oncology': ['robotic oncology', 'robotic cancer surgery', 'robotic surgical oncology', 'robotic surgery', 'oncology', 'cancer', 'robotics', 'robotic'],
+    'robotic cancer surgery': ['robotic oncology', 'robotic cancer surgery', 'robotic surgical oncology', 'robotic surgery', 'oncology', 'cancer', 'robotics', 'robotic'],
+    'robotic surgical oncology': ['robotic oncology', 'robotic cancer surgery', 'robotic surgical oncology', 'robotic surgery', 'oncology', 'cancer', 'robotics', 'robotic'],
+
+    // Robotic Gastrointestinal
+    'robotic gastrointestinal': ['robotic gastrointestinal surgery', 'robotic gastro', 'robotic gastroenterology', 'robotic surgery', 'gastroenterology', 'gastro', 'robotics', 'robotic'],
+    'robotic gastrointestinal surgery': ['robotic gastrointestinal surgery', 'robotic gastro', 'robotic gastroenterology', 'robotic surgery', 'gastroenterology', 'gastro', 'robotics', 'robotic'],
+    'robotic gastro': ['robotic gastrointestinal surgery', 'robotic gastro', 'robotic gastroenterology', 'robotic surgery', 'gastroenterology', 'gastro', 'robotics', 'robotic'],
+    'robotic gastroenterology': ['robotic gastrointestinal surgery', 'robotic gastro', 'robotic gastroenterology', 'robotic surgery', 'gastroenterology', 'gastro', 'robotics', 'robotic'],
 
     // Gastroenterology
     'gastroenterology': ['gastroenterology', 'gastro sciences', 'gastro', 'gastroenterologist', 'medical gastroenterology', 'surgical gastroenterology'],
@@ -62,6 +94,8 @@ export const SPECIALITY_ALIASES = {
     // Paediatrics & Gynaecology
     'paediatrics': ['paediatrics', 'pediatrics', 'pediatrician', 'paediatrician', 'mother and child care', 'mother & child care'],
     'pediatrics': ['paediatrics', 'pediatrics', 'pediatrician', 'paediatrician', 'mother and child care', 'mother & child care'],
+    'pediatric': ['paediatrics', 'pediatrics', 'pediatrician', 'paediatrician'],
+    'paediatric': ['paediatrics', 'pediatrics', 'pediatrician', 'paediatrician'],
     'pediatrician': ['paediatrics', 'pediatrics'],
     'paediatrician': ['paediatrics', 'pediatrics'],
     'mother and child care': ['mother and child care', 'mother & child care', 'paediatrics', 'gynaecology'],
@@ -90,7 +124,8 @@ export const SPECIALITY_ALIASES = {
     'endocrinology': ['endocrinology', 'diabetes', 'endocrinologist'],
     'diabetes': ['endocrinology'],
     'rheumatology': ['rheumatology', 'rheumatologist'],
-    'radiology': ['radiology', 'radiologist'],
+    'radiology': ['radiology', 'radiologist', 'interventional radiology'],
+    'interventional radiology': ['interventional radiology', 'radiology', 'radiologist'],
     'anaesthesia': ['anaesthesia & pain management', 'anaesthesia', 'anesthesia', 'pain management', 'pain'],
     'anesthesia': ['anaesthesia & pain management', 'anaesthesia', 'anesthesia', 'pain management', 'pain'],
     'anaesthesia & pain management': ['anaesthesia & pain management', 'anaesthesia', 'anesthesia', 'pain management', 'pain'],
@@ -121,23 +156,50 @@ export const getDoctorSpecialities = (doc) => {
     return Array.from(new Set(list.map(s => String(s).trim()))).filter(Boolean);
 };
 
-const normalizeStr = (str) =>
-    String(str || '')
+/**
+ * Normalizes speciality/department strings:
+ * - Lowercases and trims
+ * - Replaces hyphens/underscores with spaces
+ * - Normalizes spelling variants (orthopaed <-> orthoped, paed <-> ped, gynaec <-> gynec, anaesth <-> anesth)
+ * - Strips location words and facility words (hospitals, clinics, etc.)
+ * - Stems trailing plural 's' (orthopaedics -> orthopaedic)
+ */
+export const normalizeSpecialityKey = (str) => {
+    if (!str) return '';
+    let s = String(str)
         .toLowerCase()
         .replace(/[-_]/g, ' ')
         .replace(/[^\w\s&]/g, ' ')
         .replace(/\s+/g, ' ')
         .trim();
 
+    // Spelling normalizations
+    s = s.replace(/orthopaed/g, 'orthoped');
+    s = s.replace(/paed/g, 'ped');
+    s = s.replace(/gynaec/g, 'gynec');
+    s = s.replace(/anaesth/g, 'anesth');
+    s = s.replace(/opthalm/g, 'ophthalm');
+
+    // Strip facility and location stop words
+    const stopWords = /\b(hospitals?|centres?|centers?|departments?|clinics?|units?|banjara hills|kachiguda|miyapur|uppal|hyderabad)\b/g;
+    s = s.replace(stopWords, ' ').replace(/\s+/g, ' ').trim();
+
+    // Normalize tokens: stem trailing 's' unless 'ss' or short word (e.g. orthopaedics -> orthopaedic)
+    const tokens = s.split(' ').filter(Boolean).map(w => {
+        if (w.length > 3 && w.endsWith('s') && !w.endsWith('ss')) {
+            return w.slice(0, -1);
+        }
+        return w;
+    });
+    return tokens.join(' ');
+};
+
 function containsWholeWord(text, term) {
     if (!text || !term) return false;
-    const cleanText = normalizeStr(text);
-    const cleanTerm = normalizeStr(term);
-    if (!cleanText || !cleanTerm) return false;
-
-    if (cleanText === cleanTerm) return true;
-    const regex = new RegExp(`\\b${cleanTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
-    return regex.test(cleanText);
+    if (text === term) return true;
+    const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`(^|\\s)${escaped}(\\s|$)`, 'i');
+    return regex.test(text);
 }
 
 /**
@@ -147,63 +209,69 @@ function containsWholeWord(text, term) {
  * - Custom departments added via admin
  * - Multi-speciality arrays (departments & specialities)
  * - Alias groups (e.g. robotics, cardiac sciences, neurology, etc.)
+ * - Stemming & plural/singular invariance (orthopaedics <-> orthopaedic)
+ * - Spelling variants (orthopaedic <-> orthopedic, paed <-> ped, etc.)
  * - Safe whole-word matching (prevents "urology" matching "neurology")
  *
- * @param {string} specKey - target speciality slug or name (e.g. "cardiology", "robotics", "Sports Medicine")
+ * @param {string} specKey - target speciality slug or name (e.g. "cardiology", "robotics", "ROBOTIC ORTHOPAEDIC")
  * @param {object|string|Array} docOrDept - doctor object, department array, or department string
  * @returns {boolean}
  */
 export function matchesDepartment(specKey, docOrDept) {
     if (!specKey || !docOrDept) return false;
 
-    const cleanTarget = normalizeStr(specKey);
-    if (!cleanTarget) return false;
+    const rawDoctorSpecs = getDoctorSpecialities(docOrDept);
+    if (rawDoctorSpecs.length === 0) return false;
 
-    const doctorSpecs = getDoctorSpecialities(docOrDept);
-    if (doctorSpecs.length === 0) return false;
+    const normTarget = normalizeSpecialityKey(specKey);
+    if (!normTarget) return false;
 
-    const cleanDoctorSpecs = doctorSpecs.map(normalizeStr).filter(Boolean);
+    const normDoctorSpecs = rawDoctorSpecs.map(normalizeSpecialityKey).filter(Boolean);
 
-    // 1. Direct equality check (supports custom departments directly)
-    if (cleanDoctorSpecs.some(spec => spec === cleanTarget)) {
+    // 1. Direct equality check on normalized stem (handles all casing, plurals, spelling)
+    if (normDoctorSpecs.some(spec => spec === normTarget)) {
         return true;
     }
 
-    // 2. Safe whole-word check
-    if (cleanDoctorSpecs.some(spec => containsWholeWord(spec, cleanTarget))) {
+    // 2. Safe whole-word check on normalized text
+    if (normDoctorSpecs.some(spec => containsWholeWord(spec, normTarget))) {
         return true;
     }
 
-    // 3. Reverse whole-word check for multi-word targets (e.g. target "surgical gastroenterology", doc "gastroenterology")
-    for (const spec of cleanDoctorSpecs) {
-        if (spec.length >= 4 && containsWholeWord(cleanTarget, spec)) {
+    // 3. Reverse whole-word check for multi-word targets
+    for (const spec of normDoctorSpecs) {
+        if (spec.length >= 4 && containsWholeWord(normTarget, spec)) {
             return true;
         }
     }
 
-    // 4. Alias lookup from dictionary
-    const aliasTerms = SPECIALITY_ALIASES[cleanTarget] || null;
-    if (aliasTerms) {
-        const matchesAlias = aliasTerms.some(alias => {
-            const cleanAlias = normalizeStr(alias);
-            return cleanDoctorSpecs.some(spec => spec === cleanAlias || containsWholeWord(spec, cleanAlias));
-        });
-        if (matchesAlias) return true;
+    // 4. Token subset matching for multi-word medical specialities (e.g. 'robotic orthopedic surgery' vs 'robotic orthopedic')
+    const targetTokens = normTarget.split(' ').filter(w => !['surgery', 'care', 'unit', 'service'].includes(w));
+    if (targetTokens.length >= 2) {
+        for (const spec of normDoctorSpecs) {
+            const specTokens = spec.split(' ').filter(w => !['surgery', 'care', 'unit', 'service'].includes(w));
+            if (specTokens.length >= 2) {
+                const targetContainsSpec = specTokens.every(t => targetTokens.includes(t));
+                const specContainsTarget = targetTokens.every(t => specTokens.includes(t));
+                if (targetContainsSpec || specContainsTarget) return true;
+            }
+        }
     }
 
-    // Check reverse aliases: does any of the doctor's specialities have an alias map that includes cleanTarget?
-    for (const spec of cleanDoctorSpecs) {
-        const specAliases = SPECIALITY_ALIASES[spec];
-        if (specAliases && specAliases.some(alias => normalizeStr(alias) === cleanTarget)) {
+    // 5. Alias dictionary matching (both target and aliases normalized)
+    const targetAliases = (SPECIALITY_ALIASES[normTarget] || []).map(normalizeSpecialityKey);
+    if (targetAliases.length > 0) {
+        if (normDoctorSpecs.some(s => targetAliases.includes(s) || targetAliases.some(a => containsWholeWord(s, a)))) {
             return true;
         }
     }
 
-    // 5. Common spelling variants (paed <-> ped)
-    const term1 = cleanTarget.replace(/paed/g, 'ped');
-    const term2 = cleanTarget.replace(/\bped\b/g, 'paed');
-    if (cleanDoctorSpecs.some(spec => spec === term1 || spec === term2)) {
-        return true;
+    // 6. Check reverse aliases: does any doctor speciality map to target?
+    for (const spec of normDoctorSpecs) {
+        const specAliases = (SPECIALITY_ALIASES[spec] || []).map(normalizeSpecialityKey);
+        if (specAliases.includes(normTarget) || specAliases.some(a => containsWholeWord(normTarget, a))) {
+            return true;
+        }
     }
 
     return false;

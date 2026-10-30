@@ -62,7 +62,7 @@ const BranchSpecialtyPage = ({ pageData, error, targetLocation, targetSpeciality
     const content = pageData.PageData || {};
 
     const formattedLocName = branch.name ? branch.name.replace("TX Hospitals, ", "") : currentLoc;
-    const formattedSpecName = currentSpec ? currentSpec.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') : 'Specialty';
+    const formattedSpecName = currentSpec ? currentSpec.split(/[-_]+/).map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ') : 'Specialty';
 
     const breadcrumbItems = [
         { label: "Home", href: "/" },
@@ -151,11 +151,43 @@ export async function getServerSideProps(context) {
         if (res.ok) {
             pageData = await res.json();
         } else {
-            error = true;
+            // Fallback 1: Query landing page by location and speciality name
+            const cleanSpec = targetSpeciality.replace(/-/g, ' ');
+            const fallbackUrl = `${CONFIG.API_BASE_URL}/api/speciality-landing-pages/${encodeURIComponent(targetLocation)}/${encodeURIComponent(cleanSpec)}`;
+            const fbRes = await fetch(fallbackUrl);
+            if (fbRes.ok) {
+                const fbData = await fbRes.json();
+                if (fbData && fbData.PageData) {
+                    pageData = fbData;
+                }
+            }
         }
     } catch (err) {
         console.error("Error fetching specialty landing page data:", err);
-        error = true;
+    }
+
+    // Fallback 2: If no custom landing page exists yet, provide default page structure
+    // so the page never fails or redirects away, and displays the mapped specialists
+    if (!pageData) {
+        const formattedSpecName = targetSpeciality.split(/[-_]+/).map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+        const formattedLocName = targetLocation.split(/[-_]+/).map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+        pageData = {
+            Location: targetLocation,
+            SpecialityName: formattedSpecName,
+            PageData: {
+                title: `${formattedSpecName} at TX Hospitals ${formattedLocName}`,
+                specialists: {
+                    title: `Our ${formattedSpecName} Specialists at TX Hospitals ${formattedLocName}`,
+                    description: `Expert medical team providing comprehensive care.`
+                },
+                seo: {
+                    url: `/${targetLocation}/specialties/${targetSpeciality}/`,
+                    title: `${formattedSpecName} at TX Hospitals ${formattedLocName}`,
+                    metaDescription: `Consult expert ${formattedSpecName} specialists at TX Hospitals ${formattedLocName}.`
+                }
+            }
+        };
+        error = false;
     }
 
     return {
