@@ -247,11 +247,24 @@ export default function HospitalNavbar({ variant = "primary", forceSecondary = f
                 {/* Center: Dynamic content based on hovered item */}
                 <div className="flex-1 min-w-[400px] border-r border-gray-200 pr-4 overflow-y-auto max-h-[400px] [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                     <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-1">
-                        {hoveredLibraryItem === "Health Conditions" && healthConditions.map((name, i) => (
-                            <button key={i} className="text-left text-gray-700 hover:text-pink-700 py-2 px-2 transition-colors font-medium border-b border-gray-100">
-                                {name}
-                            </button>
-                        ))}
+                        {hoveredLibraryItem === "Health Conditions" && healthConditions.map((item, i) => {
+                            const name = typeof item === "object" ? item.name : item;
+                            const path = typeof item === "object" ? item.path : null;
+                            return (
+                                <button
+                                    key={i}
+                                    onClick={() => {
+                                        if (path) {
+                                            handleMenuClick(path);
+                                            setOpenMenu(null);
+                                        }
+                                    }}
+                                    className={`text-left py-2 px-2 transition-colors font-medium border-b border-gray-100 ${path ? "text-gray-700 hover:text-pink-700 cursor-pointer" : "text-gray-700"}`}
+                                >
+                                    {name}
+                                </button>
+                            );
+                        })}
                         {hoveredLibraryItem === "Treatments & Procedures" && treatmetnAndProcedures.map((name, i) => (
                             <button key={i} className="text-left text-gray-700 hover:text-pink-700 py-2 px-2 transition-colors font-medium border-b border-gray-100">
                                 {name}
@@ -718,7 +731,25 @@ export default function HospitalNavbar({ variant = "primary", forceSecondary = f
                                                             </button>
                                                             {isSubOpen && (
                                                                 <ul className="ml-4 space-y-1 border-l border-gray-100 pl-3 py-1 grid grid-cols-1 overflow-y-auto max-h-[250px]">
-                                                                    {item.name === "Health Conditions" && healthConditions.map((n, i) => <li key={i}><button className="text-xs text-gray-500 py-1 text-left w-full" onClick={() => { handleNavigate('#'); setIsMenuOpen(false); }}>{n}</button></li>)}
+                                                                    {item.name === "Health Conditions" && healthConditions.map((sub, i) => {
+                                                                        const name = typeof sub === "object" ? sub.name : sub;
+                                                                        const path = typeof sub === "object" ? sub.path : null;
+                                                                        return (
+                                                                            <li key={i}>
+                                                                                <button
+                                                                                    className="text-xs text-gray-500 py-1 text-left w-full hover:text-pink-700"
+                                                                                    onClick={() => {
+                                                                                        if (path) {
+                                                                                            handleNavigate(path);
+                                                                                        }
+                                                                                        setIsMenuOpen(false);
+                                                                                    }}
+                                                                                >
+                                                                                    {name}
+                                                                                </button>
+                                                                            </li>
+                                                                        );
+                                                                    })}
                                                                     {item.name === "Treatments & Procedures" && treatmetnAndProcedures.map((n, i) => <li key={i}><button className="text-xs text-gray-500 py-1 text-left w-full" onClick={() => { handleNavigate('#'); setIsMenuOpen(false); }}>{n}</button></li>)}
                                                                     {item.name === "Diagnostics Guide" && diagnosticsGuide.map((n, i) => <li key={i}><button className="text-xs text-gray-500 py-1 text-left w-full" onClick={() => { handleNavigate('#'); setIsMenuOpen(false); }}>{n}</button></li>)}
                                                                     {item.name === "Medicine Guide" && medicineGuide.map((n, i) => <li key={i}><button className="text-xs text-gray-500 py-1 text-left w-full" onClick={() => { handleNavigate('#'); setIsMenuOpen(false); }}>{n}</button></li>)}

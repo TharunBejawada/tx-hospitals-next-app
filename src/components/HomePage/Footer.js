@@ -60,16 +60,16 @@ const specialistLinks = [
 ];
 
 const healthConditions = [
-    { label: "Acid Reflux" },
-    { label: "Arrhythmias" },
-    { label: "Angina" },
-    { label: "Atrial Fibrillation" },
-    { label: "Brain tumors" },
-    { label: "Benign Prostatic Hyperplasia" },
-    { label: "Coronary Artery Disease" },
-    { label: "Cardiomyopathy" },
-    { label: "Deep Vein Thrombosis" },
-    { label: "Dementia" },
+    { label: "Acid Reflux", path: "/specialities/gastro-sciences/disease-and-treatment/gerd-treatment-hyderabad/" },
+    { label: "Arrhythmias", path: "/specialities/cardiac-sciences/disease-and-treatment/arrhythmia-treatment-hyderabad/" },
+    { label: "Angina", path: "/specialities/cardiac-sciences/disease-and-treatment/angina/" },
+    { label: "Atrial Fibrillation", path: "/specialities/cardiac-sciences/disease-and-treatment/atrial-fibrillation-treatment-in-hyderabad/" },
+    { label: "Brain tumors", path: "/specialities/neuro-sciences/disease-and-treatment/brain-tumor-treatment-hyderabad/" },
+    { label: "Benign Prostatic Hyperplasia", path: "/specialities/urology/disease-and-treatment/prostatic-hyperplasia-bph-treatment-hyderabad/" },
+    { label: "Coronary Artery Disease", path: "/specialities/cardiac-sciences/disease-and-treatment/coronary-artery-disease/" },
+    { label: "Cardiomyopathy", path: "/specialities/cardiac-sciences/disease-and-treatment/cardiomyopathy-treatment-in-hyderabad/" },
+    { label: "Deep Vein Thrombosis", path: "/specialities/cardiac-sciences/disease-and-treatment/deep-vein-thrombosis-dvt-treatment-hyderabad/" },
+    { label: "Dementia", path: "/specialities/neuro-sciences/disease-and-treatment/dementia-treatment-hyderabad/" },
 ];
 
 const treatmentAndProcedures = [
@@ -277,6 +277,7 @@ export default function Footer() {
                         {healthConditions.map((item, idx) => (
                             <li
                                 key={idx}
+                                onClick={() => item.path && navigate(item.path)}
                                 className="flex items-center hover:text-pink-600 cursor-pointer"
                             >
                                 {item.label}
