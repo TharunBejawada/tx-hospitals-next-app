@@ -87,7 +87,18 @@ export default function UniversalPage() {
                     const allCats = blogs.flatMap(b => b.categories || []);
                     setDepartments([...new Set(allCats)]);
                     setType("blog");
-                    setData(matchBlog);
+                    let blogData = matchBlog;
+                    if (!matchBlog.extraFields || matchBlog.extraFields.length === 0) {
+                        try {
+                            const res = await axios.get(`${CONFIG.API_BASE_URL}/blogs/getBlogbyId/${matchBlog.blogId}`);
+                            if (res?.data?.Item) {
+                                blogData = res.data.Item;
+                            }
+                        } catch (err) {
+                            console.error("Error fetching full blog details:", err);
+                        }
+                    }
+                    setData(blogData);
                     setLoading(false);
                     return;
                 }
