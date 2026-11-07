@@ -43,7 +43,7 @@ const BariatricDoctors = ({
                 <div className="flex justify-center">
                     <div className="w-full max-w-sm">
                         <motion.div
-                            initial={{ opacity: 0, y: 20 }}
+                            initial={false}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                         >

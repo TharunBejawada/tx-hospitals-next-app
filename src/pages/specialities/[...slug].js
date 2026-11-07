@@ -229,7 +229,7 @@ export default function CenterOfExcellencePage({ initialRouteType = null, initia
                                 key={key}
                                 onClick={() => handleTabClick(key)}
                                 className="relative w-auto border border-gray-800 font-semibold text-black text-2xl px-4 py-1 rounded-2xl overflow-hidden whitespace-nowrap"
-                                initial={{ x: index % 2 === 0 ? -200 : 200, opacity: 0 }}
+                                initial={false}
                                 animate={{ x: 0, opacity: 1 }}
                             >
                                 {tab === key && (
@@ -279,7 +279,7 @@ export default function CenterOfExcellencePage({ initialRouteType = null, initia
                 ${tab === key ? "bg-pink-700 text-white" : ""}
                 ${index === tabs.length - 1 && tabs.length % 2 !== 0 ? "col-span-2 justify-self-center w-1/2" : ""}
             `}
-                                initial={{ x: index % 2 === 0 ? -100 : 100, opacity: 0 }}
+                                initial={false}
                                 animate={{ x: 0, opacity: 1 }}
                                 transition={{ type: "spring", stiffness: 120, damping: 15 }}
                             >

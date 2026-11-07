@@ -117,7 +117,7 @@ export default function BanjaraHillsDoctors() {
                     {doctors.map((doctor, idx) => (
                         <motion.div
                             key={idx}
-                            initial={{ opacity: 0, y: 20 }}
+                            initial={false}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: idx * 0.05, duration: 0.6 }}
                             onClick={() => handleCardClick(doctor.url)}
