@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { FiArrowRight, FiSearch } from "react-icons/fi";
 import HospitalNavbar from "@/components/HomePage/HospitalNavbar";
@@ -15,6 +15,7 @@ const labels = [
 
 export default function HospitalHero() {
     const router = useRouter();
+    const videoRef = useRef(null);
     const [isScrolled, setIsScrolled] = useState(false);
     const [forceSecondary, setForceSecondary] = useState(false);
     const [heroSearch, setHeroSearch] = useState("");
@@ -33,26 +34,27 @@ export default function HospitalHero() {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
+    // Ensure video autoplays on mobile devices (iOS Safari & Android Chrome)
+    useEffect(() => {
+        if (videoRef.current) {
+            videoRef.current.defaultMuted = true;
+            videoRef.current.muted = true;
+            const playPromise = videoRef.current.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(() => {
+                    // Mobile browser low-power or autoplay policy handled gracefully
+                });
+            }
+        }
+    }, []);
+
     return (
         <div className="w-full font-sans">
-            {/* Background Video / Image Hero (Shared mobile and desktop with responsive heights) */}
+            {/* Background Video Hero (Active on both mobile and desktop with responsive heights) */}
             <div className="relative h-[83vh] md:h-[95vh] text-white">
-                {/* Mobile: Ultra-fast LCP Image (35 KB, instant paint <1s, saves 128 MB cellular data) */}
-                <div className="block md:hidden absolute inset-0 w-full h-full">
-                    <Image
-                        src="/assets/Header/hero-poster.webp"
-                        alt="TX Hospitals"
-                        fill
-                        priority
-                        fetchPriority="high"
-                        sizes="100vw"
-                        className="object-cover object-top"
-                    />
-                </div>
-
-                {/* Desktop: Full AutoPlay Hero Video */}
                 <video
-                    className="hidden md:block absolute w-full h-full object-cover object-top"
+                    ref={videoRef}
+                    className="absolute w-full h-full object-cover object-top"
                     src="https://tx-hospital-images.s3.ap-south-2.amazonaws.com/images/3+srikanth+out.mp4"
                     poster="/assets/Header/hero-poster.webp"
                     autoPlay
