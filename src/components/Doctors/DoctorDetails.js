@@ -8,33 +8,26 @@ export default function DoctorDetails({ doctorData }) {
     const isMobile = useIsMobile();
     const [country, setCountry] = useState("India");
     const [selectedCountry, setSelectedCountry] = useState(countryOptions[0]);
-
-    if (!doctorData?.extraFields) return null;
-
     const formRef = useRef(null);
+    const sectionRefs = useRef({});
+    const [splitSections, setSplitSections] = useState({});
+
+    const extraFields = doctorData?.extraFields || [];
 
     // Extract About Section
-    const aboutSection = doctorData.extraFields.find((f) =>
+    const aboutSection = extraFields.find((f) =>
         ["about doctor", "about the doctor", "about"].includes(
             f.heading?.toLowerCase()
         )
     );
 
     // Other Sections
-    const otherSections = doctorData.extraFields.filter(
+    const otherSections = extraFields.filter(
         (f) =>
             !["about doctor", "about the doctor", "about"].includes(
                 f.heading?.toLowerCase()
             )
     );
-
-    // One wrapper ref per section
-    const sectionRefs = otherSections.reduce((acc, field) => {
-        acc[field.heading] = useRef(null);
-        return acc;
-    }, {});
-
-    const [splitSections, setSplitSections] = useState({});
 
     useEffect(() => {
         if (!formRef.current) return;
@@ -43,7 +36,7 @@ export default function DoctorDetails({ doctorData }) {
         const newSplit = {};
 
         otherSections.forEach((field) => {
-            const sec = sectionRefs[field.heading].current;
+            const sec = sectionRefs.current[field.heading];
             if (!sec) return;
 
             const secHeight = sec.offsetHeight;
@@ -55,7 +48,7 @@ export default function DoctorDetails({ doctorData }) {
     }, [doctorData]);
 
     const scrollToSection = (heading) => {
-        sectionRefs[heading]?.current?.scrollIntoView({
+        sectionRefs.current[heading]?.scrollIntoView({
             behavior: "smooth",
             block: "start",
         });
@@ -69,6 +62,8 @@ export default function DoctorDetails({ doctorData }) {
         }
     }, [country]);
 
+    if (!extraFields.length) return null;
+
     return (
         <>
             {isMobile ? (
@@ -81,7 +76,7 @@ export default function DoctorDetails({ doctorData }) {
                             <div
                                 className="text-gray-800 leading-relaxed"
                                 dangerouslySetInnerHTML={{
-                                    __html: aboutSection.description.replace(
+                                    __html: (aboutSection.description || "").replace(
                                         /<p>/g,
                                         '<p class="mb-3">'
                                     ),
@@ -106,7 +101,7 @@ export default function DoctorDetails({ doctorData }) {
                             {otherSections.map((field, i) => (
                                 <div
                                     key={i}
-                                    ref={sectionRefs[field.heading]}
+                                    ref={(el) => { if (el) sectionRefs.current[field.heading] = el; }}
                                     className="scroll-mt-20"
                                 >
                                     <h2 className="text-xl font-bold text-pink-700 mb-1">
@@ -116,8 +111,8 @@ export default function DoctorDetails({ doctorData }) {
                                     <div
                                         className="text-gray-800 text-sm leading-relaxed"
                                         dangerouslySetInnerHTML={{
-                                            __html: field.description
-                                                .replace(/<p>/g, '<p class="mb-1>')
+                                            __html: (field.description || "")
+                                                .replace(/<p>/g, '<p class="mb-1">')
                                                 .replace(/<ul>/g, '<ul class="list-disc ml-6">'),
                                         }}
                                     />
@@ -180,7 +175,7 @@ export default function DoctorDetails({ doctorData }) {
                             <div
                                 className="text-gray-800 leading-relaxed"
                                 dangerouslySetInnerHTML={{
-                                    __html: aboutSection.description.replace(
+                                    __html: (aboutSection.description || "").replace(
                                         /<p>/g,
                                         '<p class="mb-3">'
                                     ),
@@ -205,7 +200,7 @@ export default function DoctorDetails({ doctorData }) {
                             {otherSections.map((field, i) => (
                                 <div
                                     key={i}
-                                    ref={sectionRefs[field.heading]}
+                                    ref={(el) => { if (el) sectionRefs.current[field.heading] = el; }}
                                     className="scroll-mt-32"
                                 >
                                     <h2 className="text-2xl font-bold text-pink-700 mb-3">
@@ -215,9 +210,9 @@ export default function DoctorDetails({ doctorData }) {
                                     <div
                                         className="text-gray-800 leading-relaxed"
                                         dangerouslySetInnerHTML={{
-                                            __html: field.description
-                                            .replace(/<p>/g, '<p class="mb-3">')
-                                            .replace(/<ul>/g, '<ul class="list-disc ml-6">'),
+                                            __html: (field.description || "")
+                                                .replace(/<p>/g, '<p class="mb-3">')
+                                                .replace(/<ul>/g, '<ul class="list-disc ml-6">'),
                                         }}
                                     />
                                 </div>

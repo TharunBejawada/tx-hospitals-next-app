@@ -28,6 +28,9 @@ export async function getServerSideProps(context) {
     }
 
     const cleanUrl = String(url).replace(/^\/|\/$/g, "");
+    if (context.res) {
+        context.res.setHeader('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300');
+    }
 
     try {
         const now = Date.now();
@@ -39,9 +42,9 @@ export async function getServerSideProps(context) {
 
         if (!cacheValid || !blogs || !doctors || !opinions) {
             const [blogsRes, doctorsRes, soRes] = await Promise.all([
-                axios.get(`${CONFIG.API_BASE_URL}/blogs/getBlogsList`, { timeout: 6000 }),
-                axios.get(`${CONFIG.API_BASE_URL}/getDoctorsList`, { timeout: 6000 }).catch(() => axios.get(`${CONFIG.API_BASE_URL}/getAllDoctors`, { timeout: 6000 })),
-                axios.get(`${CONFIG.API_BASE_URL}/new-secondopinion/getAllSecondOpinion`, { timeout: 6000 })
+                axios.get(`${CONFIG.API_BASE_URL}/blogs/getBlogsList`, { timeout: 6000 }).catch(() => null),
+                axios.get(`${CONFIG.API_BASE_URL}/getDoctorsList`, { timeout: 6000 }).catch(() => axios.get(`${CONFIG.API_BASE_URL}/getAllDoctors`, { timeout: 6000 })).catch(() => null),
+                axios.get(`${CONFIG.API_BASE_URL}/new-secondopinion/getAllSecondOpinion`, { timeout: 6000 }).catch(() => null)
             ]);
 
             blogs = blogsRes?.data?.Items?.filter(b => (b.status ? b.status === "active" : b.enabled !== false) && b.status !== "inactive" && b.enabled !== false) || [];
@@ -87,7 +90,7 @@ export async function getServerSideProps(context) {
         const matchDoctor = doctors.find(d => d?.url && cleanUrl === d.url.replace(/^\/|\/$/g, ""));
         if (matchDoctor) {
             try {
-                const res = await axios.get(`${CONFIG.API_BASE_URL}/doctors/${matchDoctor.id}`, { timeout: 4000 });
+                const res = await axios.get(`${CONFIG.API_BASE_URL}/doctors/${encodeURIComponent(matchDoctor.id)}`, { timeout: 4000 });
                 if (res.data && Object.keys(res.data).length > 0) {
                     return {
                         props: {

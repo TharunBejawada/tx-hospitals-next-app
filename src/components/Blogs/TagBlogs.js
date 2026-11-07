@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { motion } from "framer-motion";
-import DOMPurify from "dompurify";
+import sanitize from "@/utils/sanitize";
 import useIsMobile from "@/hooks/useIsMobile";
 import CONFIG from "@/config";
 import { FaUser } from "react-icons/fa";
@@ -192,7 +192,7 @@ export default function TagBlogs({ initialTag = '', initialBlogs = null }) {
                                                     </div>
                                                 </div>
                                                 <p className="text-gray-600 mt-2 text-base leading-relaxed line-clamp-3">
-                                                    {DOMPurify.sanitize(
+                                                    {sanitize(
                                                         blog.extraFields?.find(field => field.heading === "Introduction")
                                                             ?.description.replace(/(<([^>]+)>)/gi, "")
                                                     )}

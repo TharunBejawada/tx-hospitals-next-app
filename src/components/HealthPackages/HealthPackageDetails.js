@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import useIsMobile from "@/hooks/useIsMobile"
 import PatientDetailsForm from "@/components/HealthPackages/PatientDetailsForm";
 import { useRouter } from "next/router";
-import DOMPurify from "dompurify";
+import sanitize from "@/utils/sanitize";
 import CONFIG from "@/config";
 import Image from "next/image";
 import FAQSchema from "@/utils/FAQSchema";
@@ -126,7 +126,7 @@ export default function HealthPackageDetails({ initialPackageData = null }) {
                                         <div
                                             className="text-gray-700 text-[10px] leading-relaxed"
                                             dangerouslySetInnerHTML={{
-                                                __html: DOMPurify.sanitize(item.description),
+                                                __html: sanitize(item.description),
                                             }}
                                         />
                                     </div>
@@ -151,7 +151,7 @@ export default function HealthPackageDetails({ initialPackageData = null }) {
                                         <div
                                             className="text-white text-sm leading-relaxed"
                                             dangerouslySetInnerHTML={{
-                                                __html: DOMPurify.sanitize(item.description),
+                                                __html: sanitize(item.description),
                                             }}
                                         />
                                     </div>
@@ -183,7 +183,7 @@ export default function HealthPackageDetails({ initialPackageData = null }) {
                                         <div
                                             className="text-sm text-gray-900 font-medium leading-relaxed"
                                             dangerouslySetInnerHTML={{
-                                                __html: DOMPurify.sanitize(item.description),
+                                                __html: sanitize(item.description),
                                             }}
                                         />
                                     </div>
@@ -216,7 +216,7 @@ export default function HealthPackageDetails({ initialPackageData = null }) {
                                         <div
                                             className="text-xs leading-relaxed opacity-90 max-w-xs"
                                             dangerouslySetInnerHTML={{
-                                                __html: DOMPurify.sanitize(item.description),
+                                                __html: sanitize(item.description),
                                             }}
                                         />
                                     </div>
@@ -231,7 +231,7 @@ export default function HealthPackageDetails({ initialPackageData = null }) {
                         <p
                             className="text-xs text-gray-700 mb-2 leading-relaxed"
                             dangerouslySetInnerHTML={{
-                                __html: DOMPurify.sanitize(packageData?.readyToTakeCharge[0]?.description),
+                                __html: sanitize(packageData?.readyToTakeCharge[0]?.description),
                             }}
                         />
                         <div className="flex justify-center items-center gap-2 mb-2">
@@ -280,7 +280,7 @@ export default function HealthPackageDetails({ initialPackageData = null }) {
                                             <div className="px-3 pb-2 text-gray-700 text-sm leading-relaxed">
                                                 <div
                                                     dangerouslySetInnerHTML={{
-                                                        __html: DOMPurify.sanitize(
+                                                        __html: sanitize(
                                                             faq.description || faq.answer
                                                         ),
                                                     }}
@@ -338,7 +338,7 @@ export default function HealthPackageDetails({ initialPackageData = null }) {
                                         <div
                                             className="text-gray-700 text-sm leading-relaxed"
                                             dangerouslySetInnerHTML={{
-                                                __html: DOMPurify.sanitize(item.description),
+                                                __html: sanitize(item.description),
                                             }}
                                         />
                                     </div>
@@ -363,7 +363,7 @@ export default function HealthPackageDetails({ initialPackageData = null }) {
                                         <div
                                             className="text-white text-sm leading-relaxed"
                                             dangerouslySetInnerHTML={{
-                                                __html: DOMPurify.sanitize(item.description),
+                                                __html: sanitize(item.description),
                                             }}
                                         />
                                     </div>
@@ -395,7 +395,7 @@ export default function HealthPackageDetails({ initialPackageData = null }) {
                                         <div
                                             className="text-lg text-gray-900 font-medium leading-relaxed"
                                             dangerouslySetInnerHTML={{
-                                                __html: DOMPurify.sanitize(item.description),
+                                                __html: sanitize(item.description),
                                             }}
                                         />
                                     </div>
@@ -428,7 +428,7 @@ export default function HealthPackageDetails({ initialPackageData = null }) {
                                         <div
                                             className="text-sm leading-relaxed opacity-90 max-w-xs"
                                             dangerouslySetInnerHTML={{
-                                                __html: DOMPurify.sanitize(item.description),
+                                                __html: sanitize(item.description),
                                             }}
                                         />
                                     </div>
@@ -443,7 +443,7 @@ export default function HealthPackageDetails({ initialPackageData = null }) {
                         <p
                             className="text-base text-gray-700 mb-6 leading-relaxed"
                             dangerouslySetInnerHTML={{
-                                __html: DOMPurify.sanitize(packageData?.readyToTakeCharge[0]?.description),
+                                __html: sanitize(packageData?.readyToTakeCharge[0]?.description),
                             }}
                         />
                         <div className="flex justify-center items-center gap-12 mb-4">
@@ -492,7 +492,7 @@ export default function HealthPackageDetails({ initialPackageData = null }) {
                                             <div className="px-6 pb-6 text-gray-700 text-base leading-relaxed">
                                                 <div
                                                     dangerouslySetInnerHTML={{
-                                                        __html: DOMPurify.sanitize(
+                                                        __html: sanitize(
                                                             faq.description || faq.answer
                                                         ),
                                                     }}

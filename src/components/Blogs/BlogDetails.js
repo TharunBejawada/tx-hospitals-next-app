@@ -5,7 +5,7 @@ import Head from "next/head";
 import useIsMobile from "@/hooks/useIsMobile";
 import { FaChevronDown, FaChevronUp, FaTags, FaInfoCircle } from "react-icons/fa";
 import { motion } from "framer-motion";
-import DOMPurify from "dompurify";
+import sanitize from "@/utils/sanitize";
 import ActionButtons from "@/components/Common/ActionButtons";
 import AppointmentForm from "@/components/Common/AppointmentForm";
 import BookAppointmentForm from "@/components/Blogs/BookAppointemntForm";
@@ -53,21 +53,27 @@ export default function BlogDetails({ blogData, departments }) {
 
 
     function fixOrderedListNumbering(html) {
-        let parser = new DOMParser();
-        let doc = parser.parseFromString(html, "text/html");
+        if (!html) return "";
+        if (typeof window === "undefined") return html;
+        try {
+            let parser = new DOMParser();
+            let doc = parser.parseFromString(html, "text/html");
 
-        let lists = doc.querySelectorAll("ol");
-        let currentNumber = 1;
+            let lists = doc.querySelectorAll("ol");
+            let currentNumber = 1;
 
-        lists.forEach((ol) => {
-            if (currentNumber > 1) {
-                ol.setAttribute("start", currentNumber);
-            }
-            let count = ol.querySelectorAll("li").length;
-            currentNumber += count;
-        });
+            lists.forEach((ol) => {
+                if (currentNumber > 1) {
+                    ol.setAttribute("start", currentNumber);
+                }
+                let count = ol.querySelectorAll("li").length;
+                currentNumber += count;
+            });
 
-        return doc.body.innerHTML;
+            return doc.body.innerHTML;
+        } catch (_) {
+            return html;
+        }
     }
 
     const slugify = (text) =>
@@ -236,7 +242,7 @@ export default function BlogDetails({ blogData, departments }) {
 
                                             html = fixOrderedListNumbering(html);
 
-                                            const sanitized = DOMPurify.sanitize(html);
+                                            const sanitized = sanitize(html);
 
                                             return (
                                                 <div
@@ -260,7 +266,7 @@ export default function BlogDetails({ blogData, departments }) {
                                             {blogData.faqs.map((faq, index) => {
                                                 const isOpen = faqOpenIndex === index;
                                                 const answerText = faq.answer || faq.description || "";
-                                                const sanitizedAnswer = DOMPurify.sanitize(answerText);
+                                                const sanitizedAnswer = sanitize(answerText);
                                                 return (
                                                     <div
                                                         key={index}
@@ -353,7 +359,7 @@ export default function BlogDetails({ blogData, departments }) {
 
                                                     html = fixOrderedListNumbering(html);
 
-                                                    const sanitized = DOMPurify.sanitize(html);
+                                                    const sanitized = sanitize(html);
 
                                                     return (
                                                         <div
@@ -380,7 +386,7 @@ export default function BlogDetails({ blogData, departments }) {
                                                     {blogData.faqs.map((faq, index) => {
                                                         const isOpen = faqOpenIndex === index;
                                                         const answerText = faq.answer || faq.description || "";
-                                                        const sanitizedAnswer = DOMPurify.sanitize(answerText);
+                                                        const sanitizedAnswer = sanitize(answerText);
                                                         return (
                                                             <div
                                                                 key={index}

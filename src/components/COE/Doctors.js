@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import Head from "next/head";
-import DOMPurify from "dompurify";
+import sanitize from "@/utils/sanitize";
 import axios from "axios";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { motion } from "framer-motion";
@@ -252,7 +252,7 @@ export default function Doctors({ department: propDepartment }) {
                                         <div
                                             className="text-gray-700 text-[18px] leading-relaxed"
                                             dangerouslySetInnerHTML={{
-                                                __html: DOMPurify.sanitize(
+                                                __html: sanitize(
                                                     field.description.replace(/<ul>/g, '<ul class="list-disc ml-6">')
                                                 )
                                             }}
@@ -386,7 +386,7 @@ export default function Doctors({ department: propDepartment }) {
                                         <div
                                             className="text-gray-700 text-sm leading-relaxed"
                                             dangerouslySetInnerHTML={{
-                                                __html: DOMPurify.sanitize(field.description.replace(/<ul>/g, '<ul class="list-disc ml-6">'))
+                                                __html: sanitize(field.description.replace(/<ul>/g, '<ul class="list-disc ml-6">'))
                                             }}
                                         ></div>
                                     </div>
