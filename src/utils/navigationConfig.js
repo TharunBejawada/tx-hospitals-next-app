@@ -106,13 +106,7 @@ export const fetchNavigationConfig = async (forceRefresh = false) => {
     try {
       // Use cache-busting timestamp to bypass browser/proxy caching
       const timestamp = Date.now();
-      const res = await fetch(`${CONFIG.API_BASE_URL}/navigation-config?_t=${timestamp}`, {
-        cache: "no-store",
-        headers: {
-          "Pragma": "no-cache",
-          "Cache-Control": "no-cache"
-        }
-      });
+      const res = await fetch(`${CONFIG.API_BASE_URL}/navigation-config?_t=${timestamp}`);
 
       if (res.ok) {
         const data = await res.json();
