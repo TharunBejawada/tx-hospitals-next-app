@@ -267,22 +267,17 @@ export default function BlogsLandingPage({ initialBlogs = null }) {
                                 <div className="p-4 mx-w-full relative">
                                     <div className="grid grid-cols-1 gap-4">
                                         {filteredBlogs?.map((blog, index) => (
-                                            <motion.div
+                                            <div
                                                 key={index}
-                                                initial={{ opacity: 0, y: 50 }}
-                                                animate={{ opacity: 1, y: 0 }}
-                                                transition={{ duration: 0.5, delay: index * 0.2 }}
                                                 className={`w-full h-[98%] ${!blog.url || !blog.url.trim() || blog.url === "#" ? "cursor-default" : "cursor-pointer"}`}
                                                 onClick={() => handleReadMore(blog)}
                                             >
                                                 <div className="mx-auto bg-white shadow-md overflow-hidden flex flex-col">
-                                                    <motion.img
+                                                    <img
                                                         src={blog.blogImage}
                                                         alt={blog.blogTitle}
                                                         className="w-fit h-fit object-cover"
-                                                        whileHover={{ scale: 1.1 }}
-                                                        transition={{ duration: 0.3 }}
-                                                    />
+                                                        className="w-fit h-fit object-cover hover:scale-105 transition-transform duration-300" />
                                                     <div className="p-5 text-center flex-1 flex flex-col">
                                                         <h3 className="text-sm font-semibold text-gray-700 line-clamp-2">
                                                             {blog.blogTitle}
@@ -305,7 +300,7 @@ export default function BlogsLandingPage({ initialBlogs = null }) {
                                                         </button>
                                                     </div>
                                                 </div>
-                                            </motion.div>
+                                            </div>
                                         ))}
                                     </div>
                                 </div>
@@ -327,22 +322,17 @@ export default function BlogsLandingPage({ initialBlogs = null }) {
                                 <div className="p-4 mx-w-full relative">
                                     <div className="grid grid-cols-3 gap-4">
                                         {filteredBlogs?.map((blog, index) => (
-                                            <motion.div
+                                            <div
                                                 key={index}
-                                                initial={{ opacity: 0, y: 50 }}
-                                                animate={{ opacity: 1, y: 0 }}
-                                                transition={{ duration: 0.5, delay: index * 0.2 }}
                                                 className="w-full h-[98%] cursor-pointer"
                                                 onClick={() => handleReadMore(blog)}
                                             >
                                                 <div className="mx-auto bg-white shadow-md overflow-hidden flex flex-col">
-                                                    <motion.img
+                                                    <img
                                                         src={blog.blogImage}
                                                         alt={blog.blogTitle}
                                                         className="w-fit h-fit object-cover"
-                                                        whileHover={{ scale: 1.1 }}
-                                                        transition={{ duration: 0.3 }}
-                                                    />
+                                                        className="w-fit h-fit object-cover hover:scale-105 transition-transform duration-300" />
                                                     <div className="p-5 text-center flex-1 flex flex-col">
                                                         <h3 className="text-sm font-semibold text-gray-700 line-clamp-2">
                                                             {blog.blogTitle}
@@ -355,7 +345,7 @@ export default function BlogsLandingPage({ initialBlogs = null }) {
                                                         </button>
                                                     </div>
                                                 </div>
-                                            </motion.div>
+                                            </div>
                                         ))}
                                     </div>
                                 </div>

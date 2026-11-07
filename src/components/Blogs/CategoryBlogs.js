@@ -150,7 +150,7 @@ export default function CategoryBlogs({ initialCategory = '', initialBlogs = nul
                                 {filteredBlogs?.map((blog, index) => (
                                     <motion.div
                                         key={index}
-                                        initial={{ opacity: 0, y: 50 }}
+                                        initial={false}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ duration: 0.5, delay: index * 0.2 }}
                                         className="mb-4"

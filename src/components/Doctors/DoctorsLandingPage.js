@@ -283,12 +283,7 @@ export default function DoctorsLandingPage({ initialDoctors = null }) {
                                             className="bg-white rounded-lg shadow-lg border border-gray-500 p-2 flex flex-col justify-between"
                                             key={doctor.id || i}
                                         >
-                                            <motion.div
-                                                initial={{ opacity: 0, y: 50 }}
-                                                animate={{ opacity: 1, y: 0 }}
-                                                transition={{ duration: 0.5, delay: (i % 6) * 0.1 }}
-                                                className="flex gap-2"
-                                            >
+                                            <div className="flex gap-2">
                                                 <div className="relative w-28 h-32 z-10">
                                                     <img
                                                         loading="lazy"
@@ -296,12 +291,10 @@ export default function DoctorsLandingPage({ initialDoctors = null }) {
                                                         alt="Background"
                                                         className="absolute inset-0 w-full h-full"
                                                     />
-                                                    <motion.img
+                                                    <img
                                                         src={doctor.image}
                                                         alt={doctor.name}
-                                                        className="relative z-10 w-28 rounded-sm object-cover"
-                                                        whileHover={{ scale: 1.1 }}
-                                                        transition={{ duration: 0.3 }}
+                                                        className="relative z-10 w-28 rounded-sm object-cover hover:scale-105 transition-transform duration-300"
                                                     />
                                                 </div>
 
@@ -325,7 +318,7 @@ export default function DoctorsLandingPage({ initialDoctors = null }) {
                                                         <div>{selectedLocation || (doctor.location ? doctor.location.split(/[,/]+/).map(s => s.trim())[0] : "")}</div>
                                                     </div>
                                                 </div>
-                                            </motion.div>
+                                            </div>
                                             <div className="flex flex-col justify-between mx-auto mt-4">
                                                 <button
                                                     className="w-full py-1 px-4 border border-pink-700 text-pink-700 font-semibold rounded-lg hover:scale-105 transition"
@@ -385,12 +378,7 @@ export default function DoctorsLandingPage({ initialDoctors = null }) {
                                             className="bg-white rounded-lg shadow-lg border border-gray-500 p-4 flex flex-col justify-between"
                                             key={doctor.id || i}
                                         >
-                                            <motion.div
-                                                initial={{ opacity: 0, y: 50 }}
-                                                animate={{ opacity: 1, y: 0 }}
-                                                transition={{ duration: 0.5, delay: (i % 6) * 0.1 }}
-                                                className="flex gap-4"
-                                            >
+                                            <div className="flex gap-4">
                                                 <div className="relative w-32 h-36 z-10">
                                                     <img
                                                         loading="lazy"
@@ -398,12 +386,10 @@ export default function DoctorsLandingPage({ initialDoctors = null }) {
                                                         alt="Background"
                                                         className="absolute inset-0 w-full h-full"
                                                     />
-                                                    <motion.img
+                                                    <img
                                                         src={doctor.image}
                                                         alt={doctor.name}
-                                                        className="relative z-10 w-32 h-34 rounded-sm object-cover"
-                                                        whileHover={{ scale: 1.1 }}
-                                                        transition={{ duration: 0.3 }}
+                                                        className="relative z-10 w-32 h-34 rounded-sm object-cover hover:scale-105 transition-transform duration-300"
                                                     />
                                                 </div>
 
@@ -427,7 +413,7 @@ export default function DoctorsLandingPage({ initialDoctors = null }) {
                                                         <div>{selectedLocation || (doctor.location ? doctor.location.split(/[,/]+/).map(s => s.trim())[0] : "")}</div>
                                                     </div>
                                                 </div>
-                                            </motion.div>
+                                            </div>
 
                                             {/* Buttons */}
                                             <div className="flex flex-col justify-between mx-auto mt-4">
