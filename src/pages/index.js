@@ -2,33 +2,18 @@ import React from 'react';
 import dynamic from 'next/dynamic';
 import Layout from '@/components/Layouts/Layout';
 import Specialities from '@/components/HomePage/Specialities';
-import LocationsBar from '@/components/HomePage/LocationsBar';
+import DiseaseSearch from '@/components/HomePage/DiseaseSearch';
+import WhyChooseUs from '@/components/HomePage/WhyChooseUs';
+import VideoSection from '@/components/HomePage/VideoSection';
+import HealthLibrary from '@/components/HomePage/HealthLibrary';
+import FAQ from '@/components/HomePage/FAQ';
+import OurLocations from '@/components/HomePage/OurLocations';
 import Head from "next/head";
 import CONFIG from "@/config";
-
-const DiseaseSearch = dynamic(() => import('@/components/HomePage/DiseaseSearch'), { 
-    loading: () => <div className="w-full min-h-[100px] animate-pulse bg-gray-50" />
-});
-const WhyChooseUs = dynamic(() => import('@/components/HomePage/WhyChooseUs'), {
-    loading: () => <div className="w-full min-h-[200px] animate-pulse bg-white" />
-});
-const HealthLibrary = dynamic(() => import('@/components/HomePage/HealthLibrary'), {
-    loading: () => <div className="w-full min-h-[200px] animate-pulse bg-white" />
-});
-const FAQ = dynamic(() => import('@/components/HomePage/FAQ'), {
-    loading: () => <div className="w-full min-h-[200px] animate-pulse bg-white" />
-});
-const OurLocations = dynamic(() => import('@/components/HomePage/OurLocations'), {
-    loading: () => <div className="w-full min-h-[200px] animate-pulse bg-white" />
-});
 
 const SocialSidebar = dynamic(() => import('@/components/HomePage/SocialSidebar'), { 
     ssr: false,
     loading: () => null
-});
-const VideoSection = dynamic(() => import('@/components/HomePage/VideoSection'), { 
-    ssr: false,
-    loading: () => <div className="w-full bg-[#fceef2] min-h-[400px] md:min-h-[500px] animate-pulse" />
 });
 
 export default function HomePage({ initialBlogs = [] }) {
@@ -39,6 +24,9 @@ export default function HomePage({ initialBlogs = [] }) {
                 <meta name="description" content="TX Hospitals offers world-class multi-specialty care in Hyderabad at Uppal, Kachiguda, Banjara Hills & Miyapur with expert doctors and advanced care." />
                 <meta name="keywords" content="TX Hospitals Hyderabad, Multi-specialty hospital Hyderabad, Super specialty hospital Hyderabad, Best hospital in Hyderabad, Top Hospitals in Hyderabad" />
                 
+                {/* Preload critical LCP Hero Poster Image */}
+                <link rel="preload" as="image" href="/assets/Header/hero-poster.webp" type="image/webp" fetchPriority="high" />
+
                 {/* Open Graph / Facebook */}
                 <meta property="og:type" content="website" />
                 <meta property="og:title" content="TX Hospitals | Leading Multi-Specialty Hospitals Hyderabad" />
@@ -92,4 +80,3 @@ export async function getServerSideProps({ res }) {
         }
     };
 }
-

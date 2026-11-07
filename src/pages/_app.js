@@ -59,7 +59,7 @@ export default function App({ Component, pageProps }) {
       </Head>
       <Script
         id="gtm-script"
-        strategy="afterInteractive"
+        strategy="lazyOnload"
         dangerouslySetInnerHTML={{
           __html: `
             (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -73,12 +73,12 @@ export default function App({ Component, pageProps }) {
       {/* Google tag (gtag.js) */}
       <Script
         id="gtag-load"
-        strategy="afterInteractive"
+        strategy="lazyOnload"
         src="https://www.googletagmanager.com/gtag/js?id=AW-18108940602"
       />
       <Script
         id="gtag-init"
-        strategy="afterInteractive"
+        strategy="lazyOnload"
         dangerouslySetInnerHTML={{
           __html: `
             window.dataLayer = window.dataLayer || [];
@@ -91,7 +91,7 @@ export default function App({ Component, pageProps }) {
       {/* Meta Pixel Code */}
       <Script
         id="fb-pixel"
-        strategy="afterInteractive"
+        strategy="lazyOnload"
         dangerouslySetInnerHTML={{
           __html: `
             !function(f,b,e,v,n,t,s)

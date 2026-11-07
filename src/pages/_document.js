@@ -13,6 +13,10 @@ export default function Document() {
                 <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
                 <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
+                {/* Media S3 Preconnect & DNS Prefetch */}
+                <link rel="preconnect" href="https://tx-hospital-images.s3.ap-south-2.amazonaws.com" crossOrigin="anonymous" />
+                <link rel="dns-prefetch" href="https://tx-hospital-images.s3.ap-south-2.amazonaws.com" />
+
                 {/* Manifest */}
                 <link rel="manifest" href="/manifest.json" />
 

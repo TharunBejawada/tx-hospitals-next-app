@@ -94,7 +94,7 @@ export default function HealthLibrary({ initialBlogs = [] }) {
                                     alt={blog.blogTitle || "Health Article"}
                                     fill
                                     sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 400px"
-                                    priority={idx < 3}
+                                    loading="lazy"
                                     quality={80}
                                     className="object-cover transition-transform duration-500 group-hover:scale-110"
                                     onClick={() => handleReadMore(blog)}

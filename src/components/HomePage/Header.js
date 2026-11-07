@@ -40,6 +40,7 @@ export default function HospitalHero() {
                 <video
                     className="absolute w-full h-full object-cover object-top"
                     src="https://tx-hospital-images.s3.ap-south-2.amazonaws.com/images/3+srikanth+out.mp4"
+                    poster="/assets/Header/hero-poster.webp"
                     autoPlay
                     muted
                     loop
@@ -91,37 +92,28 @@ export default function HospitalHero() {
                 {/* Action Buttons: Mobile Grid (Visible on Mobile only, flows naturally above message) */}
                 <div className="grid grid-cols-2 gap-2 p-1 md:hidden">
                     {labels.map((label, idx) => (
-                        <motion.button
+                        <button
                             key={idx}
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.05 * idx, duration: 0.4 }}
-                            whileTap={{ scale: 0.95 }}
-                            className="flex items-center justify-center bg-pink-700 text-white rounded-full gap-2 py-2 font-semibold hover:bg-pink-800 transition"
+                            className="flex items-center justify-center bg-pink-700 text-white rounded-full gap-2 py-2 font-semibold hover:bg-pink-800 transition active:scale-95"
                             onClick={() => router.push(label?.path)}
                         >
                             <span className="text-xs">{label?.title}</span>
                             <FiArrowRight size={16} />
-                        </motion.button>
+                        </button>
                     ))}
                 </div>
 
                 {/* Chairman's Message Image */}
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6 }}
-                >
+                <div className="w-full">
                     <Image
-                        src="/assets/Header/Chairmans message.png"
+                        src="/assets/Header/Chairmans-message.webp"
                         alt="Chairman's Message"
                         width={1300}
                         height={400}
                         className="w-full object-cover"
                         priority
                     />
-                </motion.div>
+                </div>
 
                 {/* Action Buttons: Desktop Overlay (Visible on Desktop only, absolutely positioned) */}
                 <div className="hidden md:block absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl">

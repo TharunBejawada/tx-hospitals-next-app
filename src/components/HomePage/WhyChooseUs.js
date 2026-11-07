@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import useIsMobile from "@/hooks/useIsMobile";
 import { motion, useInView } from "framer-motion";
 
 // Reusable hook
@@ -80,15 +79,14 @@ const cardVariants = {
     }
 };
 
-function StatCard({ item, index }) {
-    const isMobile = useIsMobile();
+function StatCard({ item }) {
     const [count, done, countRef] = useCountUp(item.number, 2000);
 
     return (
         <motion.div
             variants={cardVariants}
             whileHover={{ y: -8, scale: 1.02 }}
-            className={`bg-white text-gray-800 rounded-2xl shadow-md p-4 flex justify-between items-center transition-shadow duration-300 hover:shadow-2xl ${isMobile ? 'p-3 rounded-xl' : ''}`}
+            className="bg-white text-gray-800 rounded-xl md:rounded-2xl shadow-md p-3 md:p-4 flex justify-between items-center transition-shadow duration-300 hover:shadow-2xl"
         >
             <div className="text-left flex-1" ref={countRef}>
                 <h3 className="font-bold text-pink-700 text-3xl">
@@ -105,9 +103,9 @@ function StatCard({ item, index }) {
                 <Image
                     src={item.icon}
                     alt={item.title}
-                    width={isMobile ? 40 : 70}
-                    height={isMobile ? 40 : 70}
-                    className="object-contain"
+                    width={70}
+                    height={70}
+                    className="object-contain w-10 h-10 md:w-[70px] md:h-[70px]"
                 />
             </motion.div>
         </motion.div>
@@ -115,14 +113,13 @@ function StatCard({ item, index }) {
 }
 
 export default function WhyChooseUs() {
-    const isMobile = useIsMobile();
     const sectionRef = useRef(null);
     const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
     return (
         <section
             ref={sectionRef}
-            className={`relative text-white py-10 px-6 bg-cover bg-center overflow-hidden ${isMobile ? 'py-8 px-4' : ''}`}
+            className="relative text-white py-8 px-4 md:py-10 md:px-6 bg-cover bg-center overflow-hidden"
             style={{ backgroundImage: "url('/assets/WhyChooseUs/BG.png')" }}
             id="why-choose-us"
         >
@@ -138,7 +135,7 @@ export default function WhyChooseUs() {
                     <span className="inline-block px-4 py-1.5 rounded-full bg-white/20 backdrop-blur-md text-white text-xs font-bold uppercase tracking-widest mb-4 border border-white/30">
                         Our Commitment
                     </span>
-                    <h2 className={`font-extrabold mb-4  ${isMobile ? 'text-4xl' : 'text-5xl'}`}>
+                    <h2 className="font-extrabold mb-4 text-4xl md:text-5xl">
                         Why Choose <span className="text-white relative">Us?
                             <span className="absolute -bottom-2 left-0 w-full h-1 bg-white/40 rounded-full"></span>
                         </span>
@@ -149,7 +146,7 @@ export default function WhyChooseUs() {
                     initial={{ opacity: 0 }}
                     animate={isInView ? { opacity: 1 } : {}}
                     transition={{ duration: 0.4, delay: 0.1 }}
-                    className={`max-w-3xl mx-auto mb-16 text-white/90 font-medium leading-relaxed ${isMobile ? 'text-sm mb-10 px-2' : 'text-xl'}`}
+                    className="max-w-3xl mx-auto mb-10 md:mb-16 px-2 md:px-0 text-white/90 font-medium leading-relaxed text-sm md:text-xl"
                 >
                     Redefining healthcare by combining clinical excellence, advanced technology and patient-first values. Trusted for holistic, world-class healthcare.
                 </motion.p>
@@ -161,7 +158,7 @@ export default function WhyChooseUs() {
                     className="grid gap-4 md:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
                 >
                     {stats.map((item, index) => (
-                        <StatCard key={index} item={item} index={index} />
+                        <StatCard key={index} item={item} />
                     ))}
                 </motion.div>
             </div>
