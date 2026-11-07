@@ -13,7 +13,8 @@ import CONFIG from "@/config";
 export default function SecondOpinionLanding({
     opinionType = "Free Second", // Can be "Second" or "First"
     customTitle = "Your Health Decision Deserves the Right Second Opinion",
-    customSubtitle = "Get expert evaluation, accurate diagnosis and the right treatment guidance from our senior specialists."
+    customSubtitle = "Get expert evaluation, accurate diagnosis and the right treatment guidance from our senior specialists.",
+    initialDoctors = []
 }) {
     // Process locations and specialties dynamically from standard codebase lists
     const citiesList = locations.map(loc => ({ name: loc.name }));
@@ -25,12 +26,13 @@ export default function SecondOpinionLanding({
     const badgeText = "Free Second Opinion";
 
     // Doctors state
-    const [doctors, setDoctors] = useState([]);
+    const [doctors, setDoctors] = useState(initialDoctors || []);
     const [doctorModalOpen, setDoctorModalOpen] = useState(false);
 
     // Fetch doctors from API, show first 4
     useEffect(() => {
-        fetch(`${CONFIG.API_BASE_URL}/getAllDoctors`)
+        if (initialDoctors && initialDoctors.length > 0) return;
+        fetch(`${CONFIG.API_BASE_URL}/getDoctorsList`).then(r => r.ok ? r : fetch(`${CONFIG.API_BASE_URL}/getAllDoctors`))
             .then(res => res.json())
             .then(data => {
                 const sorted = [...data].sort((a, b) => Number(a.priorityOrder) - Number(b.priorityOrder));

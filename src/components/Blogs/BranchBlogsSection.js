@@ -12,21 +12,22 @@ import CONFIG from '@/config';
  *              When location === "Hyderabad" (or not provided) it falls back to getAllBlogs.
  *  - maxCards  {number}  How many cards to show (default 3)
  */
-const BranchBlogsSection = ({ location, maxCards = 3 }) => {
-    const [blogs, setBlogs] = useState([]);
-    const [loading, setLoading] = useState(true);
+const BranchBlogsSection = ({ location, maxCards = 3, initialBlogs = [] }) => {
+    const [blogs, setBlogs] = useState(initialBlogs || []);
+    const [loading, setLoading] = useState(!initialBlogs || initialBlogs.length === 0);
     const [selectedCategory, setSelectedCategory] = useState('ALL');
 
     // ── Fetch ──────────────────────────────────────────────────────────────────
     useEffect(() => {
         let cancelled = false;
         const fetchBlogs = async () => {
+            if (initialBlogs && initialBlogs.length > 0) return;
             setLoading(true);
             try {
                 const url =
                     location && location !== 'Hyderabad'
-                        ? `${CONFIG.API_BASE_URL}/blogs/getBlogsByLocation/${encodeURIComponent(location)}`
-                        : `${CONFIG.API_BASE_URL}/blogs/getAllBlogs`;
+                        ? `${CONFIG.API_BASE_URL}/blogs/getBlogsList/${encodeURIComponent(location)}`
+                        : `${CONFIG.API_BASE_URL}/blogs/getBlogsList`;
 
                 const response = await axios.get(url);
 

@@ -1,7 +1,7 @@
 import BranchBlogsSection from '@/components/Blogs/BranchBlogsSection';
 
-const KachigudaNewBlogs = () => (
-    <BranchBlogsSection location="Kachiguda" maxCards={3} />
+const KachigudaNewBlogs = ({ initialBlogs }) => (
+    <BranchBlogsSection location="Kachiguda" maxCards={3} initialBlogs={initialBlogs} />
 );
 
 export default KachigudaNewBlogs;

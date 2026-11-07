@@ -1,3 +1,4 @@
+import CONFIG from "@/config";
 // import React from 'react';
 // import Head from 'next/head';
 // import SecondaryLayout from '@/components/Layouts/SecondaryLayout';
@@ -10,7 +11,7 @@
 // import KachigudaMap from '@/components/Kachiguda/KachigudaMap';
 // import KachigudaCTA from '@/components/Kachiguda/KachigudaCTA';
 
-// export default function KachigudaPage() {
+// export default function KachigudaPage({ initialDoctors = [], initialBlogs = [] }) {
 //     return (
 //         <>
 // <Head>
@@ -92,7 +93,7 @@ export default function KachigudaPage() {
                     <KachigudaNewSpecialties />
 
                     {/* Doctors Section */}
-                    <KachigudaNewDoctors />
+                    <KachigudaNewDoctors initialDoctors={initialDoctors} />
 
                     {/* Why choose section */}
                     <KachigudaNewWhyChoose />
@@ -107,7 +108,7 @@ export default function KachigudaPage() {
                     <KachigudaNewLocations />
 
                     {/* Blogs Section */}
-                    <KachigudaNewBlogs />
+                    <KachigudaNewBlogs initialBlogs={initialBlogs} />
 
                     {/* FAQ Section */}
                     <KachigudaNewFAQ />
@@ -117,3 +118,45 @@ export default function KachigudaPage() {
     );
 }
 
+
+
+export async function getServerSideProps({ res }) {
+    if (res) {
+        res.setHeader('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300');
+    }
+    let initialDoctors = [];
+    let initialBlogs = [];
+    try {
+        const [docsRes, blogsRes] = await Promise.all([
+            fetch(`${CONFIG.API_BASE_URL}/getDoctorsList`).then(r => r.ok ? r : fetch(`${CONFIG.API_BASE_URL}/getAllDoctors`)),
+            fetch(`${CONFIG.API_BASE_URL}/blogs/getBlogsList/${encodeURIComponent('Kachiguda')}`)
+        ]);
+
+        if (docsRes.ok) {
+            const data = await docsRes.json();
+            const targetIds = [
+                'drgabrielsukumarchinnam@txhospitals.in',
+                'drkaranmpatel@txhospitals.in',
+                'drnareshdude@txhospitals.in'
+            ];
+            initialDoctors = targetIds.map(id => (data || []).find(doc => doc.id === id)).filter(Boolean);
+        }
+
+        if (blogsRes.ok) {
+            const bData = await blogsRes.json();
+            const raw = bData?.Items || (Array.isArray(bData) ? bData : []);
+            initialBlogs = raw
+                .filter(b => (b.status ? b.status === 'active' : b.enabled !== false) && b.status !== 'inactive' && b.enabled !== false)
+                .sort((a, b) => new Date(b.createdAt || b.timeline || 0) - new Date(a.createdAt || a.timeline || 0));
+        }
+    } catch (err) {
+        console.error("Error in Kachiguda getServerSideProps:", err);
+    }
+
+    return {
+        props: {
+            initialDoctors,
+            initialBlogs
+        }
+    };
+}

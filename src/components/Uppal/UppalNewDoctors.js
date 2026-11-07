@@ -3,13 +3,14 @@ import { Award, MapPin, Calendar, Phone } from 'lucide-react';
 import BookAppointmentForm from '@/components/Blogs/BookAppointemntForm';
 import CONFIG from '@/config';
 
-const UppalNewDoctors = () => {
-    const [doctors, setDoctors] = useState([]);
-    const [loading, setLoading] = useState(true);
+const UppalNewDoctors = ({ initialDoctors = [] }) => {
+    const [doctors, setDoctors] = useState(initialDoctors || []);
+    const [loading, setLoading] = useState(!initialDoctors || initialDoctors.length === 0);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
-        fetch(`${CONFIG.API_BASE_URL}/getAllDoctors`)
+        if (initialDoctors && initialDoctors.length > 0) return;
+        fetch(`${CONFIG.API_BASE_URL}/getDoctorsList`).then(r => r.ok ? r : fetch(`${CONFIG.API_BASE_URL}/getAllDoctors`))
             .then((res) => res.json())
             .then((data) => {
                 // Get the three specific doctors in the requested order

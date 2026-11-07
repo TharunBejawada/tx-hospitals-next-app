@@ -4,7 +4,7 @@ export async function getServerSideProps({ res }) {
     
     const routes = await fetchRoutes(
         "doctors",
-        `${apiUrl}/getAllDoctors`
+        `${apiUrl}/getDoctorsList`
     );
     const sitemap = generateXML(routes);
     res.setHeader("Content-Type", "text/xml");

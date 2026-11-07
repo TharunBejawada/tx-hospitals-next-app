@@ -1,7 +1,7 @@
 import BranchBlogsSection from '@/components/Blogs/BranchBlogsSection';
 
-const UppalNewBlogs = () => (
-    <BranchBlogsSection location="Uppal" maxCards={3} />
+const UppalNewBlogs = ({ initialBlogs }) => (
+    <BranchBlogsSection location="Uppal" maxCards={3} initialBlogs={initialBlogs} />
 );
 
 export default UppalNewBlogs;

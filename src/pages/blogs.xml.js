@@ -4,7 +4,7 @@ export async function getServerSideProps({ res }) {
     
     const routes = await fetchRoutes(
         "blogs",
-        `${apiUrl}/blogs/getAllBlogs`
+        `${apiUrl}/blogs/getBlogsList`
     );
     const sitemap = generateXML(routes);
     res.setHeader("Content-Type", "text/xml");

@@ -24,15 +24,16 @@ const OurLocations = dynamic(() => import("@/components/HomePage/OurLocations"),
     loading: () => <div className="w-full min-h-[200px] animate-pulse bg-white" />
 });
 
-export default function RoboticProcedureDetailPage() {
+export default function RoboticProcedureDetailPage({ initialData = null }) {
     const router = useRouter();
 
-    const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [data, setData] = useState(initialData);
+    const [loading, setLoading] = useState(!initialData);
     const [error, setError] = useState(null);
     const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
+        if (initialData) return;
         // Wait until the router is ready (asPath is populated)
         if (!router.isReady) return;
 

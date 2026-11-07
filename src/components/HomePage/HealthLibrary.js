@@ -20,14 +20,15 @@ const itemVariants = {
     visible: { opacity: 1, scale: 1, y: 0 }
 };
 
-export default function HealthLibrary() {
+export default function HealthLibrary({ initialBlogs = [] }) {
     const router = useRouter();
-    const [blogs, setBlogs] = useState([]);
+    const [blogs, setBlogs] = useState(initialBlogs || []);
 
     useEffect(() => {
+        if (initialBlogs && initialBlogs.length > 0) return;
         const fetchBlogs = async () => {
             try {
-                const response = await fetch(`${CONFIG.API_BASE_URL}/blogs/getAllBlogs`);
+                const response = await fetch(`${CONFIG.API_BASE_URL}/blogs/getBlogsList`);
                 const data = await response.json();
                 const sortedAndFilteredBlogs = data?.Items
                     ?.filter(blog => (blog.status ? blog.status === "active" : blog.enabled !== false) && blog.status !== "inactive" && blog.enabled !== false)
@@ -38,7 +39,7 @@ export default function HealthLibrary() {
             }
         };
         fetchBlogs();
-    }, []);
+    }, [initialBlogs]);
 
     const handleReadMore = async (blog) => {
         if (!blog || !blog.url || !blog.url.trim() || blog.url === "#") return;

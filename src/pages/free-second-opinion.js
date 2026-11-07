@@ -2,8 +2,9 @@ import React from "react";
 import Head from "next/head";
 import SecondaryLayout from "@/components/Layouts/SecondaryLayout";
 import SecondOpinionLanding from "@/components/SecondOpinion/Landing/SecondOpinionLanding";
+import CONFIG from "@/config";
 
-export default function SecondOpinionPage() {
+export default function SecondOpinionPage({ initialDoctors = [] }) {
     return (
         <>
             <Head>
@@ -21,8 +22,32 @@ export default function SecondOpinionPage() {
             <SecondaryLayout>
                 <SecondOpinionLanding
                     customTitle="Your Health Decision Deserves the Right  Opinion"
+                    initialDoctors={initialDoctors}
                 />
             </SecondaryLayout>
         </>
     );
+}
+
+export async function getServerSideProps({ res }) {
+    if (res) {
+        res.setHeader('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300');
+    }
+    let initialDoctors = [];
+    try {
+        let response = await fetch(`${CONFIG.API_BASE_URL}/getDoctorsList`);
+        if (!response.ok) response = await fetch(`${CONFIG.API_BASE_URL}/getAllDoctors`);
+        if (response.ok) {
+            const data = await response.json();
+            const sorted = [...data].sort((a, b) => Number(a.priorityOrder || 9999) - Number(b.priorityOrder || 9999));
+            initialDoctors = sorted.slice(0, 4);
+        }
+    } catch (err) {
+        console.error("Error in free-second-opinion getServerSideProps:", err);
+    }
+    return {
+        props: {
+            initialDoctors
+        }
+    };
 }

@@ -11,13 +11,13 @@ import Head from "next/head";
 import Breadcrumb from "@/components/Common/Breadcrumb";
 import BookAppointmentForm from "@/components/Blogs/BookAppointemntForm";
 
-export default function HealthPackageDetails() {
+export default function HealthPackageDetails({ initialPackageData = null }) {
 
     const router = useRouter();
     const isMobile = useIsMobile();
 
-    const [packageData, setPackageData] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [packageData, setPackageData] = useState(initialPackageData || null);
+    const [loading, setLoading] = useState(!initialPackageData);
     const [openIndex, setOpenIndex] = useState(null);
     const [showModal, setShowModal] = useState(false);
 
@@ -37,6 +37,11 @@ export default function HealthPackageDetails() {
     ];
 
     useEffect(() => {
+        if (initialPackageData) {
+            setLoading(false);
+            return;
+        }
+
         if (!router.isReady) return;
         let fullPath = router.asPath;
         if (!fullPath.endsWith("/")) {
@@ -57,7 +62,7 @@ export default function HealthPackageDetails() {
             }
         };
         fetchPackage();
-    }, [router.isReady, router.asPath]);
+    }, [router.isReady, router.asPath, initialPackageData]);
 
     const handleCall = () => {
         window.location.href = "tel:9144514459";

@@ -98,7 +98,7 @@ export default function COEOverview({ department: propDepartment }) {
     useEffect(() => {
         const fetchAllBlogs = async () => {
             try {
-                const endpoint = `${CONFIG.API_BASE_URL}/blogs/getAllBlogs`;
+                const endpoint = `${CONFIG.API_BASE_URL}/blogs/getBlogsList`;
                 const response = await axios.get(endpoint);
                 const sortedAndFilteredBlogs = response.data.Items?.filter(
                     (blog) => (blog.status ? blog.status === "active" : blog.enabled !== false) && blog.status !== "inactive" && blog.enabled !== false

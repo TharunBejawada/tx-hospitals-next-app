@@ -10,12 +10,12 @@ import BookAppointmentForm from "@/components/Blogs/BookAppointemntForm";
 import { useRouter } from "next/router";
 import Breadcrumb from "@/components/Common/Breadcrumb";
 
-export default function SOLandingPage() {
+export default function SOLandingPage({ initialSurgeryOptions = [] }) {
 
     const router = useRouter();
     const isMobile = useIsMobile();
-    const [surgeryOptions, setSurgeryOptions] = useState([]);
-    const [selectedSurgery, setSelectedSurgery] = useState("");
+    const [surgeryOptions, setSurgeryOptions] = useState(initialSurgeryOptions || []);
+    const [selectedSurgery, setSelectedSurgery] = useState(initialSurgeryOptions?.[0]?.name || "");
     const [showAll, setShowAll] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [formData, setFormData] = useState({ name: "", phone: "" });
@@ -30,6 +30,19 @@ export default function SOLandingPage() {
     }, []);
 
     useEffect(() => {
+        if (initialSurgeryOptions && initialSurgeryOptions.length > 0) {
+            try {
+                const existingMap = JSON.parse(localStorage.getItem('slugMap') || '{}');
+                const newMap = { ...existingMap };
+                initialSurgeryOptions.forEach(option => {
+                    if (option.url) {
+                        newMap[option.url.replace(/^\/|\/$/g, "")] = { id: option.id, type: 'surgery' };
+                    }
+                });
+                localStorage.setItem('slugMap', JSON.stringify(newMap));
+            } catch (e) {}
+            return;
+        }
         const fetchData = async () => {
             try {
                 const endpoint = `${CONFIG.API_BASE_URL}/new-secondopinion/getAllSecondOpinion`;

@@ -13,11 +13,11 @@ import VisitorsGuidelines from "@/components/Patients&Visitors/VisitorsGuideline
 // import InternationalPatients from "@/components/Patients&Visitors/InternationalPatients";
 // import Insurance from "@/components/Patients&Visitors/Insurance";
 
-const PatientVisitorsPage = () => {
+const PatientVisitorsPage = ({ initialTab = "" }) => {
     const isMobile = useIsMobile();
     const router = useRouter();
     const { tab } = router.query;
-    const [selectedTab, setSelectedTab] = useState("");
+    const [selectedTab, setSelectedTab] = useState(initialTab);
 
     useEffect(() => {
         if (tab) {
@@ -135,3 +135,14 @@ const PatientVisitorsPage = () => {
 };
 
 export default PatientVisitorsPage;
+
+
+export async function getServerSideProps(context) {
+    const { tab } = context.params || {};
+    const initialTab = Array.isArray(tab) ? tab[0] : (tab || "");
+    return {
+        props: {
+            initialTab
+        }
+    };
+}

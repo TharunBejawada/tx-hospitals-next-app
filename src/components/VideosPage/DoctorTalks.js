@@ -3,13 +3,14 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { FiX } from "react-icons/fi";
 
-export default function DoctorTalks() {
-    const [doctorVideos, setDoctorVideos] = useState([]);
+export default function DoctorTalks({ initialVideos = [] }) {
+    const [doctorVideos, setDoctorVideos] = useState(initialVideos);
     const [selectedVideo, setSelectedVideo] = useState(null);
     const [hoveredIdx, setHoveredIdx] = useState(null);
     const [modalVisible, setModalVisible] = useState(false);
 
     useEffect(() => {
+        if (initialVideos && initialVideos.length > 0) return;
         const fetchDoctorVideos = async () => {
             try {
                 const res = await fetch("https://api.txhospitals.vgworld.in/doctortalks/getAll");

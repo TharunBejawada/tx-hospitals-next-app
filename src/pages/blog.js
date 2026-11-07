@@ -3,8 +3,33 @@ import Head from "next/head";
 import SecondaryLayout from '@/components/Layouts/SecondaryLayout';
 import BlogsLandingPage from '@/components/Blogs/BlogsLandingPage';
 import { BlogListingSchema } from '@/utils/BlogSchema';
+import axios from 'axios';
+import CONFIG from '@/config';
 
-export default function Doctors_Page() {
+export async function getServerSideProps() {
+    try {
+        const response = await axios.get(`${CONFIG.API_BASE_URL}/blogs/getBlogsList`, { timeout: 6000 });
+        const rawBlogs = response.data?.Items || [];
+        const initialBlogs = rawBlogs
+            .filter(blog => (blog.status ? blog.status === "active" : blog.enabled !== false) && blog.status !== "inactive" && blog.enabled !== false)
+            .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+
+        return {
+            props: {
+                initialBlogs
+            }
+        };
+    } catch (err) {
+        console.error("SSR Blog list error:", err.message);
+        return {
+            props: {
+                initialBlogs: []
+            }
+        };
+    }
+}
+
+export default function Blog_Page({ initialBlogs }) {
     return (
         <>
             <Head>
@@ -18,7 +43,7 @@ export default function Doctors_Page() {
                 url="https://txhospitals.in/blog/"
             />
             <SecondaryLayout>
-                <BlogsLandingPage />
+                <BlogsLandingPage initialBlogs={initialBlogs} />
             </SecondaryLayout>
         </>
     );

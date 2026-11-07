@@ -3,7 +3,7 @@ import { fetchRoutes, generateXML, apiUrl } from "../utils/sitemap";
 export async function getServerSideProps({ res }) {
     const routes = await fetchRoutes(
         "blogs-miyapur",
-        `${apiUrl}/blogs/getBlogsByLocation/Miyapur`
+        `${apiUrl}/blogs/getBlogsList/Miyapur`
     );
     const sitemap = generateXML(routes);
     res.setHeader("Content-Type", "text/xml");

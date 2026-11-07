@@ -10,7 +10,7 @@ export default function HealthLibrary() {
     useEffect(() => {
         const fetchBlogs = async () => {
             try {
-                const res = await fetch("https://api.txhospitals.vgworld.in/blogs/getAllBlogs");
+                const res = await fetch("https://api.txhospitals.vgworld.in/blogs/getBlogsList");
                 const data = await res.json();
                 const activeBlogs = (data.Items || []).filter(blog => (blog.status ? blog.status === "active" : blog.enabled !== false) && blog.status !== "inactive" && blog.enabled !== false);
                 setBlogs(activeBlogs);

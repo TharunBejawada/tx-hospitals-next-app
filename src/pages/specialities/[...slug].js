@@ -1,4 +1,63 @@
-"use client";
+
+export async function getServerSideProps(context) {
+    const slug = context.params?.slug || [];
+    if (!slug || slug.length === 0) {
+        return { redirect: { destination: "/specialities/", permanent: false } };
+    }
+
+    let dep = slug[0] || null;
+    const second = slug[1] || null;
+    const third = slug[2] || null;
+
+    if (dep === "cardiothoracic-and-vascular-surgery-hospitals") {
+        dep = "cardiothoracic-vascular-surgery";
+    } else if (dep === "medical-gastro-hospitals") {
+        dep = "medical-gastroenterology";
+    } else if (dep === "surgical-gastro-hospitals" || dep === "surgical-gastroenterology-hospitals") {
+        dep = "surgical-gastroenterology";
+    } else if (dep === "gynecology-hospitals") {
+        dep = "gynaecology";
+    } else if (dep === "pediatric-hospitals") {
+        dep = "paediatrics";
+    }
+
+    let initialRouteType = null;
+    let initialTab = null;
+    let initialUrl = null;
+
+    if (!second) {
+        initialRouteType = "coe-main";
+        initialTab = "";
+    } else {
+        const validTabs = [
+            "disease-and-treatment",
+            "diagnostics",
+            "procedures",
+            "our-clinical-team",
+        ];
+
+        if (validTabs.includes(second) && !third) {
+            initialRouteType = "coe-tab";
+            initialTab = second;
+        } else if (second === "disease-and-treatment" && third) {
+            initialRouteType = "dat-detail";
+            initialUrl = `/specialities/${slug.join('/')}/`;
+        } else if (second === "procedures" && third) {
+            initialRouteType = "procedure-detail";
+            initialUrl = `/specialities/${slug.join('/')}/`;
+        }
+    }
+
+    return {
+        props: {
+            initialRouteType,
+            initialDepartment: dep,
+            initialTab,
+            initialUrl
+        }
+    };
+}
+
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { motion, AnimatePresence } from "framer-motion";
@@ -19,13 +78,13 @@ const OurLocations = dynamic(() => import("@/components/HomePage/OurLocations"),
     loading: () => <div className="w-full min-h-[200px] animate-pulse bg-white" />
 });
 
-export default function CenterOfExcellencePage() {
+export default function CenterOfExcellencePage({ initialRouteType = null, initialDepartment = null, initialTab = null, initialUrl = null }) {
     const router = useRouter();
     const { slug } = router.query;
-    const [routeType, setRouteType] = useState(null);
-    const [department, setDepartment] = useState(null);
-    const [tab, setTab] = useState(null);
-    const [url, setUrl] = useState(null);
+    const [routeType, setRouteType] = useState(initialRouteType);
+    const [department, setDepartment] = useState(initialDepartment);
+    const [tab, setTab] = useState(initialTab);
+    const [url, setUrl] = useState(initialUrl);
     const isMobile = useIsMobile();
 
     useEffect(() => {

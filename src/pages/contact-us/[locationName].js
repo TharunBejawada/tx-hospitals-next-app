@@ -1,12 +1,8 @@
 import ContactUs from "@/components/ContactUs/ContactUs";
 import SecondaryLayout from "@/components/Layouts/SecondaryLayout";
 import LocalitySchema from "@/utils/LocalitySchema";
-import { useRouter } from "next/router";
 
-export default function ContactUsPage() {
-    const router = useRouter();
-    const { locationName } = router.query;
-
+export default function ContactUsPage({ locationName = "" }) {
     return (
         <>
             {locationName && (
@@ -20,4 +16,13 @@ export default function ContactUsPage() {
             </SecondaryLayout>
         </>
     );
+}
+
+export async function getServerSideProps(context) {
+    const { locationName } = context.params || {};
+    return {
+        props: {
+            locationName: locationName || ""
+        }
+    };
 }

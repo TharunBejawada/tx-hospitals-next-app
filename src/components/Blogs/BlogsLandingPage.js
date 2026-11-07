@@ -9,17 +9,22 @@ import AppointmentForm from "@/components/Common/AppointmentForm";
 import Breadcrumb from "@/components/Common/Breadcrumb";
 import ActionButtons from "@/components/Common/ActionButtons";
 
-export default function BlogsLandingPage() {
+export default function BlogsLandingPage({ initialBlogs = null }) {
 
     const router = useRouter();
     const isMobile = useIsMobile();
     const [currentUrl, setCurrentUrl] = useState("");
-    const [loading, setLoading] = useState(true);
+    const sortedInitial = Array.isArray(initialBlogs) ? initialBlogs : [];
+    const hasInitial = sortedInitial.length > 0;
+    const [loading, setLoading] = useState(!hasInitial);
     const [error, setError] = useState(null);
-    const [blogs, setBlogs] = useState([]);
-    const [topBlogs, setTopBlogs] = useState([]);
-    const [filteredBlogs, setFilteredBlogs] = useState([]);
-    const [departments, setDepartments] = useState([]);
+    const [blogs, setBlogs] = useState(sortedInitial);
+    const [topBlogs, setTopBlogs] = useState(() => sortedInitial.slice(0, 3));
+    const [filteredBlogs, setFilteredBlogs] = useState(sortedInitial);
+    const [departments, setDepartments] = useState(() => {
+        const allCategories = sortedInitial.flatMap(blog => blog.categories || []);
+        return [...new Set(allCategories)];
+    });
     const [searchTerm, setSearchTerm] = useState("");
     const [open, setOpen] = useState(false);
     const [showModal, setShowModal] = useState(false);
@@ -35,9 +40,24 @@ export default function BlogsLandingPage() {
     }, []);
 
     useEffect(() => {
+        if (hasInitial) {
+            try {
+                const existingMap = JSON.parse(localStorage.getItem('slugMap') || '{}');
+                const newMap = { ...existingMap };
+                sortedInitial.forEach(blog => {
+                    if (blog.url) {
+                        newMap[blog.url.replace(/^\/|\/$/g, "")] = { id: blog.blogId, type: 'blog' };
+                    }
+                });
+                localStorage.setItem('slugMap', JSON.stringify(newMap));
+            } catch (_) {}
+            setLoading(false);
+            return;
+        }
+
         const fetchBlogs = async () => {
             try {
-                const endpoint = `${CONFIG.API_BASE_URL}/blogs/getAllBlogs`;
+                const endpoint = `${CONFIG.API_BASE_URL}/blogs/getBlogsList`;
                 const response = await axios.get(endpoint);
                 const sortedAndFilteredBlogs = response.data.Items
                     ?.filter(blog => (blog.status ? blog.status === "active" : blog.enabled !== false) && blog.status !== "inactive" && blog.enabled !== false)
@@ -64,7 +84,7 @@ export default function BlogsLandingPage() {
             }
         };
         fetchBlogs();
-    }, []);
+    }, [hasInitial]);
 
     useEffect(() => {
         if (!searchTerm.trim()) {

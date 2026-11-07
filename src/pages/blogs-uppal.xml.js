@@ -3,7 +3,7 @@ import { fetchRoutes, generateXML, apiUrl } from "../utils/sitemap";
 export async function getServerSideProps({ res }) {
     const routes = await fetchRoutes(
         "blogs-uppal",
-        `${apiUrl}/blogs/getBlogsByLocation/Uppal`
+        `${apiUrl}/blogs/getBlogsList/Uppal`
     );
     const sitemap = generateXML(routes);
     res.setHeader("Content-Type", "text/xml");

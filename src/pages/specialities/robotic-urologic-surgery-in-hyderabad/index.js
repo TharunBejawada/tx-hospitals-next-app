@@ -1,4 +1,3 @@
-"use client";
 import React, { useState, useEffect } from "react";
 import Head from "next/head";
 import axios from "axios";
@@ -20,9 +19,9 @@ const OurLocations = dynamic(() => import("@/components/HomePage/OurLocations"),
     loading: () => <div className="w-full min-h-[200px] animate-pulse bg-white" />
 });
 
-export default function RoboticUrologicSurgeryPage() {
-    const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(true);
+export default function RoboticUrologicSurgeryPage({ initialData = null }) {
+    const [data, setData] = useState(initialData);
+    const [loading, setLoading] = useState(!initialData);
     const [error, setError] = useState(null);
     const [showModal, setShowModal] = useState(false);
 
@@ -30,6 +29,7 @@ export default function RoboticUrologicSurgeryPage() {
     const apiUrl = `https://api.txhospitals.vgworld.in/robotic-surgery/getRoboticSurgerybyURL/${encodeURIComponent(pageUrl)}`;
 
     useEffect(() => {
+        if (initialData) return;
         const fetchData = async () => {
             try {
                 const response = await axios.get(apiUrl);
@@ -98,3 +98,29 @@ export default function RoboticUrologicSurgeryPage() {
         </>
     );
 }
+
+export async function getServerSideProps({ res }) {
+    if (res) {
+        res.setHeader('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300');
+    }
+    const pageUrl = "/specialities/robotic-urologic-surgery-in-hyderabad/";
+    let initialData = null;
+    try {
+        const apiUrl = `https://api.txhospitals.vgworld.in/robotic-surgery/getRoboticSurgerybyURL/${encodeURIComponent(pageUrl)}`;
+        const response = await fetch(apiUrl);
+        if (response.ok) {
+            const result = await response.json();
+            if (Array.isArray(result) && result.length > 0) {
+                initialData = result[0];
+            }
+        }
+    } catch (err) {
+        console.error("Error in robotic index getServerSideProps:", err);
+    }
+    return {
+        props: {
+            initialData
+        }
+    };
+}
+

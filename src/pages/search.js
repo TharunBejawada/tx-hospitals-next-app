@@ -1,18 +1,23 @@
 import React from "react";
 import Head from "next/head";
-import { useRouter } from "next/router";
 import SecondaryLayout from "@/components/Layouts/SecondaryLayout";
 import SearchResults from "@/components/Search/SearchResults";
 
-export default function SearchPage() {
-    const router = useRouter();
-    const { q = "" } = router.query;
+export async function getServerSideProps(context) {
+    const { q = "" } = context.query || {};
+    return {
+        props: {
+            query: String(q || "").trim()
+        }
+    };
+}
 
+export default function SearchPage({ query = "" }) {
     return (
         <>
             <Head>
                 <title>
-                    {q ? `Search: "${q}" – TX Hospitals` : "Search – TX Hospitals"}
+                    {query ? `Search: "${query}" – TX Hospitals` : "Search – TX Hospitals"}
                 </title>
                 <meta
                     name="description"
@@ -24,7 +29,7 @@ export default function SearchPage() {
                 />
             </Head>
             <SecondaryLayout>
-                <SearchResults initialQuery={q} />
+                <SearchResults initialQuery={query} />
             </SecondaryLayout>
         </>
     );

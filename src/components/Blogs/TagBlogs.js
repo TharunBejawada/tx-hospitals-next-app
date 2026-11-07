@@ -12,16 +12,17 @@ import Breadcrumb from "@/components/Common/Breadcrumb";
 import AppointmentForm from "@/components/Common/AppointmentForm";
 import { BlogListingSchema } from "@/utils/BlogSchema";
 
-export default function TagBlogs() {
+export default function TagBlogs({ initialTag = '', initialBlogs = null }) {
 
     const router = useRouter();
+    const hasInitial = Array.isArray(initialBlogs) && initialBlogs.length > 0;
     const [currentUrl, setCurrentUrl] = useState("");
-    const [category, setCategory] = useState("");
+    const [category, setCategory] = useState(initialTag || "");
     const [departments, setDepartments] = useState([]);
     const isMobile = useIsMobile();
-    const [blogs, setBlogs] = useState([]);
-    const [filteredBlogs, setFilteredBlogs] = useState([]);
-    const [topBlogs, setTopBlogs] = useState([]);
+    const [blogs, setBlogs] = useState(hasInitial ? initialBlogs : []);
+    const [filteredBlogs, setFilteredBlogs] = useState(hasInitial ? initialBlogs : []);
+    const [topBlogs, setTopBlogs] = useState(hasInitial ? initialBlogs.slice(0, 2) : []);
     const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
@@ -53,22 +54,25 @@ export default function TagBlogs() {
 
     useEffect(() => {
         if (!category) return;
+        if (hasInitial && category === initialTag) return;
+
         const fetchBlogs = async () => {
             try {
-                const response = await axios.get(`${CONFIG.API_BASE_URL}/blogs/getBlogsByTag/${category}`);
-                const sortedAndFilteredBlogs = response.data
+                const response = await axios.get(`${CONFIG.API_BASE_URL}/blogs/getBlogsByTag/${encodeURIComponent(category)}`);
+                const raw = Array.isArray(response.data) ? response.data : (response.data?.Items || []);
+                const sortedAndFilteredBlogs = raw
                     ?.filter(blog => (blog.status ? blog.status === "active" : blog.enabled !== false) && blog.status !== "inactive" && blog.enabled !== false)
-                    .sort((a, b) => new Date(b.timeline) - new Date(a.timeline));
+                    .sort((a, b) => new Date(b.timeline || b.createdAt || 0) - new Date(a.timeline || a.createdAt || 0));
                 setBlogs(sortedAndFilteredBlogs);
                 setFilteredBlogs(sortedAndFilteredBlogs);
                 setTopBlogs(sortedAndFilteredBlogs.slice(0, 2));
             } catch (err) {
-                console.error('Error fetching blogs:', err);
+                console.error('Error fetching tag blogs:', err);
             }
         };
 
         fetchBlogs();
-    }, [category]);
+    }, [category, hasInitial, initialTag]);
 
     const handleReadMore = async (blog) => {
         if (!blog || !blog.url || !blog.url.trim() || blog.url === "#") return;

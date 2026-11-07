@@ -8,12 +8,13 @@ import WhyChooseHealthPackages from "@/components/HealthPackages/WhyChooseHealth
 import Breadcrumb from "@/components/Common/Breadcrumb";
 import BookAppointmentForm from "@/components/Blogs/BookAppointemntForm";
 
-export default function HPLandingPage() {
+export default function HPLandingPage({ initialPackages = null }) {
 
     const isMobile = useIsMobile();
     const [active, setActive] = useState("All Packages");
-    const [packages, setPackages] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const hasInitial = Array.isArray(initialPackages) && initialPackages.length > 0;
+    const [packages, setPackages] = useState(hasInitial ? initialPackages : []);
+    const [loading, setLoading] = useState(!hasInitial);
     const [showModal, setShowModal] = useState(false);
 
     const breadcrumbItems = [
@@ -29,6 +30,11 @@ export default function HPLandingPage() {
     ];
 
     useEffect(() => {
+        if (hasInitial) {
+            setLoading(false);
+            return;
+        }
+
         const fetchPackages = async () => {
             try {
                 const res = await fetch(
@@ -44,7 +50,7 @@ export default function HPLandingPage() {
         };
 
         fetchPackages();
-    }, []);
+    }, [hasInitial]);
 
     const handleCall = () => {
         window.location.href = "tel:9144514459";

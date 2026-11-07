@@ -4,6 +4,7 @@ import Layout from '@/components/Layouts/Layout';
 import Specialities from '@/components/HomePage/Specialities';
 import LocationsBar from '@/components/HomePage/LocationsBar';
 import Head from "next/head";
+import CONFIG from "@/config";
 
 const DiseaseSearch = dynamic(() => import('@/components/HomePage/DiseaseSearch'), { 
     loading: () => <div className="w-full min-h-[100px] animate-pulse bg-gray-50" />
@@ -30,7 +31,7 @@ const VideoSection = dynamic(() => import('@/components/HomePage/VideoSection'),
     loading: () => <div className="w-full bg-[#fceef2] min-h-[400px] md:min-h-[500px] animate-pulse" />
 });
 
-export default function HomePage() {
+export default function HomePage({ initialBlogs = [] }) {
     return (
         <>
             <Head>
@@ -60,10 +61,35 @@ export default function HomePage() {
                 <DiseaseSearch />
                 <WhyChooseUs />
                 <VideoSection />
-                <HealthLibrary />
+                <HealthLibrary initialBlogs={initialBlogs} />
                 <FAQ />
                 <OurLocations />
             </Layout>
         </>
     );
 }
+
+export async function getServerSideProps({ res }) {
+    if (res) {
+        res.setHeader('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300');
+    }
+    let initialBlogs = [];
+    try {
+        const response = await fetch(`${CONFIG.API_BASE_URL}/blogs/getBlogsList`);
+        if (response.ok) {
+            const data = await response.json();
+            const sortedAndFilteredBlogs = (data?.Items || [])
+                .filter(blog => (blog.status ? blog.status === "active" : blog.enabled !== false) && blog.status !== "inactive" && blog.enabled !== false)
+                .sort((a, b) => new Date(b.createdAt || b.timeline || 0) - new Date(a.createdAt || a.timeline || 0));
+            initialBlogs = sortedAndFilteredBlogs.slice(0, 6);
+        }
+    } catch (err) {
+        console.error("Error in homepage getServerSideProps:", err);
+    }
+    return {
+        props: {
+            initialBlogs
+        }
+    };
+}
+

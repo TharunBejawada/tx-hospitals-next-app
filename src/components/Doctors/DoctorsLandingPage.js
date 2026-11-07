@@ -19,14 +19,36 @@ const locations = [
     { value: "Miyapur", label: "Miyapur" },
 ];
 
-export default function DoctorsLandingPage() {
+export default function DoctorsLandingPage({ initialDoctors = null }) {
 
     const router = useRouter();
-    const [loading, setLoading] = useState(true);
+    const hasInitial = Array.isArray(initialDoctors) && initialDoctors.length > 0;
+    const [loading, setLoading] = useState(!hasInitial);
     const [error, setError] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
-    const [doctorsData, setDoctorsData] = useState([]);
-    const [departments, setDepartments] = useState([]);
+    const [doctorsData, setDoctorsData] = useState(() => {
+        if (!hasInitial) return [];
+        return initialDoctors.map((doctor) => ({
+            ...doctor,
+            category: doctor.department || "",
+        }));
+    });
+    const [departments, setDepartments] = useState(() => {
+        if (!hasInitial) return [];
+        const seenDepts = new Set();
+        const uniqueDepartments = [];
+        initialDoctors.forEach((doc) => {
+            getDoctorSpecialities(doc).forEach((dept) => {
+                const cleaned = String(dept || "").trim();
+                const lower = cleaned.toLowerCase();
+                if (cleaned && cleaned !== "undefined" && cleaned !== "null" && !seenDepts.has(lower)) {
+                    seenDepts.add(lower);
+                    uniqueDepartments.push(cleaned);
+                }
+            });
+        });
+        return uniqueDepartments.sort((a, b) => a.localeCompare(b));
+    });
     const [selectedLocation, setSelectedLocation] = useState("");
     const [selectedSpeciality, setSelectedSpeciality] = useState("");
     const [visibleDoctors, setVisibleDoctors] = useState(20);
@@ -142,11 +164,24 @@ export default function DoctorsLandingPage() {
     }, []);
 
     useEffect(() => {
-        fetch(`${CONFIG.API_BASE_URL}/getAllDoctors`)
+        if (hasInitial) {
+            try {
+                const existingMap = JSON.parse(localStorage.getItem('slugMap') || '{}');
+                const newMap = { ...existingMap };
+                initialDoctors.forEach(doctor => {
+                    if (doctor.url) {
+                        newMap[doctor.url.replace(/^\/|\/$/g, "")] = { id: doctor.id, type: 'doctor' };
+                    }
+                });
+                localStorage.setItem('slugMap', JSON.stringify(newMap));
+            } catch (_) {}
+            setLoading(false);
+            return;
+        }
+
+        fetch(`${CONFIG.API_BASE_URL}/getDoctorsList`).then(r => r.ok ? r : fetch(`${CONFIG.API_BASE_URL}/getAllDoctors`))
             .then((response) => response.json())
             .then((data) => {
-
-                // Extract unique department names for dropdown (case-insensitive deduplication)
                 const seenDepts = new Set();
                 const uniqueDepartments = [];
                 data.forEach((doc) => {
@@ -161,7 +196,6 @@ export default function DoctorsLandingPage() {
                 });
                 uniqueDepartments.sort((a, b) => a.localeCompare(b));
 
-                // Flatten the array for filtering & display
                 const flatDoctorsArray = data.map((doctor) => ({
                     ...doctor,
                     category: doctor.department || "",
@@ -174,12 +208,14 @@ export default function DoctorsLandingPage() {
                 const existingMap = JSON.parse(localStorage.getItem('slugMap') || '{}');
                 const newMap = { ...existingMap };
                 data.forEach(doctor => {
-                    newMap[doctor.url.replace(/^\/|\/$/g, "")] = { id: doctor.id, type: 'doctor' };
+                    if (doctor.url) {
+                        newMap[doctor.url.replace(/^\/|\/$/g, "")] = { id: doctor.id, type: 'doctor' };
+                    }
                 });
                 localStorage.setItem('slugMap', JSON.stringify(newMap));
             })
             .catch((error) => console.error("Error fetching doctors data:", error));
-    }, []);
+    }, [hasInitial]);
 
     if (loading) {
         return (

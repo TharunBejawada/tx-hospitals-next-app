@@ -1,24 +1,173 @@
-"use client";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import CONFIG from "@/config";
 import BlogDetails from "@/components/Blogs/BlogDetails";
 import ViewProfile from "@/components/Doctors/ViewProfile";
-// import SecondOpinionDetail from "@/components/SecondOpinion/SecondOpinionDetail";
 import { useRouter } from "next/router";
 import SecondaryLayout from "@/components/Layouts/SecondaryLayout";
 import SODetailsPage from "@/components/SecondOpinion/SODetailsPage";
 
-export default function UniversalPage() {
+// In-memory cache on the Node.js server to make SSR resolution ultra-fast (1 minute TTL)
+let serverCache = {
+    blogs: null,
+    doctors: null,
+    opinions: null,
+    lastFetched: 0
+};
+
+export async function getServerSideProps(context) {
+    const { url } = context.params || {};
+
+    if (!url || url.includes('[') || url.includes(']')) {
+        return {
+            redirect: {
+                destination: "/",
+                permanent: false
+            }
+        };
+    }
+
+    const cleanUrl = String(url).replace(/^\/|\/$/g, "");
+
+    try {
+        const now = Date.now();
+        const cacheValid = serverCache.lastFetched && (now - serverCache.lastFetched < 60000);
+
+        let blogs = cacheValid ? serverCache.blogs : null;
+        let doctors = cacheValid ? serverCache.doctors : null;
+        let opinions = cacheValid ? serverCache.opinions : null;
+
+        if (!cacheValid || !blogs || !doctors || !opinions) {
+            const [blogsRes, doctorsRes, soRes] = await Promise.all([
+                axios.get(`${CONFIG.API_BASE_URL}/blogs/getBlogsList`, { timeout: 6000 }),
+                axios.get(`${CONFIG.API_BASE_URL}/getDoctorsList`, { timeout: 6000 }).catch(() => axios.get(`${CONFIG.API_BASE_URL}/getAllDoctors`, { timeout: 6000 })),
+                axios.get(`${CONFIG.API_BASE_URL}/new-secondopinion/getAllSecondOpinion`, { timeout: 6000 })
+            ]);
+
+            blogs = blogsRes?.data?.Items?.filter(b => (b.status ? b.status === "active" : b.enabled !== false) && b.status !== "inactive" && b.enabled !== false) || [];
+            doctors = Array.isArray(doctorsRes?.data) ? doctorsRes.data : [];
+            opinions = soRes?.data?.Items || [];
+
+            serverCache = {
+                blogs,
+                doctors,
+                opinions,
+                lastFetched: now
+            };
+        }
+
+        // 1. Check Blogs
+        const matchBlog = blogs.find(blog => blog?.url && cleanUrl === blog.url.replace(/^\/|\/$/g, ""));
+        if (matchBlog) {
+            const allCats = blogs.flatMap(b => b.categories || []);
+            const departments = [...new Set(allCats)];
+
+            let blogData = matchBlog;
+            if (!matchBlog.extraFields || matchBlog.extraFields.length === 0) {
+                try {
+                    const res = await axios.get(`${CONFIG.API_BASE_URL}/blogs/getBlogbyId/${matchBlog.blogId}`, { timeout: 4000 });
+                    if (res?.data?.Item) {
+                        blogData = res.data.Item;
+                    }
+                } catch (err) {
+                    console.error("SSR Blog detail fetch warning:", err.message);
+                }
+            }
+
+            return {
+                props: {
+                    initialType: "blog",
+                    initialData: blogData,
+                    initialDepartments: departments
+                }
+            };
+        }
+
+        // 2. Check Doctors
+        const matchDoctor = doctors.find(d => d?.url && cleanUrl === d.url.replace(/^\/|\/$/g, ""));
+        if (matchDoctor) {
+            try {
+                const res = await axios.get(`${CONFIG.API_BASE_URL}/doctors/${matchDoctor.id}`, { timeout: 4000 });
+                if (res.data && Object.keys(res.data).length > 0) {
+                    return {
+                        props: {
+                            initialType: "doctor",
+                            initialData: res.data,
+                            initialDepartments: []
+                        }
+                    };
+                }
+            } catch (err) {
+                console.error("SSR Doctor fetch error:", err.message);
+            }
+            return {
+                redirect: {
+                    destination: "/find-doctor/",
+                    permanent: false
+                }
+            };
+        }
+
+        // 3. Check Second Opinion Surgeries
+        const matchOpinion = opinions.find(op => op?.url && cleanUrl === op.url.replace(/^\/|\/$/g, ""));
+        if (matchOpinion) {
+            try {
+                const res = await axios.get(`${CONFIG.API_BASE_URL}/new-secondopinion/getSecondOpinionbyId/${matchOpinion.soId}`, { timeout: 4000 });
+                if (res?.data?.Item) {
+                    return {
+                        props: {
+                            initialType: "surgery",
+                            initialData: res.data.Item,
+                            initialDepartments: []
+                        }
+                    };
+                }
+            } catch (err) {
+                console.error("SSR Surgery fetch error:", err.message);
+            }
+        }
+
+        // If it looks like a doctor URL but no match was found
+        if (cleanUrl.startsWith("dr-")) {
+            return {
+                redirect: {
+                    destination: "/find-doctor/",
+                    permanent: false
+                }
+            };
+        }
+
+        // Fallback redirect to home if route not matched
+        return {
+            redirect: {
+                destination: "/",
+                permanent: false
+            }
+        };
+
+    } catch (error) {
+        console.error("Universal SSR Error:", error.message);
+        // On error, let client fallback attempt resolution
+        return {
+            props: {
+                initialType: null,
+                initialData: null,
+                initialDepartments: []
+            }
+        };
+    }
+}
+
+export default function UniversalPage({ initialType, initialData, initialDepartments }) {
     const router = useRouter();
     const { url } = router.query;
 
-    const [loading, setLoading] = useState(true);
-    const [type, setType] = useState(null);
-    const [data, setData] = useState(null);
-    const [departments, setDepartments] = useState([]);
+    const [loading, setLoading] = useState(!initialData);
+    const [type, setType] = useState(initialType || null);
+    const [data, setData] = useState(initialData || null);
+    const [departments, setDepartments] = useState(initialDepartments || []);
 
-    // Simple static cache to avoid re-fetching lists during the same session
+    // Simple static client cache
     const apiCache = {
         blogs: null,
         doctors: null,
@@ -26,6 +175,23 @@ export default function UniversalPage() {
     };
 
     useEffect(() => {
+        // If data was already rendered by SSR, save hint to localStorage and return
+        if (initialData && initialType) {
+            try {
+                const cleanUrl = String(url || "").replace(/^\/|\/$/g, "");
+                if (cleanUrl) {
+                    const existingMap = JSON.parse(localStorage.getItem('slugMap') || '{}');
+                    const id = initialData.blogId || initialData.id || initialData.soId;
+                    if (id) {
+                        existingMap[cleanUrl] = { id, type: initialType };
+                        localStorage.setItem('slugMap', JSON.stringify(existingMap));
+                    }
+                }
+            } catch (_) {}
+            setLoading(false);
+            return;
+        }
+
         if (!url) return;
 
         if (url.includes('[') || url.includes(']')) {
@@ -35,7 +201,6 @@ export default function UniversalPage() {
 
         const fetchData = async () => {
             try {
-                // 1. FAST PATH: Check local storage hint for instant resolution
                 const slugMap = JSON.parse(localStorage.getItem('slugMap') || '{}');
                 const cleanUrl = url.replace(/^\/|\/$/g, "");
                 const hint = slugMap[cleanUrl];
@@ -65,14 +230,12 @@ export default function UniversalPage() {
                     }
                 }
 
-                // 2. REGULAR PATH (Fallback): Search through all lists
                 const [blogsRes, doctorsRes, soRes] = await Promise.all([
-                    apiCache.blogs || axios.get(`${CONFIG.API_BASE_URL}/blogs/getAllBlogs`),
-                    apiCache.doctors || axios.get(`${CONFIG.API_BASE_URL}/getAllDoctors`),
+                    apiCache.blogs || axios.get(`${CONFIG.API_BASE_URL}/blogs/getBlogsList`),
+                    apiCache.doctors || axios.get(`${CONFIG.API_BASE_URL}/getDoctorsList`).catch(() => axios.get(`${CONFIG.API_BASE_URL}/getAllDoctors`)),
                     apiCache.opinions || axios.get(`${CONFIG.API_BASE_URL}/new-secondopinion/getAllSecondOpinion`)
                 ]);
 
-                // Cache the results for subsequent navigations
                 apiCache.blogs = blogsRes;
                 apiCache.doctors = doctorsRes;
                 apiCache.opinions = soRes;
@@ -81,7 +244,6 @@ export default function UniversalPage() {
                 const doctors = Array.isArray(doctorsRes?.data) ? doctorsRes.data : [];
                 const opinions = soRes?.data?.Items || [];
 
-                // Check Blogs
                 const matchBlog = blogs.find(blog => blog?.url && cleanUrl === blog.url.replace(/^\/|\/$/g, ""));
                 if (matchBlog) {
                     const allCats = blogs.flatMap(b => b.categories || []);
@@ -103,7 +265,6 @@ export default function UniversalPage() {
                     return;
                 }
 
-                // Check Doctors
                 const matchDoctor = doctors.find(d => d?.url && cleanUrl === d.url.replace(/^\/|\/$/g, ""));
                 if (matchDoctor) {
                     try {
@@ -121,7 +282,6 @@ export default function UniversalPage() {
                     return;
                 }
 
-                // Check Second Opinion
                 const matchOpinion = opinions.find(op => op?.url && cleanUrl === op.url.replace(/^\/|\/$/g, ""));
                 if (matchOpinion) {
                     const res = await axios.get(`${CONFIG.API_BASE_URL}/new-secondopinion/getSecondOpinionbyId/${matchOpinion.soId}`);
@@ -131,7 +291,6 @@ export default function UniversalPage() {
                     return;
                 }
 
-                // If it looks like a doctor URL but no match was found, redirect to homepage
                 if (cleanUrl.startsWith("dr-")) {
                     router.replace("/find-doctor/");
                     return;
@@ -140,20 +299,14 @@ export default function UniversalPage() {
                 router.replace("/");
                 return;
             } catch (err) {
-                console.error("Universal Error:", err);
+                console.error("Universal Client Error:", err);
                 router.replace("/");
                 return;
             }
         };
 
         fetchData();
-    }, [url]);
-
-    useEffect(() => {
-        if (type === "404") {
-            router.replace("/");
-        }
-    }, [type, router]);
+    }, [url, initialData, initialType]);
 
     /* Loading state */
     if (loading) {
@@ -196,6 +349,5 @@ export default function UniversalPage() {
         );
     }
 
-    /* 404 / REDIRECT TO HOME */
     return null;
 }

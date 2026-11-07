@@ -65,7 +65,7 @@ export default function DoctorBlogs({ department, doctorName, maxCards = 3 }) {
         const fetchBlogs = async () => {
             setLoading(true);
             try {
-                const response = await axios.get(`${CONFIG.API_BASE_URL}/blogs/getAllBlogs`);
+                const response = await axios.get(`${CONFIG.API_BASE_URL}/blogs/getBlogsList`);
                 const raw = response.data?.Items || (Array.isArray(response.data) ? response.data : []);
 
                 const active = raw

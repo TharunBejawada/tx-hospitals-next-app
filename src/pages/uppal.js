@@ -1,3 +1,4 @@
+import CONFIG from "@/config";
 /*
 import React from 'react';
 import Head from 'next/head';
@@ -67,7 +68,7 @@ import UppalNewFAQ from '@/components/Uppal/UppalNewFAQ';
 import Breadcrumb from '@/components/Common/Breadcrumb';
 import LocalitySchema from '@/utils/LocalitySchema';
 
-export default function UppalPage() {
+export default function UppalPage({ initialDoctors = [], initialBlogs = [] }) {
     return (
         <>
             <Head>
@@ -119,7 +120,7 @@ export default function UppalPage() {
                     <UppalNewEmergency />
 
                     {/* Doctors Section */}
-                    <UppalNewDoctors />
+                    <UppalNewDoctors initialDoctors={initialDoctors} />
 
                     {/* Testimonials Section */}
                     <UppalNewTestimonials />
@@ -128,7 +129,7 @@ export default function UppalPage() {
                     <UppalNewLocations />
 
                     {/* Blogs Section */}
-                    <UppalNewBlogs />
+                    <UppalNewBlogs initialBlogs={initialBlogs} />
 
                     {/* FAQ Section */}
                     <UppalNewFAQ />
@@ -136,4 +137,45 @@ export default function UppalPage() {
             </SecondaryLayout>
         </>
     );
+}
+
+export async function getServerSideProps({ res }) {
+    if (res) {
+        res.setHeader('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300');
+    }
+    let initialDoctors = [];
+    let initialBlogs = [];
+    try {
+        const [docsRes, blogsRes] = await Promise.all([
+            fetch(`${CONFIG.API_BASE_URL}/getDoctorsList`).then(r => r.ok ? r : fetch(`${CONFIG.API_BASE_URL}/getAllDoctors`)),
+            fetch(`${CONFIG.API_BASE_URL}/blogs/getBlogsList/${encodeURIComponent('Uppal')}`)
+        ]);
+
+        if (docsRes.ok) {
+            const data = await docsRes.json();
+            const targetIds = [
+                'drmkumarbhanu@txhospitals.in',
+                'drjagdishpusa@txhospitals.in',
+                'druazadhchandrashekhar@txhospitals.in'
+            ];
+            initialDoctors = targetIds.map(id => (data || []).find(doc => doc.id === id)).filter(Boolean);
+        }
+
+        if (blogsRes.ok) {
+            const bData = await blogsRes.json();
+            const raw = bData?.Items || (Array.isArray(bData) ? bData : []);
+            initialBlogs = raw
+                .filter(b => (b.status ? b.status === 'active' : b.enabled !== false) && b.status !== 'inactive' && b.enabled !== false)
+                .sort((a, b) => new Date(b.createdAt || b.timeline || 0) - new Date(a.createdAt || a.timeline || 0));
+        }
+    } catch (err) {
+        console.error("Error in Uppal getServerSideProps:", err);
+    }
+
+    return {
+        props: {
+            initialDoctors,
+            initialBlogs
+        }
+    };
 }

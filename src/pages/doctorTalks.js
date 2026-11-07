@@ -4,7 +4,7 @@ import SecondaryLayout from '@/components/Layouts/SecondaryLayout';
 import DoctorTalks from '@/components/VideosPage/DoctorTalks';
 import Breadcrumb from '@/components/Common/Breadcrumb';
 
-export default function DoctorTalksPage() {
+export default function DoctorTalksPage({ initialVideos = [] }) {
     return (
         <>
             <Head>
@@ -20,8 +20,31 @@ export default function DoctorTalksPage() {
                         { label: "Doctor Talks" }
                     ]} />
                 </div>
-                <DoctorTalks />
+                <DoctorTalks initialVideos={initialVideos} />
             </SecondaryLayout>
         </>
     );
+}
+
+export async function getServerSideProps({ res }) {
+    if (res) {
+        res.setHeader('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300');
+    }
+    let initialVideos = [];
+    try {
+        const response = await fetch("https://api.txhospitals.vgworld.in/doctortalks/getAll");
+        if (response.ok) {
+            const data = await response.json();
+            if (Array.isArray(data) && data.length > 0) {
+                initialVideos = data[0]?.doctorTalks || [];
+            }
+        }
+    } catch (err) {
+        console.error("Error in doctorTalks getServerSideProps:", err);
+    }
+    return {
+        props: {
+            initialVideos
+        }
+    };
 }

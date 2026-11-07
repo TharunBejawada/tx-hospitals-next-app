@@ -1,3 +1,4 @@
+import CONFIG from "@/config";
 import React from 'react';
 import Head from 'next/head';
 import SecondaryLayout from '@/components/Layouts/SecondaryLayout';
@@ -15,7 +16,7 @@ import MiyapurFAQ from '@/components/Miyapur/MiyapurFAQ';
 import Breadcrumb from '@/components/Common/Breadcrumb';
 import LocalitySchema from '@/utils/LocalitySchema';
 
-export default function MiyapurPage() {
+export default function MiyapurPage({ initialBlogs = [] }) {
     return (
         <>
             <Head>
@@ -62,7 +63,7 @@ export default function MiyapurPage() {
                     <MiyapurLocations />
 
                     {/* Blogs Section */}
-                    <MiyapurBlogs />
+                    <MiyapurBlogs initialBlogs={initialBlogs} />
 
                     {/* FAQ Section */}
                     <MiyapurFAQ />
@@ -70,4 +71,30 @@ export default function MiyapurPage() {
             </SecondaryLayout>
         </>
     );
+}
+
+
+export async function getServerSideProps({ res }) {
+    if (res) {
+        res.setHeader('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300');
+    }
+    let initialBlogs = [];
+    try {
+        const blogsRes = await fetch(`${CONFIG.API_BASE_URL}/blogs/getBlogsList/${encodeURIComponent('Miyapur')}`);
+        if (blogsRes.ok) {
+            const bData = await blogsRes.json();
+            const raw = bData?.Items || (Array.isArray(bData) ? bData : []);
+            initialBlogs = raw
+                .filter(b => (b.status ? b.status === 'active' : b.enabled !== false) && b.status !== 'inactive' && b.enabled !== false)
+                .sort((a, b) => new Date(b.createdAt || b.timeline || 0) - new Date(a.createdAt || a.timeline || 0));
+        }
+    } catch (err) {
+        console.error("Error in Miyapur getServerSideProps:", err);
+    }
+
+    return {
+        props: {
+            initialBlogs
+        }
+    };
 }
