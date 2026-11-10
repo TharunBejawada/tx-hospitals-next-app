@@ -15,8 +15,9 @@ import MiyapurBlogs from '@/components/Miyapur/MiyapurBlogs';
 import MiyapurFAQ from '@/components/Miyapur/MiyapurFAQ';
 import Breadcrumb from '@/components/Common/Breadcrumb';
 import LocalitySchema from '@/utils/LocalitySchema';
+import { getTopBranchDoctors } from '@/utils/branchDoctors';
 
-export default function MiyapurPage({ initialBlogs = [] }) {
+export default function MiyapurPage({ initialDoctors = [], initialBlogs = [] }) {
     return (
         <>
             <Head>
@@ -48,7 +49,7 @@ export default function MiyapurPage({ initialBlogs = [] }) {
                     <MiyapurRoboticKnee />
 
                     {/* Doctors Section */}
-                    <MiyapurDoctors />
+                    <MiyapurDoctors initialDoctors={initialDoctors} />
 
                     {/* Why Choose Section */}
                     <MiyapurWhyChoose />
@@ -78,9 +79,19 @@ export async function getServerSideProps({ res }) {
     if (res) {
         res.setHeader('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300');
     }
+    let initialDoctors = [];
     let initialBlogs = [];
     try {
-        const blogsRes = await fetch(`${CONFIG.API_BASE_URL}/blogs/getBlogsList/${encodeURIComponent('Miyapur')}`);
+        const [docsRes, blogsRes] = await Promise.all([
+            fetch(`${CONFIG.API_BASE_URL}/getDoctorsList`).then(r => r.ok ? r : fetch(`${CONFIG.API_BASE_URL}/getAllDoctors`)),
+            fetch(`${CONFIG.API_BASE_URL}/blogs/getBlogsList/${encodeURIComponent('Miyapur')}`)
+        ]);
+
+        if (docsRes.ok) {
+            const data = await docsRes.json();
+            initialDoctors = getTopBranchDoctors(data, 'Miyapur', 3);
+        }
+
         if (blogsRes.ok) {
             const bData = await blogsRes.json();
             const raw = bData?.Items || (Array.isArray(bData) ? bData : []);
@@ -94,6 +105,7 @@ export async function getServerSideProps({ res }) {
 
     return {
         props: {
+            initialDoctors,
             initialBlogs
         }
     };

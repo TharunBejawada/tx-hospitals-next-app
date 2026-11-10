@@ -15,6 +15,7 @@ import BanjaraHillsNewBlogs from '@/components/BanjaraHills/BanjaraHillsNewBlogs
 import BanjaraHillsNewFAQ from '@/components/BanjaraHills/BanjaraHillsNewFAQ';
 import Breadcrumb from '@/components/Common/Breadcrumb';
 import LocalitySchema from '@/utils/LocalitySchema';
+import { getTopBranchDoctors } from '@/utils/branchDoctors';
 
 export default function BanjaraHillsPage({ initialDoctors = [], initialBlogs = [] }) {
     return (
@@ -92,42 +93,7 @@ export async function getServerSideProps({ res }) {
 
         if (docsRes.ok) {
             const data = await docsRes.json();
-            const doctorDetailsOverride = {
-                'dravinashdal@txhospitals.in': {
-                    name: 'Dr. Avinash Dal',
-                    designation: 'Sr. Consultant - Cardiothoracic & Vascular Surgeon | Chairman - CTVS',
-                    qualification: 'MBBS, MS - General Surgery, MCh - Cardiothoracic & Vascular Surgery',
-                    experience: '30+ Years',
-                    location: 'Banjara Hills, Hyderabad'
-                },
-                'drdvlnarayanarao@txhospitals.in': {
-                    name: 'Dr. D.V.L Narayana Rao',
-                    designation: 'Sr. Consultant Surgical Gastroenterologist, Robotic Laparoscopic & GI Cancer Surgeon',
-                    qualification: 'MBBS, MS (Gen Surgery), MMC Chennai, MCh (GI Surgery), AIIMS New Delhi Fellowship (SGE), NIMS Hyderabad, DNB, FLTP, Ex. Prof. Surgical Gastro (OMC, KMC)',
-                    experience: '33+ Years',
-                    location: 'Banjara Hills, Hyderabad'
-                },
-                'drnareshkumarg@txhospitals.in': {
-                    name: 'Dr. Naresh Kumar G',
-                    designation: 'Sr. Consultant - Neurosurgeon',
-                    qualification: 'MBBS, MS, MCh Neurosurgery',
-                    experience: '12+ Years',
-                    location: 'Banjara Hills, Hyderabad'
-                }
-            };
-            const targetIds = ['dravinashdal@txhospitals.in', 'drdvlnarayanarao@txhospitals.in', 'drnareshkumarg@txhospitals.in'];
-            initialDoctors = targetIds.map(id => {
-                const apiDoc = (data || []).find(doc => doc.id === id);
-                const override = doctorDetailsOverride[id];
-                if (override) {
-                    return {
-                        ...apiDoc,
-                        ...override,
-                        image: apiDoc ? apiDoc.image : "https://tx-hospital-doctor-images.s3.ap-south-2.amazonaws.com/doctors/default-doctor.webp"
-                    };
-                }
-                return apiDoc;
-            }).filter(Boolean);
+            initialDoctors = getTopBranchDoctors(data, 'Banjara', 3);
         }
 
         if (blogsRes.ok) {
