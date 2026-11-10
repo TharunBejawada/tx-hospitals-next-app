@@ -53,7 +53,7 @@ export const departmentData = {
     },
     "endocrinology": {
         title: "Endocrinology",
-        image: "/assets/COE/Banner Box.webp",
+        image: "/assets/COE/Endocrinology.webp",
     },
     "transplant-medicine": {
         title: "Transplant Medicine",
