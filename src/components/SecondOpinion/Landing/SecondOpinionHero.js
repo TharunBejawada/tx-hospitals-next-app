@@ -86,7 +86,7 @@ export default function SecondOpinionHero({
                         <div className="flex flex-col sm:flex-row gap-2 flex-wrap">
                             {/* Call button exactly matching brand color */}
                             <a
-                                href="tel:9144514459"
+                                href="tel:+919144514459"
                                 className="bg-[#b01640] hover:bg-[#8b1232] text-white flex items-center justify-center gap-2 rounded-lg font-bold font-montserrat text-sm tracking-wider px-4 py-2.5 transition-all transform active:scale-95 shadow-md hover:shadow-lg w-full sm:w-auto uppercase"
                             >
                                 <svg alt="Icon" className="w-4 h-4 fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">

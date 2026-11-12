@@ -49,7 +49,7 @@ const BanjaraHillsNewFAQ = () => {
         },
         {
             question: "How can I book an appointment at TX Hospitals, Banjara Hills?",
-            answer: "You can book an appointment online through our website, by calling our direct helpline 040-66529999, or by visiting the hospital reception in person."
+            answer: "You can book an appointment online through our website, by calling our direct helpline +91-40-66529999, or by visiting the hospital reception in person."
         }
     ];
 
@@ -133,8 +133,8 @@ const BanjaraHillsNewFAQ = () => {
                             </div>
                             <div className="flex items-center gap-2.5">
                                 <Phone className="flex-shrink-0 w-4 h-4" style={{ color: 'rgb(189,56,92)' }} />
-                                <a href="tel:04066529999" className="hover:underline font-medium" style={{ fontSize: 13, color: 'rgb(189,56,92)' }}>
-                                    040-66529999
+                                <a href="tel:+914066529999" className="hover:underline font-medium" style={{ fontSize: 13, color: 'rgb(189,56,92)' }}>
+                                    +91-40-66529999
                                 </a>
                             </div>
                             <button

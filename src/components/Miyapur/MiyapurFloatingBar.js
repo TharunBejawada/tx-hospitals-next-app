@@ -207,7 +207,7 @@ const MiyapurFloatingBar = () => {
                         WhatsApp
                     </span>
                     <a 
-                        href="https://wa.me/9144514459"
+                        href="https://wa.me/919144514459"
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label="WhatsApp" 
@@ -240,7 +240,7 @@ const MiyapurFloatingBar = () => {
                         Call Us
                     </span>
                     <a 
-                        href="tel:9144514459"
+                        href="tel:+919144514459"
                         aria-label="Call Us" 
                         className="flex items-center justify-center w-10 h-10 rounded-l-lg shadow-md transition-all hover:w-12 text-white" 
                         style={{

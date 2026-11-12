@@ -30,7 +30,7 @@ const CTASection = ({ data }) => {
                         )}
 
                         <p className="text-white font-bold text-[16px] md:text-[18px] mb-10">
-                            Call 9144514459 to book your appointment today.
+                            Call +91 9144514459 to book your appointment today.
                         </p>
 
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
@@ -43,11 +43,11 @@ const CTASection = ({ data }) => {
                             </button>
 
                             <a
-                                href="tel:9144514459"
+                                href="tel:+919144514459"
                                 className="w-full sm:w-auto bg-transparent border-[1.5px] border-white text-white hover:bg-white/10 flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-md transition-all duration-300 font-semibold text-[15px] transform hover:-translate-y-0.5"
                             >
                                 <Phone className="w-[18px] h-[18px]" strokeWidth={2.5} />
-                                Call 91445 14459
+                                Call +91 91445 14459
                             </a>
                         </div>
                     </div>

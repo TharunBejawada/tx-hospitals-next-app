@@ -183,11 +183,11 @@ export default function SocialSidebar({ isClinicalResearch = false }) {
     );
 
     const mobileIcons = isClinicalResearch ? [
-        { src: "/assets/FixedIcons/Call Icon .webp", alt: "Call Us", link: "tel:917674014388" },
+        { src: "/assets/FixedIcons/Call Icon .webp", alt: "Call Us", link: "tel:+917674014388" },
         { src: "/assets/FixedIcons/Whatsup Icon.webp", alt: "WhatsApp", link: "https://wa.me/917674014388" },
     ] : [
-        { src: "/assets/FixedIcons/Call Icon .webp", alt: "Call Us", link: "tel:9144514459" },
-        { src: "/assets/FixedIcons/Whatsup Icon.webp", alt: "WhatsApp", link: "https://wa.me/9144514459" },
+        { src: "/assets/FixedIcons/Call Icon .webp", alt: "Call Us", link: "tel:+919144514459" },
+        { src: "/assets/FixedIcons/Whatsup Icon.webp", alt: "WhatsApp", link: "https://wa.me/919144514459" },
         { src: "/assets/FixedIcons/Doctor Consultant Icon.webp", alt: "Doctors Appointment", link: "https://txhospitals.in/find-doctor/" },
         { src: "/assets/FixedIcons/Second opinon _ Icon.webp", alt: "Second Opinion", link: "https://txhospitals.in/surgery-care/" },
     ];
@@ -368,7 +368,7 @@ export default function SocialSidebar({ isClinicalResearch = false }) {
                         <span className="absolute right-full mr-2 whitespace-nowrap px-2.5 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none text-white text-xs font-medium shadow-md" style={{ background: 'rgb(37, 211, 102)' }}>
                             WhatsApp
                         </span>
-                        <a href="https://wa.me/9144514459" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="flex items-center justify-center w-10 h-10 rounded-l-lg shadow-md transition-all hover:w-12 text-white" style={{ background: 'rgb(37, 211, 102)' }}>
+                        <a href="https://wa.me/919144514459" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="flex items-center justify-center w-10 h-10 rounded-l-lg shadow-md transition-all hover:w-12 text-white" style={{ background: 'rgb(37, 211, 102)' }}>
                             <svg width="18" alt="Image" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.6.95 3.18 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.966a9.9 9.9 0 0 0-6.98-2.853c-5.438 0-9.863 4.372-9.867 9.8.001 1.736.469 3.43 1.36 4.953l-.991 3.616 3.698-.97c1.54.845 3.201 1.289 4.841 1.289zm8.56-5.882c-.269-.134-1.594-.787-1.84-.878-.246-.09-.425-.135-.605.134-.18.27-.697.877-.854 1.057-.158.18-.314.203-.583.069-.269-.134-1.138-.419-2.167-1.338-.802-.714-1.344-1.597-1.501-1.867-.158-.269-.017-.415.118-.549.121-.12.269-.314.403-.472.135-.157.18-.27.27-.449.09-.18.045-.337-.023-.472-.067-.134-.605-1.457-.828-1.995-.218-.523-.458-.453-.628-.462-.162-.008-.348-.01-.534-.01-.186 0-.49.07-.746.348-.256.278-.978.956-.978 2.33 0 1.375.999 2.702 1.138 2.893.139.191 1.967 3.003 4.76 4.213.665.288 1.184.46 1.588.589.668.213 1.277.183 1.758.11.536-.08 1.594-.651 1.817-1.282.223-.63.223-1.17.157-1.282-.067-.112-.246-.18-.515-.314z" /></svg>
                         </a>
                     </div>
@@ -378,7 +378,7 @@ export default function SocialSidebar({ isClinicalResearch = false }) {
                         <span className="absolute right-full mr-2 whitespace-nowrap px-2.5 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none text-white text-xs font-medium shadow-md" style={{ background: 'rgb(37, 99, 235)' }}>
                             Call Us
                         </span>
-                        <a href="tel:9144514459" aria-label="Call Us" className="flex items-center justify-center w-10 h-10 rounded-l-lg shadow-md transition-all hover:w-12 text-white" style={{ background: 'rgb(37, 99, 235)' }}>
+                        <a href="tel:+919144514459" aria-label="Call Us" className="flex items-center justify-center w-10 h-10 rounded-l-lg shadow-md transition-all hover:w-12 text-white" style={{ background: 'rgb(37, 99, 235)' }}>
                             <Phone size={18} />
                         </a>
                     </div>

@@ -53,11 +53,11 @@ const EmergencySection = ({ location }) => {
                             </button>
 
                             <a
-                                href="tel:9144514459"
+                                href="tel:+919144514459"
                                 className="flex-1 flex items-center justify-center gap-2 border-2 border-[#BD385C] text-[#BD385C] px-6 py-3 rounded hover:bg-red-50 transition-all font-semibold text-sm w-full sm:w-auto"
                             >
                                 <Phone className="w-[16px] h-[16px]" />
-                                Call 9144514459
+                                Call +91 9144514459
                             </a>
                         </div>
                     </div>

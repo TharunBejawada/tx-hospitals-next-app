@@ -10,8 +10,8 @@ const BRANCH_LOCATION_DATA = {
         mapName: 'TX Hospitals, Banjara Hills, Hyderabad',
         displayName: 'Banjara Hills',
         address: '8-2-680/A, Road No. 12, Sri Ram Nagar Colony, Banjara Hills, Hyderabad, Telangana 500028',
-        phone: '040-66529999',
-        phoneHref: 'tel:04066529999',
+        phone: '+91-40-66529999',
+        phoneHref: 'tel:+914066529999',
         blogLocation: 'Banjara Hills',
     },
     'kachiguda': {
@@ -28,8 +28,8 @@ const BRANCH_LOCATION_DATA = {
         mapName: 'TX Hospitals, Miyapur, Hyderabad',
         displayName: 'Miyapur',
         address: 'Pillar No A 600, Plot 65 & 66, Miyapur Cross Road, Mathrusree Nagar, Hafeezpet, Hyderabad, Telangana 500059',
-        phone: '040-21999999',
-        phoneHref: 'tel:04021999999',
+        phone: '+91-40-21999999',
+        phoneHref: 'tel:+914021999999',
         blogLocation: 'Miyapur',
     },
     'uppal': {

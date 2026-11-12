@@ -53,7 +53,7 @@ export default function HPLandingPage({ initialPackages = null }) {
     }, [hasInitial]);
 
     const handleCall = () => {
-        window.location.href = "tel:9144514459";
+        window.location.href = "tel:+919144514459";
     };
 
     const filteredPackages = packages.filter((pkg) => {

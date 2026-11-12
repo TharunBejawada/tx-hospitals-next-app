@@ -87,7 +87,7 @@ const UppalHero = () => {
                             </div>
 
                             <a
-                                href="tel:9247903419"
+                                href="tel:+919247903419"
                                 className="w-full sm:w-auto border-2 border-pink-700 text-pink-700 px-6 py-3 rounded-xl font-bold text-base hover:bg-pink-50 transition-all transform hover:scale-105 text-center shrink-0"
                             >
                                 Call Now

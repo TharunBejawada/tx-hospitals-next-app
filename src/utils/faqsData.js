@@ -9,11 +9,11 @@ export const faqs = [
     },
     {
         "question": "How do I book an appointment for the package?",
-        "answer": "<p>Please call our Help Line numbers 040 66529999 (Banjara Hills) 040 – 48108108 (Kachiguda) 040 – 43108108(Uppal)to book a package.</p>"
+        "answer": "<p>Please call our Help Line numbers +91 40 66529999 (Banjara Hills) +91-40-48108108 (Kachiguda) +91-40-43108108 (Uppal) to book a package.</p>"
     },
     {
         "question": "How can I access the tariff list for admission and procedures of TXH?",
-        "answer": "<p>You can call us and speak to our financial counseling team for any kind of assistance on the hospital tariffs:</p><ul><li>040 66529999 (Banjara Hills)</li><li>040 – 48108108 (Kachiguda)</li><li>040 – 43108108 (Uppal)</li></ul>"
+        "answer": "<p>You can call us and speak to our financial counseling team for any kind of assistance on the hospital tariffs:</p><ul><li>+91 40 66529999 (Banjara Hills)</li><li>+91-40-48108108 (Kachiguda)</li><li>+91-40-43108108 (Uppal)</li></ul>"
     },
     {
         "question": "Do TX Hospitals offer health care education?",
@@ -69,7 +69,7 @@ export const faqs = [
     },
     {
         "question": "Is there any facility that enables payable transport to the hospital?",
-        "answer": "<p>Yes, you can reach us at 040-48108108 (Kachiguda), 040-43108108 (Uppal), 040 66529999 (Banjara Hills) and request/book an ambulance for service.</p>"
+        "answer": "<p>Yes, you can reach us at +91-40-48108108 (Kachiguda), +91-40-43108108 (Uppal), +91 40 66529999 (Banjara Hills) and request/book an ambulance for service.</p>"
     },
     {
         "question": "Can I use your transport to another healthcare facility in case of emergencies?",

@@ -65,7 +65,7 @@ export default function HealthPackageDetails({ initialPackageData = null }) {
     }, [router.isReady, router.asPath, initialPackageData]);
 
     const handleCall = () => {
-        window.location.href = "tel:9144514459";
+        window.location.href = "tel:+919144514459";
     };
 
     const toggle = (index) => {

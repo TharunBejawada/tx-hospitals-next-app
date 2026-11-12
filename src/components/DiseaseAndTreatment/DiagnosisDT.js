@@ -70,11 +70,11 @@ const DiagnosisDT = ({ data, openModal }) => {
                         />
                         <div className="flex flex-col sm:flex-row items-center gap-4 flex-shrink-0">
                             <a
-                                href="tel:9144514459"
+                                href="tel:+919144514459"
                                 className="flex items-center justify-center gap-2 border border-[#C23358] text-[#C23358] bg-transparent font-semibold px-6 py-2.5 rounded-lg hover:bg-pink-50 transition text-sm whitespace-nowrap"
                             >
                                 <FaPhoneAlt size={12} />
-                                9144514459
+                                +91 9144514459
                             </a>
                             <button
                                 onClick={openModal}

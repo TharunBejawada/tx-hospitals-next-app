@@ -37,10 +37,10 @@ const UppalCTA = () => {
                     className="flex flex-col sm:flex-row justify-center items-center gap-4"
                 >
                     <a
-                        href="tel:9247903419"
+                        href="tel:+919247903419"
                         className="bg-white text-pink-700 border border-white hover:bg-gray-50 px-8 py-3.5 rounded-xl font-bold text-sm md:text-base transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 w-full sm:w-auto shadow-lg hover:shadow-xl"
                     >
-                        Call: 9247903419
+                        Call: +91 9247903419
                     </a>
 
                     <button

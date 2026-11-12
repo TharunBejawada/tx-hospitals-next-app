@@ -5,7 +5,7 @@ export default function ActionButtons({
     callNowText = "Call Now",
     onBookNow,
     showCallIcon = true,
-    phoneNumber = "9144514459",
+    phoneNumber = "+919144514459",
 }) {
 
     const handleCallNow = () => {

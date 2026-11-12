@@ -69,11 +69,11 @@ const WhyChooseProcedure = ({ data, openModal }) => {
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4 flex-shrink-0">
                     <a
-                        href="tel:9144514459"
+                        href="tel:+919144514459"
                         className="flex items-center justify-center gap-2 border-2 border-[#C23358] text-[#C23358] font-bold py-3 px-6 rounded-lg hover:bg-[#C23358] hover:text-white transition bg-white"
                     >
                         <FaPhoneAlt size={16} />
-                        9144514459
+                        +91 9144514459
                     </a>
                     <button
                         onClick={openModal}

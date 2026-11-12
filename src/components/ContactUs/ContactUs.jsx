@@ -52,7 +52,7 @@ export default function ContactUs() {
     };
 
     const makeCall = (phoneNumber) => {
-        window.location.href = `tel:${phoneNumber}`;
+        window.location.href = `tel:${String(phoneNumber || "").replace(/[^+\d]/g, "")}`;
     };
 
     const openWhatsApp = () => {

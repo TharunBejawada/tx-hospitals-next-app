@@ -106,7 +106,7 @@ const KachigudaNewDoctors = ({ initialDoctors = [] }) => {
                                                 Book Appointment
                                             </button>
                                             <a
-                                                href="tel:9144514459"
+                                                href="tel:+919144514459"
                                                 className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded transition-all hover:bg-[#BD385C] hover:text-white"
                                                 style={{ background: 'rgb(255, 255, 255)', fontSize: '13px', fontWeight: 500, color: 'rgb(189, 56, 92)', border: '1px solid rgb(189, 56, 92)' }}
                                             >

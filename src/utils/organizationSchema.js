@@ -121,7 +121,7 @@ export const organizationSchema = {
             "@type": "Hospital",
             "name": "TX Hospitals, Banjara Hills",
             "url": "https://txhospitals.in/banjara-hills/",
-            "telephone": "040-66529999",
+            "telephone": "+91-40-66529999",
             "address": {
                 "@type": "PostalAddress",
                 "streetAddress": "8-2-680/A, Road No. 12, Sri Ram Nagar Colony, Banjara Hills",
@@ -178,7 +178,7 @@ export const organizationSchema = {
             "@type": "Hospital",
             "name": "TX Hospitals, Miyapur",
             "url": "https://txhospitals.in/miyapur/",
-            "telephone": "040-21999999",
+            "telephone": "+91-40-21999999",
             "address": {
                 "@type": "PostalAddress",
                 "streetAddress": "Pillar No A 600, Plot 65 & 66, Miyapur Cross Road, Mathrusree Nagar, Hafeezpet",
@@ -199,7 +199,7 @@ export const organizationSchema = {
             "@type": "Hospital",
             "name": "TX Hospitals, Banjara Hills",
             "url": "https://txhospitals.in/banjara-hills/",
-            "telephone": "040-66529999",
+            "telephone": "+91-40-66529999",
             "address": {
                 "@type": "PostalAddress",
                 "streetAddress": "8-2-680/A, Road No. 12, Sri Ram Nagar Colony, Banjara Hills",
@@ -256,7 +256,7 @@ export const organizationSchema = {
             "@type": "Hospital",
             "name": "TX Hospitals, Miyapur",
             "url": "https://txhospitals.in/miyapur/",
-            "telephone": "040-21999999",
+            "telephone": "+91-40-21999999",
             "address": {
                 "@type": "PostalAddress",
                 "streetAddress": "Pillar No A 600, Plot 65 & 66, Miyapur Cross Road, Mathrusree Nagar, Hafeezpet",

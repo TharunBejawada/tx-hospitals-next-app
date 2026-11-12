@@ -97,7 +97,7 @@ const BanjaraHillsHero = () => {
     };
 
     const handleWhatsAppClick = (message = "Hi, I would like to book an appointment at TX Hospitals Banjara Hills.") => {
-        const url = `https://wa.me/9144514459?text=${encodeURIComponent(message)}`;
+        const url = `https://wa.me/919144514459?text=${encodeURIComponent(message)}`;
         window.open(url, '_blank');
     };
 
@@ -230,7 +230,7 @@ const BanjaraHillsHero = () => {
                         <div className="flex flex-wrap items-center gap-4 pt-6">
                             {/* Call Now Button */}
                             <a
-                                href="tel:9144514459"
+                                href="tel:+919144514459"
                                 className="bg-[#b3204d] hover:bg-[#971b41] text-white px-6 py-3 rounded-xl font-bold flex items-center gap-3 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg shadow-pink-900/10 min-w-[180px]"
                             >
                                 <div className="bg-white/20 p-2 rounded-lg text-white">
@@ -238,7 +238,7 @@ const BanjaraHillsHero = () => {
                                 </div>
                                 <div className="text-left leading-tight text-sm font-bold">
                                     <div className="text-sm font-semibold text-white/90">Call Now</div>
-                                    <div className="text-base font-bold">9144514459</div>
+                                    <div className="text-base font-bold">+91 9144514459</div>
                                 </div>
                             </a>
 

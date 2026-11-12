@@ -129,7 +129,7 @@ export default function SODetailsPage({ surgeryData }) {
                                 >
                                     Book Appointment
                                 </button>
-                                <a href="tel:9144514459">
+                                <a href="tel:+919144514459">
                                     <button
                                         className="border border-pink-700 text-pink-700 hover:bg-pink-700 hover:text-white text-xs font-semibold px-2 py-1 rounded-full transition"
                                     >
@@ -268,7 +268,7 @@ export default function SODetailsPage({ surgeryData }) {
                                 >
                                     Book Appointment
                                 </button>
-                                <a href="tel:9144514459">
+                                <a href="tel:+919144514459">
                                     <button
                                         className="border-2 border-pink-700 text-pink-700 hover:bg-pink-700 hover:text-white text-xl font-semibold px-8 py-3 rounded-full transition"
                                     >

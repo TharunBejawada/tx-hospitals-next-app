@@ -25,7 +25,7 @@ export default function KidneyTransplantationSurgery() {
 
     // Handler Functions
     const handleCall = () => {
-        window.location.href = "tel:9144514459";
+        window.location.href = "tel:+919144514459";
     };
 
     const surgeonsData = [

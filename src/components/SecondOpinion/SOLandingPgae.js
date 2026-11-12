@@ -331,11 +331,11 @@ export default function SOLandingPage({ initialSurgeryOptions = [] }) {
                             At TX Hospitals, we help you make informed health decisions backed by
                             advanced <br />
                             diagnostics and experienced specialists. <br />
-                            Call us at <span className="font-bold">9144514459</span> or by
+                            Call us at <span className="font-bold">+91 9144514459</span> or by
                             visiting TX Hospitals website to book your consultation now
                         </p>
                         <div className="mt-2 px-20">
-                            <a href="tel:9144514459">
+                            <a href="tel:+919144514459">
                                 <button className="bg-pink-700 text-white text-lg font-semibold px-2 py-1 rounded-md hover:bg-pink-800 transition">
                                     Call us Today
                                 </button>
@@ -584,11 +584,11 @@ export default function SOLandingPage({ initialSurgeryOptions = [] }) {
                                 At TX Hospitals, we help you make informed health decisions backed by
                                 advanced <br />
                                 diagnostics and experienced specialists. <br />
-                                Call us at <span className="font-bold">9144514459</span> or by
+                                Call us at <span className="font-bold">+91 9144514459</span> or by
                                 visiting TX Hospitals website to book your consultation now
                             </p>
                             <div className="mt-6">
-                                <a href="tel:9144514459">
+                                <a href="tel:+919144514459">
                                     <button className="bg-pink-700 text-white text-lg font-semibold px-4 py-2 rounded-md hover:bg-pink-800 transition">
                                         Call us Today
                                     </button>

@@ -102,7 +102,7 @@ export default function ViewProfile({ doctorData }) {
                                     </button>
                                     <div className="flex gap-3">
                                         <button
-                                            onClick={() => window.open("tel:9144514459", "_self")}
+                                            onClick={() => window.open("tel:+919144514459", "_self")}
                                             className="flex-1 bg-[#b01752] text-white px-4 py-2 rounded-lg font-semibold flex items-center justify-center gap-2 hover:bg-[#901342] transition"
                                         >
                                             <FaPhoneAlt />
@@ -181,7 +181,7 @@ export default function ViewProfile({ doctorData }) {
                                         Book Appointment
                                     </button>
                                     <button
-                                        onClick={() => window.open("tel:9144514459", "_self")}
+                                        onClick={() => window.open("tel:+919144514459", "_self")}
                                         className="bg-[#b01752] text-white px-8 py-3 rounded-lg font-bold flex items-center gap-3 hover:bg-[#901342] transition shadow-sm text-base"
                                     >
                                         <FaPhoneAlt size={18} />

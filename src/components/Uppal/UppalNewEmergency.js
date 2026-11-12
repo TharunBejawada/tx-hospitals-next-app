@@ -41,12 +41,12 @@ const UppalNewEmergency = () => {
                         </button>
 
                         <a
-                            href="tel:9144514459"
+                            href="tel:+919144514459"
                             className="flex items-center justify-center gap-2 border border-white text-white px-6 py-3 rounded-lg hover:bg-white/10 transition-all duration-200 w-full sm:w-auto font-semibold text-sm md:text-base"
                             
                         >
                             <Phone className="w-[18px] h-[18px]" />
-                            Call 91445 14459
+                            Call +91 91445 14459
                         </a>
 
                         <button

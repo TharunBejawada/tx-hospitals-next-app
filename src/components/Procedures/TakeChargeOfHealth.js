@@ -28,11 +28,11 @@ const TakeChargeOfHealth = ({ data, openModal }) => {
                 {/* Buttons */}
                 <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                     <a
-                        href="tel:9144514459"
+                        href="tel:+919144514459"
                         className="flex items-center justify-center gap-2 bg-white text-[#B92B4B] font-bold py-3 px-8 rounded-lg hover:bg-gray-100 transition shadow-sm w-full sm:w-auto"
                     >
                         <FaPhoneAlt size={16} />
-                        9144514459
+                        +91 9144514459
                     </a>
                     <button
                         onClick={openModal}

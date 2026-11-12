@@ -32,12 +32,12 @@ const BanjaraHillsNewCTA = () => {
                         </button>
                         
                         <a 
-                            href="tel:9144514459" 
+                            href="tel:+919144514459" 
                             className="flex items-center gap-2 px-6 py-3 rounded-lg transition-all hover:bg-white hover:text-[#BD385C]" 
                             style={{ background: 'transparent', fontSize: '14px', fontWeight: 600, color: 'rgb(255, 255, 255)', border: '1.5px solid rgba(255, 255, 255, 0.8)' }}
                         >
                             <Phone className="w-4 h-4" />
-                            Call 91445 14459
+                            Call +91 91445 14459
                         </a>
                         
                         <button 

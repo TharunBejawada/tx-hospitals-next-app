@@ -79,7 +79,7 @@ const RoboticSurgeryHeader = ({ data, onBookNow }) => {
                         </button>
 
                         <a
-                            href="tel:9144514459"
+                            href="tel:+919144514459"
                             className="flex items-center justify-center gap-3 bg-white border-2 border-pink-700 text-pink-700 hover:bg-pink-50 px-6 py-3.5 rounded-xl font-semibold text-base transition-all duration-300 shadow-md"
                         >
                             <img
@@ -87,7 +87,7 @@ const RoboticSurgeryHeader = ({ data, onBookNow }) => {
                                 alt="Phone"
                                 className="w-5 h-5 object-contain"
                             />
-                            Call 9144 51 4459
+                            Call +91 9144 51 4459
                         </a>
                     </div>
                 </div>
@@ -144,7 +144,7 @@ const RoboticSurgeryHeader = ({ data, onBookNow }) => {
                         </button>
 
                         <a
-                            href="tel:9144514459"
+                            href="tel:+919144514459"
                             className="flex items-center justify-center gap-3 bg-white border-2 border-pink-700 text-pink-700 hover:bg-pink-50 px-6 py-2.5 rounded-lg font-bold transition-all duration-300 shadow-md transform hover:-translate-y-1 group"
                         >
                             <div className="p-2 rounded-lg transition-colors">
@@ -154,7 +154,7 @@ const RoboticSurgeryHeader = ({ data, onBookNow }) => {
                                     className="w-5 h-5 object-contain"
                                 />
                             </div>
-                            Call 9144 51 4459
+                            Call +91 9144 51 4459
                         </a>
                     </div>
                 </div>

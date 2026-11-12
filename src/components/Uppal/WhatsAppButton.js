@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { FaWhatsapp } from 'react-icons/fa';
 
 const WhatsAppButton = ({ 
-    phoneNumber = "9247903419", 
+    phoneNumber = "919247903419", 
     message = "Hi, I would like to book an appointment.",
     className = "",
     sizeClass = "py-3 px-8 text-base"
