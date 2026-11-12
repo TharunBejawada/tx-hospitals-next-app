@@ -15,7 +15,7 @@ const KachigudaNewCTA = () => {
                     <p className="max-w-[850px]" style={{ fontSize: '15px', fontWeight: 400, color: 'rgba(255, 255, 255, 0.9)', lineHeight: 1.7 }}>
                         Don't delay your health concerns. Whether it is a regular consultation, emergency care, diagnostic test, surgery or second opinion, TX Hospitals Kachiguda is ready to help you with trusted medical care close to home.
                     </p>
-                    
+
                     <div className="flex flex-wrap justify-center gap-4">
                         <button onClick={() => setIsModalOpen(true)} className="flex items-center gap-2 px-8 py-3 rounded transition-opacity hover:opacity-90 shadow-md" style={{ background: 'rgb(255, 255, 255)', fontSize: '15px', fontWeight: 500, color: 'rgb(189, 56, 92)', border: 'none' }}>
                             <Calendar className="w-4 h-4" />
@@ -23,7 +23,7 @@ const KachigudaNewCTA = () => {
                         </button>
                         <a href="tel:+919144514459" className="flex items-center gap-2 px-6 py-3 rounded transition-all hover:bg-white hover:text-[#BD385C]" style={{ background: 'transparent', fontSize: '15px', fontWeight: 500, color: 'rgb(255, 255, 255)', border: '1.5px solid rgba(255, 255, 255, 0.7)' }}>
                             <Phone className="w-4 h-4" />
-                            Call +91-91445 14459
+                            Call +919144514459
                         </a>
                         <button onClick={() => setIsModalOpen(true)} className="flex items-center gap-2 px-6 py-3 rounded transition-all hover:bg-white hover:text-[#BD385C]" style={{ background: 'transparent', fontSize: '15px', fontWeight: 500, color: 'rgb(255, 255, 255)', border: '1.5px solid rgba(255, 255, 255, 0.7)' }}>
                             <HeartPulse className="w-4 h-4" />

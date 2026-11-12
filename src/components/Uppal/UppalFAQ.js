@@ -14,7 +14,7 @@ const faqs = [
     },
     {
         question: "How do I book an appointment with a doctor near Uppal?",
-        answer: "You can book an appointment by calling +91-9144514459, messaging us on WhatsApp, or visiting TX Hospitals Uppal directly. Walk-ins are also welcome for OPD consultations during working hours."
+        answer: "You can book an appointment by calling +919144514459, messaging us on WhatsApp, or visiting TX Hospitals Uppal directly. Walk-ins are also welcome for OPD consultations during working hours."
     },
     {
         question: "Are treatments at TX Hospitals Uppal affordable?",
@@ -22,7 +22,7 @@ const faqs = [
     },
     {
         question: "Is there an ambulance service near Uppal?",
-        answer: "Yes, for emergencies, our ambulance service is available across Uppal, Nagole, Boduppal, Kothapet, Habsiguda and surrounding areas. Call +91-9144514459 immediately for emergency assistance."
+        answer: "Yes, for emergencies, our ambulance service is available across Uppal, Nagole, Boduppal, Kothapet, Habsiguda and surrounding areas. Call +919144514459 immediately for emergency assistance."
     }
 ];
 

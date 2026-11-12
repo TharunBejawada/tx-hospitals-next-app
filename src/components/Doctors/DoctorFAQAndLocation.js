@@ -50,7 +50,7 @@ export default function DoctorFAQAndLocation({ doctorData }) {
     const defaultFaqs = [
         {
             question: `How can I book an appointment with ${doctorData?.name || "the doctor"}?`,
-            answer: `You can book an appointment online via the "Book Appointment" button on this profile, or by contacting our 24/7 patient desk at ${activeBranch.phone || "+91-9144514459"}.`,
+            answer: `You can book an appointment online via the "Book Appointment" button on this profile, or by contacting our 24/7 patient desk at ${activeBranch.phone || "+919144514459"}.`,
         },
         {
             question: `Which branch does ${doctorData?.name || "the doctor"} consult at?`,
@@ -120,9 +120,8 @@ export default function DoctorFAQAndLocation({ doctorData }) {
                                             {faq.question}
                                         </span>
                                         <ChevronDown
-                                            className={`flex-shrink-0 ml-4 transition-transform duration-300 ${
-                                                isOpen ? "rotate-180" : ""
-                                            }`}
+                                            className={`flex-shrink-0 ml-4 transition-transform duration-300 ${isOpen ? "rotate-180" : ""
+                                                }`}
                                             style={{ color: isOpen ? "#fff" : "rgb(189,56,92)" }}
                                             size={18}
                                             strokeWidth={2.5}
@@ -161,11 +160,10 @@ export default function DoctorFAQAndLocation({ doctorData }) {
                                     <button
                                         key={idx}
                                         onClick={() => setActiveBranchIndex(idx)}
-                                        className={`flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                                            activeBranchIndex === idx
+                                        className={`flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold transition-all cursor-pointer ${activeBranchIndex === idx
                                                 ? "bg-pink-700 text-white shadow-xs"
                                                 : "text-gray-600 hover:text-pink-700 bg-white border border-gray-200"
-                                        }`}
+                                            }`}
                                     >
                                         {b.displayName}
                                     </button>

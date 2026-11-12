@@ -238,7 +238,7 @@ const BanjaraHillsHero = () => {
                                 </div>
                                 <div className="text-left leading-tight text-sm font-bold">
                                     <div className="text-sm font-semibold text-white/90">Call Now</div>
-                                    <div className="text-base font-bold">+91-9144514459</div>
+                                    <div className="text-base font-bold">+919144514459</div>
                                 </div>
                             </a>
 

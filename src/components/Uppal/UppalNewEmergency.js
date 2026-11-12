@@ -7,7 +7,7 @@ const UppalNewEmergency = () => {
 
     return (
         <section className="py-12 md:py-16 px-6" style={{ background: 'rgb(255, 255, 255)' }}>
-            <div 
+            <div
                 className="max-w-[1170px] mx-auto rounded-3xl p-8 md:p-14 text-white text-center shadow-xl relative overflow-hidden px-6 lg:pr-11"
                 style={{ background: 'rgb(189, 56, 92)' }}
             >
@@ -16,14 +16,14 @@ const UppalNewEmergency = () => {
                 <div className="absolute bottom-0 right-0 w-48 h-48 bg-white/5 rounded-full translate-x-16 translate-y-16" />
 
                 <div className="relative z-10">
-                    <h2 
+                    <h2
                         className="mb-6 text-2xl md:text-3xl lg:text-4xl font-bold leading-tight"
-                        
+
                     >
                         24/7 Emergency Care in Uppal, Ready When You Need Us Most
                     </h2>
-                    
-                    <p 
+
+                    <p
                         className="max-w-[850px] mx-auto text-sm md:text-base leading-relaxed mb-8 text-white/90"
                         style={{ fontWeight: 400 }}
                     >
@@ -34,7 +34,7 @@ const UppalNewEmergency = () => {
                         <button
                             onClick={() => setIsModalOpen(true)}
                             className="flex items-center justify-center gap-2 bg-white text-[#BD385C] px-6 py-3 rounded-lg hover:bg-white/90 transition-all duration-200 w-full sm:w-auto shadow-md font-semibold text-sm md:text-base border border-transparent"
-                            
+
                         >
                             <Calendar className="w-[18px] h-[18px]" />
                             Book Appointment
@@ -43,16 +43,16 @@ const UppalNewEmergency = () => {
                         <a
                             href="tel:+919144514459"
                             className="flex items-center justify-center gap-2 border border-white text-white px-6 py-3 rounded-lg hover:bg-white/10 transition-all duration-200 w-full sm:w-auto font-semibold text-sm md:text-base"
-                            
+
                         >
                             <Phone className="w-[18px] h-[18px]" />
-                            Call +91-91445 14459
+                            Call +919144514459
                         </a>
 
                         <button
                             onClick={() => setIsModalOpen(true)}
                             className="flex items-center justify-center gap-2 border border-white text-white px-6 py-3 rounded-lg hover:bg-white/10 transition-all duration-200 w-full sm:w-auto font-semibold text-sm md:text-base"
-                            
+
                         >
                             <Heart className="w-[18px] h-[18px]" />
                             Book Health Check Up

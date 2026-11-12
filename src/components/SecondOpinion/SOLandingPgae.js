@@ -40,7 +40,7 @@ export default function SOLandingPage({ initialSurgeryOptions = [] }) {
                     }
                 });
                 localStorage.setItem('slugMap', JSON.stringify(newMap));
-            } catch (e) {}
+            } catch (e) { }
             return;
         }
         const fetchData = async () => {
@@ -331,7 +331,7 @@ export default function SOLandingPage({ initialSurgeryOptions = [] }) {
                             At TX Hospitals, we help you make informed health decisions backed by
                             advanced <br />
                             diagnostics and experienced specialists. <br />
-                            Call us at <span className="font-bold">+91-9144514459</span> or by
+                            Call us at <span className="font-bold">+919144514459</span> or by
                             visiting TX Hospitals website to book your consultation now
                         </p>
                         <div className="mt-2 px-20">
@@ -584,7 +584,7 @@ export default function SOLandingPage({ initialSurgeryOptions = [] }) {
                                 At TX Hospitals, we help you make informed health decisions backed by
                                 advanced <br />
                                 diagnostics and experienced specialists. <br />
-                                Call us at <span className="font-bold">+91-9144514459</span> or by
+                                Call us at <span className="font-bold">+919144514459</span> or by
                                 visiting TX Hospitals website to book your consultation now
                             </p>
                             <div className="mt-6">

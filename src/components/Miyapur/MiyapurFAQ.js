@@ -49,7 +49,7 @@ const MiyapurFAQ = () => {
         },
         {
             question: "How can I book an appointment at TX Hospitals, Miyapur?",
-            answer: "You can book an appointment online through our website, by calling +91-40-21999999, or by visiting the hospital reception in person."
+            answer: "You can book an appointment online through our website, by calling 040-21999999, or by visiting the hospital reception in person."
         }
     ];
 
@@ -134,7 +134,7 @@ const MiyapurFAQ = () => {
                             <div className="flex items-center gap-2.5">
                                 <Phone className="flex-shrink-0 w-4 h-4" style={{ color: 'rgb(189,56,92)' }} />
                                 <a href="tel:+914021999999" className="hover:underline font-medium" style={{ fontSize: 13, color: 'rgb(189,56,92)' }}>
-                                    +91-40-21999999
+                                    040-21999999
                                 </a>
                             </div>
                             <button

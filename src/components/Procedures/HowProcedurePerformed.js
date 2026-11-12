@@ -91,7 +91,7 @@ const HowProcedurePerformed = ({ data, openModal, durationData }) => {
                             className="flex items-center justify-center gap-2 border-2 border-[#B92B4B] text-[#B92B4B] font-bold py-3 px-6 rounded-lg hover:bg-[#B92B4B] hover:text-white transition"
                         >
                             <FaPhoneAlt size={16} />
-                            +91-9144514459
+                            +919144514459
                         </a>
                         <button
                             onClick={openModal}

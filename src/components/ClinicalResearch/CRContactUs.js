@@ -11,9 +11,9 @@ export default function CRContactUs() {
     return (
         <section className={`bg-[#1a0810] text-white w-full ${isMobile ? 'py-12 px-6' : 'py-20 px-12 md:px-24'}`}>
             <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12">
-                
+
                 {/* Contact Information */}
-                <motion.div 
+                <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
@@ -22,7 +22,7 @@ export default function CRContactUs() {
                     <h2 className={`font-serif mb-8 ${isMobile ? 'text-3xl' : 'text-5xl'} text-white`}>
                         How to <span className="text-pink-600">Contact Us</span>
                     </h2>
-                    
+
                     <div className="flex flex-col gap-8 text-gray-300">
                         {/* Phone */}
                         <div className="flex items-start gap-4">
@@ -31,8 +31,8 @@ export default function CRContactUs() {
                             </div>
                             <div>
                                 <h4 className="text-pink-500 font-bold uppercase tracking-wider text-sm mb-2">Call Us</h4>
-                                <p className="text-lg">+91-7674014388</p>
-                                <p className="text-lg">+91-6301433702</p>
+                                <p className="text-lg">+917674014388</p>
+                                <p className="text-lg">+916301433702</p>
                             </div>
                         </div>
 
@@ -68,7 +68,7 @@ export default function CRContactUs() {
                 </motion.div>
 
                 {/* Google Map */}
-                <motion.div 
+                <motion.div
                     initial={{ opacity: 0, x: 20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
@@ -85,7 +85,7 @@ export default function CRContactUs() {
                         title="TX Hospitals Banjara Hills Map"
                     ></iframe>
                 </motion.div>
-                
+
             </div>
         </section>
     );

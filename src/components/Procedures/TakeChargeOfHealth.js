@@ -32,7 +32,7 @@ const TakeChargeOfHealth = ({ data, openModal }) => {
                         className="flex items-center justify-center gap-2 bg-white text-[#B92B4B] font-bold py-3 px-8 rounded-lg hover:bg-gray-100 transition shadow-sm w-full sm:w-auto"
                     >
                         <FaPhoneAlt size={16} />
-                        +91-9144514459
+                        +919144514459
                     </a>
                     <button
                         onClick={openModal}

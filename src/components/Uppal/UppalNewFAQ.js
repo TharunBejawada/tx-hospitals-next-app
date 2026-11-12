@@ -118,7 +118,7 @@ const UppalNewFAQ = () => {
                             <div className="flex items-center gap-2.5">
                                 <Phone className="flex-shrink-0 w-4 h-4" style={{ color: 'rgb(189,56,92)' }} />
                                 <a href="tel:+914043108108" className="hover:underline font-medium" style={{ fontSize: 13, color: 'rgb(189,56,92)' }}>
-                                    +91-40-43 108 108
+                                    040-43 108 108
                                 </a>
                             </div>
                             <button

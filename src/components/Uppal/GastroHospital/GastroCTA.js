@@ -31,7 +31,7 @@ const GastroCTA = ({ onBookClick }) => {
                                 href="tel:+919247903419"
                                 className="w-full sm:w-auto bg-white/10 hover:bg-white/20 text-white font-bold py-4 px-12 rounded-full transition-all text-lg border border-white/10 backdrop-blur-sm"
                             >
-                                Call: +91-9247903419
+                                Call: +919247903419
                             </a>
                         </div>
                     </div>

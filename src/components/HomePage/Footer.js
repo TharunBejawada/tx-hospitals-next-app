@@ -180,7 +180,7 @@ export default function Footer() {
                     <div className="flex flex-col space-y-1 mb-4">
                         <div className="flex items-center space-x-3">
                             <PiDeviceMobileThin className="text-gray-800" size={42} />
-                            <span>+91-9144514459</span>
+                            <span>+919144514459</span>
                         </div>
                     </div>
                     <div className="flex items-start space-x-3 mb-6">

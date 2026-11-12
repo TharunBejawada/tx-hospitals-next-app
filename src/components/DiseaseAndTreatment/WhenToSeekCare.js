@@ -28,7 +28,7 @@ const WhenToSeekCare = ({ data, openModal }) => {
                         className="flex items-center justify-center gap-2 border border-[#C23358] text-[#C23358] font-semibold px-6 py-2.5 rounded-lg hover:bg-pink-50 transition text-sm"
                     >
                         <FaPhoneAlt size={13} />
-                        +91-9144514459
+                        +919144514459
                     </a>
                     <button
                         onClick={openModal}

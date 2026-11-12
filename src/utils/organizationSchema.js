@@ -11,19 +11,19 @@ export const organizationSchema = {
     "logo": "https://txhospitals.in/TXlogoWB.jpg",
     "image": "https://txhospitals.in/TXlogoWB.jpg",
     "description": "TX Hospitals offers world-class multi-specialty care in Hyderabad across Banjara Hills, Uppal, Kachiguda, and Miyapur with expert doctors, advanced medical infrastructure, and 24/7 emergency services.",
-    "telephone": "+91-9144514459",
+    "telephone": "+919144514459",
     "email": "info@txhospitals.in",
     "contactPoint": [
         {
             "@type": "ContactPoint",
-            "telephone": "+91-9144514459",
+            "telephone": "+919144514459",
             "contactType": "customer service",
             "areaServed": "IN",
             "availableLanguage": ["English", "Telugu", "Hindi"]
         },
         {
             "@type": "ContactPoint",
-            "telephone": "+91-9963229765",
+            "telephone": "+919963229765",
             "contactType": "emergency",
             "areaServed": "IN",
             "availableLanguage": ["English", "Telugu", "Hindi"]
@@ -121,7 +121,7 @@ export const organizationSchema = {
             "@type": "Hospital",
             "name": "TX Hospitals, Banjara Hills",
             "url": "https://txhospitals.in/banjara-hills/",
-            "telephone": "+91-40-66529999",
+            "telephone": "040-66529999",
             "address": {
                 "@type": "PostalAddress",
                 "streetAddress": "8-2-680/A, Road No. 12, Sri Ram Nagar Colony, Banjara Hills",
@@ -140,7 +140,7 @@ export const organizationSchema = {
             "@type": "Hospital",
             "name": "TX Hospitals, Uppal",
             "url": "https://txhospitals.in/uppal/",
-            "telephone": "+91-40-43 108 108",
+            "telephone": "040-43 108 108",
             "address": {
                 "@type": "PostalAddress",
                 "streetAddress": "# 2-6-71, Bharath Nagar Colony, Near Masjid Uppal",
@@ -159,7 +159,7 @@ export const organizationSchema = {
             "@type": "Hospital",
             "name": "TX Hospitals, Kachiguda",
             "url": "https://txhospitals.in/kachiguda/",
-            "telephone": "+91-40-48 108 108",
+            "telephone": "040-48 108 108",
             "address": {
                 "@type": "PostalAddress",
                 "streetAddress": "# 3-2-841/1, Kachiguda Station Rd, Mahalaxmi Nilayam, Kachiguda",
@@ -178,7 +178,7 @@ export const organizationSchema = {
             "@type": "Hospital",
             "name": "TX Hospitals, Miyapur",
             "url": "https://txhospitals.in/miyapur/",
-            "telephone": "+91-40-21999999",
+            "telephone": "040-21999999",
             "address": {
                 "@type": "PostalAddress",
                 "streetAddress": "Pillar No A 600, Plot 65 & 66, Miyapur Cross Road, Mathrusree Nagar, Hafeezpet",
@@ -199,7 +199,7 @@ export const organizationSchema = {
             "@type": "Hospital",
             "name": "TX Hospitals, Banjara Hills",
             "url": "https://txhospitals.in/banjara-hills/",
-            "telephone": "+91-40-66529999",
+            "telephone": "040-66529999",
             "address": {
                 "@type": "PostalAddress",
                 "streetAddress": "8-2-680/A, Road No. 12, Sri Ram Nagar Colony, Banjara Hills",
@@ -218,7 +218,7 @@ export const organizationSchema = {
             "@type": "Hospital",
             "name": "TX Hospitals, Uppal",
             "url": "https://txhospitals.in/uppal/",
-            "telephone": "+91-40-43 108 108",
+            "telephone": "040-43 108 108",
             "address": {
                 "@type": "PostalAddress",
                 "streetAddress": "# 2-6-71, Bharath Nagar Colony, Near Masjid Uppal",
@@ -237,7 +237,7 @@ export const organizationSchema = {
             "@type": "Hospital",
             "name": "TX Hospitals, Kachiguda",
             "url": "https://txhospitals.in/kachiguda/",
-            "telephone": "+91-40-48 108 108",
+            "telephone": "040-48 108 108",
             "address": {
                 "@type": "PostalAddress",
                 "streetAddress": "# 3-2-841/1, Kachiguda Station Rd, Mahalaxmi Nilayam, Kachiguda",
@@ -256,7 +256,7 @@ export const organizationSchema = {
             "@type": "Hospital",
             "name": "TX Hospitals, Miyapur",
             "url": "https://txhospitals.in/miyapur/",
-            "telephone": "+91-40-21999999",
+            "telephone": "040-21999999",
             "address": {
                 "@type": "PostalAddress",
                 "streetAddress": "Pillar No A 600, Plot 65 & 66, Miyapur Cross Road, Mathrusree Nagar, Hafeezpet",

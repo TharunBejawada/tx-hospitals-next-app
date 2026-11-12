@@ -59,7 +59,7 @@ const UppalEmergency = () => {
                         >
                             <Phone className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 fill-current shrink-0" />
                             <span className="whitespace-nowrap">
-                                Call Emergency: +91-9144514459
+                                Call Emergency: +919144514459
                             </span>
                         </a>
                         <p className="text-gray-500 text-sm mt-4 font-medium tracking-wide">

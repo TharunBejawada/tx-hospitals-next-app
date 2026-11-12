@@ -41,7 +41,7 @@ const KachigudaNewFAQ = () => {
         },
         {
             question: "How can I book an appointment at TX Hospitals Kachiguda?",
-            answer: "You can book an appointment by calling the hospital helpline +91-40-48 108 108, filling the appointment form on the website or contacting TX Hospitals Kachiguda directly."
+            answer: "You can book an appointment by calling the hospital helpline 040-48 108 108, filling the appointment form on the website or contacting TX Hospitals Kachiguda directly."
         }
     ];
 
@@ -126,7 +126,7 @@ const KachigudaNewFAQ = () => {
                             <div className="flex items-center gap-2.5">
                                 <Phone className="flex-shrink-0 w-4 h-4" style={{ color: 'rgb(189,56,92)' }} />
                                 <a href="tel:+914048108108" className="hover:underline font-medium" style={{ fontSize: 13, color: 'rgb(189,56,92)' }}>
-                                    +91-40-48 108 108
+                                    040-48 108 108
                                 </a>
                             </div>
                             <button

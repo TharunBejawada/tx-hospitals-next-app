@@ -106,7 +106,7 @@ export function buildDoctorSchema(doctorData) {
                 "url": canonicalUrl,
                 "image": imageUrl,
                 "description": bio,
-                "telephone": branch.phone || "+91-9144514459",
+                "telephone": branch.phone || "+919144514459",
                 "email": "info@txhospitals.in",
                 "priceRange": "₹₹",
                 "currenciesAccepted": "INR",
