@@ -65,7 +65,7 @@ import KachigudaNewFAQ from '@/components/Kachiguda/KachigudaNewFAQ';
 import Breadcrumb from '@/components/Common/Breadcrumb';
 import LocalitySchema from '@/utils/LocalitySchema';
 
-export default function KachigudaPage() {
+export default function KachigudaPage({ initialDoctors = [], initialBlogs = [] }) {
     return (
         <>
             <Head>
