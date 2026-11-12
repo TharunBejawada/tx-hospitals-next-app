@@ -46,7 +46,7 @@ const RoboticFirstStep = ({ data, onBookNow }) => {
                                     className="flex items-center justify-center gap-2 bg-white text-[#b02a44] px-6 py-3 rounded-xl font-bold transition-all duration-300 hover:bg-pink-50 shadow-md w-full max-w-sm"
                                 >
                                     <img src="/assets/surgeries/live-transplant/Call Icon 3.webp" alt="Call" className="w-5 h-5 object-contain" />
-                                    <span className="text-[15px]">Call +91 9144 51 4459</span>
+                                    <span className="text-[15px]">Call +91-9144 51 4459</span>
                                 </a>
                             </div>
 
@@ -98,7 +98,7 @@ const RoboticFirstStep = ({ data, onBookNow }) => {
                                 className="flex items-center gap-3 bg-white text-[#b02a44] px-8 py-3.5 rounded-xl font-bold transition-all duration-300 hover:bg-pink-50 hover:scale-105 shadow-lg"
                             >
                                 <img src="/assets/surgeries/live-transplant/Call Icon 3.webp" alt="Call" className="w-6 h-6 object-contain" />
-                                <span>Call +91 9144 51 4459</span>
+                                <span>Call +91-9144 51 4459</span>
                             </a>
                         </div>
 

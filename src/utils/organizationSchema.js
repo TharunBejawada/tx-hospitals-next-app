@@ -11,19 +11,19 @@ export const organizationSchema = {
     "logo": "https://txhospitals.in/TXlogoWB.jpg",
     "image": "https://txhospitals.in/TXlogoWB.jpg",
     "description": "TX Hospitals offers world-class multi-specialty care in Hyderabad across Banjara Hills, Uppal, Kachiguda, and Miyapur with expert doctors, advanced medical infrastructure, and 24/7 emergency services.",
-    "telephone": "+91 9144514459",
+    "telephone": "+91-9144514459",
     "email": "info@txhospitals.in",
     "contactPoint": [
         {
             "@type": "ContactPoint",
-            "telephone": "+91 9144514459",
+            "telephone": "+91-9144514459",
             "contactType": "customer service",
             "areaServed": "IN",
             "availableLanguage": ["English", "Telugu", "Hindi"]
         },
         {
             "@type": "ContactPoint",
-            "telephone": "+91 9963229765",
+            "telephone": "+91-9963229765",
             "contactType": "emergency",
             "areaServed": "IN",
             "availableLanguage": ["English", "Telugu", "Hindi"]

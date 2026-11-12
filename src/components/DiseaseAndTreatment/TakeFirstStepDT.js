@@ -35,7 +35,7 @@ const TakeFirstStepDT = ({ data, openModal }) => {
                         className="flex items-center justify-center gap-2 bg-white text-[#C23358] font-semibold px-6 py-2.5 rounded-lg shadow-sm hover:bg-gray-50 transition text-sm whitespace-nowrap"
                     >
                         <FaPhoneAlt size={12} />
-                        +91 9144514459
+                        +91-9144514459
                     </a>
 
                     {/* Book Appointment Button */}

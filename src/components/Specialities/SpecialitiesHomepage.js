@@ -126,7 +126,7 @@ const faqs = [
     {
         question: "How do I choose the right specialist for my problem?",
         answer:
-            "Call +91 91445 14459 for guidance. Our patient care team connects you to the best specialist based on your symptoms and medical needs.",
+            "Call +91-91445 14459 for guidance. Our patient care team connects you to the best specialist based on your symptoms and medical needs.",
     },
     {
         question: "Does TX Hospitals offer minimally invasive or robotic surgeries?",
@@ -154,7 +154,7 @@ const faqs = [
     },
     {
         question: "How can I book an appointment with a doctor?",
-        answer: "Call +91 91445 14459, visit www.txhospitals.in, or walk into TX Hospitals at Banjara Hills, Kachiguda, or Uppal."
+        answer: "Call +91-91445 14459, visit www.txhospitals.in, or walk into TX Hospitals at Banjara Hills, Kachiguda, or Uppal."
     },
     {
         question: "Does TX Hospitals provide preventive health checkups?",

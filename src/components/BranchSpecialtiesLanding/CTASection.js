@@ -50,7 +50,7 @@ Book a consultation at TX Hospitals Uppal today.`
                         style={{ border: '1px solid rgba(255, 255, 255, 0.4)', color: 'white' }}
                     >
                         <Phone className="w-5 h-5" />
-                        Call +91 91445 14459
+                        Call +91-91445 14459
                     </a>
 
                     <button

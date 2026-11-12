@@ -135,7 +135,7 @@ const BanjaraHillsFaqsAndVisit = () => {
                                                 Phone
                                             </h4>
                                             <p className="text-gray-700 text-sm font-semibold leading-none">
-                                                +91 9144514459
+                                                +91-9144514459
                                             </p>
                                         </div>
                                     </div>

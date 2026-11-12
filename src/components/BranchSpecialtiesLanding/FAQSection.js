@@ -55,7 +55,7 @@ const FAQSection = ({ location }) => {
         },
         {
             question: `How can I book a consultation at TX Hospitals ${formattedLocation}?`,
-            answer: `You can book a consultation with the required specialist at TX Hospitals by calling +91 9144514459 or by visiting official website.`
+            answer: `You can book a consultation with the required specialist at TX Hospitals by calling +91-9144514459 or by visiting official website.`
         }
     ];
 
@@ -90,7 +90,7 @@ const FAQSection = ({ location }) => {
         },
         {
             question: `How can I book an appointment at TX Hospitals Kachiguda?`,
-            answer: `You can schedule an appointment with the required specialist by calling +91 9144514459 or visiting the official TX Hospitals website.`
+            answer: `You can schedule an appointment with the required specialist by calling +91-9144514459 or visiting the official TX Hospitals website.`
         }
     ];
 
@@ -133,7 +133,7 @@ const FAQSection = ({ location }) => {
         },
         {
             question: "How can I book an appointment with a specialist at TX Hospitals Uppal?",
-            answer: "You can book a consultation by calling +91 9144514459 or through the official TX Hospitals website."
+            answer: "You can book a consultation by calling +91-9144514459 or through the official TX Hospitals website."
         }
     ];
 

@@ -31,8 +31,8 @@ export default function CRContactUs() {
                             </div>
                             <div>
                                 <h4 className="text-pink-500 font-bold uppercase tracking-wider text-sm mb-2">Call Us</h4>
-                                <p className="text-lg">+91 7674014388</p>
-                                <p className="text-lg">+91 6301433702</p>
+                                <p className="text-lg">+91-7674014388</p>
+                                <p className="text-lg">+91-6301433702</p>
                             </div>
                         </div>
 

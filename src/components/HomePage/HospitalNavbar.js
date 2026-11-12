@@ -197,7 +197,7 @@ export default function HospitalNavbar({ variant = "primary", forceSecondary = f
                         <p className="text-[10px] text-gray-600 font-bold uppercase tracking-wider">
                             Emergency & 24/7 Support
                         </p>
-                        <p className="text-sm font-bold text-black">+91 9144514459 / +91 9963229765</p>
+                        <p className="text-sm font-bold text-black">+91-9144514459 / +91-9963229765</p>
                     </div>
                     <div className="flex flex-col gap-2">
                         {quickLinks.map((link, idx) => (
@@ -323,7 +323,7 @@ export default function HospitalNavbar({ variant = "primary", forceSecondary = f
                         <p className="text-[10px] text-gray-600 font-bold uppercase tracking-wider">
                             Emergency & 24/7 Support
                         </p>
-                        <p className="text-sm font-bold text-black">+91 9144514459 / +91 9963229765</p>
+                        <p className="text-sm font-bold text-black">+91-9144514459 / +91-9963229765</p>
                     </div>
                     <div className="flex flex-col gap-2">
                         {quickLinks.map((link, idx) => (
@@ -433,7 +433,7 @@ export default function HospitalNavbar({ variant = "primary", forceSecondary = f
                         <p className="text-[10px] text-gray-600 font-bold uppercase tracking-wider">
                             Emergency & 24/7 Support
                         </p>
-                        <p className="text-sm font-bold text-black">+91 9144514459 / +91 9963229765</p>
+                        <p className="text-sm font-bold text-black">+91-9144514459 / +91-9963229765</p>
                     </div>
                     <div className="flex flex-col gap-2">
                         {quickLinks.map((link, idx) => (
@@ -492,7 +492,7 @@ export default function HospitalNavbar({ variant = "primary", forceSecondary = f
                             <p className="text-xs text-gray-600 font-semibold">
                                 Emergency & 24/7 Health Support
                             </p>
-                            <p className="text-sm font-medium text-black">+91 9144514459 / +91 9963229765</p>
+                            <p className="text-sm font-medium text-black">+91-9144514459 / +91-9963229765</p>
                         </div>
 
                         <div className="flex flex-col gap-2">
@@ -782,7 +782,7 @@ export default function HospitalNavbar({ variant = "primary", forceSecondary = f
                             <div className="mt-8 flex flex-col gap-3 border-t border-gray-100 pt-6">
                                 <a href="tel:+919144514459" className="flex items-center justify-center gap-2 w-full py-3 rounded-lg border border-pink-200 bg-pink-50 text-pink-700 font-bold hover:bg-pink-100 transition-colors">
                                     <MdPhoneInTalk size={20} />
-                                    <span>+91 9144514459 / +91 9963229765</span>
+                                    <span>+91-9144514459 / +91-9963229765</span>
                                 </a>
                                 <button onClick={() => { window.dispatchEvent(new CustomEvent('open-appointment-modal')); setIsMenuOpen(false); }} className="flex items-center justify-center gap-2 w-full py-3 rounded-lg bg-pink-700 text-white font-bold hover:bg-pink-800 transition-colors shadow-md">
                                     <svg xmlns="http://www.w3.org/2000/svg" alt="Image" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -808,7 +808,7 @@ export default function HospitalNavbar({ variant = "primary", forceSecondary = f
                         <div className="flex items-center gap-8">
                             <a href="tel:+919144514459">
                                 <div className="flex items-center gap-3 text-white bg-pink-700 rounded-full px-4 py-1 cursor-pointer whitespace-nowrap text-sm">
-                                    <MdPhoneInTalk size={18} /> +91 9144514459 / +91 9963229765
+                                    <MdPhoneInTalk size={18} /> +91-9144514459 / +91-9963229765
                                 </div>
                             </a>
 

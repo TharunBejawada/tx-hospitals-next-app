@@ -37,7 +37,7 @@ const BanjaraHillsNewCTA = () => {
                             style={{ background: 'transparent', fontSize: '14px', fontWeight: 600, color: 'rgb(255, 255, 255)', border: '1.5px solid rgba(255, 255, 255, 0.8)' }}
                         >
                             <Phone className="w-4 h-4" />
-                            Call +91 91445 14459
+                            Call +91-91445 14459
                         </a>
                         
                         <button 

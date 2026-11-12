@@ -30,7 +30,7 @@ export default function HealthAwarenessCallToAction({ onBookClick }) {
                             className="w-full sm:w-auto bg-white hover:bg-pink-50 text-[#c22055] px-7 py-3.5 rounded-full font-bold text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-md hover:shadow-lg transition-all duration-200 active:scale-95 whitespace-nowrap"
                         >
                             <FaPhoneAlt className="text-sm text-[#c22055]" />
-                            <span>+91 91445 14459</span>
+                            <span>+91-91445 14459</span>
                         </a>
 
                         {/* Symptom Check / Book Button */}

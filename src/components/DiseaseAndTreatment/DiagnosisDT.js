@@ -74,7 +74,7 @@ const DiagnosisDT = ({ data, openModal }) => {
                                 className="flex items-center justify-center gap-2 border border-[#C23358] text-[#C23358] bg-transparent font-semibold px-6 py-2.5 rounded-lg hover:bg-pink-50 transition text-sm whitespace-nowrap"
                             >
                                 <FaPhoneAlt size={12} />
-                                +91 9144514459
+                                +91-9144514459
                             </a>
                             <button
                                 onClick={openModal}
