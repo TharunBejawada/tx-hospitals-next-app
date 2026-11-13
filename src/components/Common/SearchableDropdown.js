@@ -1,12 +1,17 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-const SearchableDropdown = ({ name, value, onChange, options, placeholder, disabled, style, className }) => {
+const SearchableDropdown = ({ name, value, onChange, options = [], placeholder, disabled, style, className }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const dropdownRef = useRef(null);
 
-    const filteredOptions = options.filter(option =>
-        option.label.toLowerCase().includes(searchTerm.toLowerCase())
+    // Normalize options to support both string[] and { label, value }[]
+    const normalizedOptions = (options || []).map(option =>
+        typeof option === 'string' ? { label: option, value: option } : option
+    );
+
+    const filteredOptions = normalizedOptions.filter(option =>
+        (option?.label || '').toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     const handleSelect = (option) => {
@@ -15,7 +20,7 @@ const SearchableDropdown = ({ name, value, onChange, options, placeholder, disab
         setSearchTerm('');
     };
 
-    const selectedOption = options.find(opt => opt.value === value);
+    const selectedOption = normalizedOptions.find(opt => opt.value === value);
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -28,7 +33,7 @@ const SearchableDropdown = ({ name, value, onChange, options, placeholder, disab
     }, []);
 
     return (
-        <div ref={dropdownRef} className={`relative rounded-lg`} style={style}>
+        <div ref={dropdownRef} className={`relative rounded-lg ${isOpen ? 'z-40' : 'z-10'}`} style={style}>
             <div
                 className={`${className || ''} flex justify-between items-center ${disabled ? 'cursor-not-allowed opacity-80' : 'cursor-pointer'}`}
                 onClick={() => !disabled && setIsOpen(!isOpen)}

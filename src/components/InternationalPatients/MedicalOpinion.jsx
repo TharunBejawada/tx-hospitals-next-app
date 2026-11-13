@@ -8,6 +8,8 @@ import { useRouter } from "next/router";
 import CONFIG from "@/config";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
+import SearchableDropdown from '@/components/Common/SearchableDropdown';
 
 export default function MedicalOpinion() {
 
@@ -83,6 +85,10 @@ export default function MedicalOpinion() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!formData.country) {
+            toast.error('Please select a country');
+            return;
+        }
         try {
             const payload = {
                 ...formData,
@@ -170,20 +176,18 @@ export default function MedicalOpinion() {
                                             className="border font-inter p-2 rounded"
                                         />
                                         {/* Country Dropdown */}
-                                        <select
+                                        <SearchableDropdown
                                             name="country"
                                             value={formData.country}
+                                            placeholder="Select Country*"
+                                            options={countryOptions.map((c) => ({
+                                                label: `${c.name} (${c.code})`,
+                                                value: c.name,
+                                            }))}
                                             onChange={handleCountryChange}
-                                            required
-                                            className="border border-gray-300 font-inter p-2 rounded"
-                                        >
-                                            <option value="">Select Country*</option>
-                                            {countryOptions.map((c, idx) => (
-                                                <option key={idx} value={c.name}>
-                                                    {c.name} ({c.code})
-                                                </option>
-                                            ))}
-                                        </select>
+                                            className="w-full text-sm border border-gray-300 font-inter p-2 rounded bg-white text-gray-800"
+                                            style={{ background: 'white', borderRadius: '4px' }}
+                                        />
                                         {/* WhatsApp with locked dial code */}
                                         <WhatsAppField />
                                         <input
@@ -248,7 +252,7 @@ export default function MedicalOpinion() {
                     </div>
                 </>
             ) : (
-                <div className="flex flex-row gap-4 mt-6 px-12">
+                <div className="flex flex-row gap-4 py-6 px-6 lg:px-12 max-w-7xl mx-auto">
                     {/* Left Side */}
                     <div className="w-[60%] space-y-8 rounded-lg shadow-md border border-gray-200 bg-gray-200 px-4 py-4">
                         {/* Get Free Medical Opinion */}
@@ -292,20 +296,18 @@ export default function MedicalOpinion() {
                                     />
                                     {/* Country Dropdown - spans full width */}
                                     <div className="col-span-2">
-                                        <select
+                                        <SearchableDropdown
                                             name="country"
                                             value={formData.country}
+                                            placeholder="Select Country*"
+                                            options={countryOptions.map((c) => ({
+                                                label: `${c.name} (${c.code})`,
+                                                value: c.name,
+                                            }))}
                                             onChange={handleCountryChange}
-                                            required
-                                            className="w-full border border-gray-300 font-inter p-2 rounded"
-                                        >
-                                            <option value="">Select Country*</option>
-                                            {countryOptions.map((c, idx) => (
-                                                <option key={idx} value={c.name}>
-                                                    {c.name} ({c.code})
-                                                </option>
-                                            ))}
-                                        </select>
+                                            className="w-full text-sm border border-gray-300 font-inter p-2 rounded bg-white text-gray-800"
+                                            style={{ background: 'white', borderRadius: '4px' }}
+                                        />
                                     </div>
                                     {/* WhatsApp with locked dial code - spans full width */}
                                     <div className="col-span-2">

@@ -51,12 +51,12 @@ export default function PlanYourTrip() {
                 </>
             ) : (
                 <>
-                    <section className="py-12 px-12 bg-white">
-                        <h2 className="text-4xl font-semibold font-inter text-center text-pink-800 mb-8">
+                    <section className="py-8 sm:py-10 px-6 sm:px-12 bg-white">
+                        <h2 className="text-4xl font-semibold font-inter text-center text-pink-800 mb-5">
                             Plan Your Travel
                         </h2>
 
-                        <div className="flex flex-wrap justify-center gap-4 mb-10">
+                        <div className="flex flex-wrap justify-center gap-3.5 mb-6">
                             {travelOptions.map((option, index) => (
                                 <button
                                     key={index}

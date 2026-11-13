@@ -104,7 +104,8 @@ const BookAppointmentForm = ({ showModal, setShowModal, redirectUrl = "/thank-yo
         "TX Hospitals Uppal",
         "TX Hospitals Kachiguda",
         "TX Hospitals Banjara Hills",
-        "TX Children Hospitals Banjara Hills"
+        "TX Children Hospitals Banjara Hills",
+        "TX Hospitals Miyapur"
     ];
 
     return (
