@@ -857,7 +857,7 @@ export default function HospitalNavbar({ variant = "primary", forceSecondary = f
 
                         {/* Right */}
                         <div className="flex items-center gap-8">
-                            <button className={linkClass} onClick={() => router.push("/find-doctor")}>
+                            <button className={linkClass} onClick={() => router.push("/find-doctor/")}>
                                 DOCTORS
                             </button>
                             <div

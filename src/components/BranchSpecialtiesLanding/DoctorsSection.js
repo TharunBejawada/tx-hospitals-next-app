@@ -144,7 +144,7 @@ const DoctorsSection = ({ location }) => {
 
                 <div className="text-center">
                     <a
-                        href={`/find-doctor?location=${formattedLocation}`}
+                        href={`/find-doctor/?location=${formattedLocation}`}
                         className="inline-block px-8 py-2.5 rounded transition-all hover:bg-[#BD385C] hover:text-white"
                         style={{ background: 'rgb(255, 255, 255)', fontSize: '15px', fontWeight: 500, color: 'rgb(189, 56, 92)', border: '1.5px solid rgb(189, 56, 92)' }}
                     >

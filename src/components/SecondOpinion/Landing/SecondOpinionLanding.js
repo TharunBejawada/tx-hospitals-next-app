@@ -274,7 +274,7 @@ export default function SecondOpinionLanding({
                         {/* View All Doctors Button */}
                         <div className="mt-12 flex justify-center">
                             <Link
-                                href="/find-doctor"
+                                href="/find-doctor/"
                                 className="border-2 border-pink-700 text-pink-700 px-8 py-3 rounded-full font-bold text-sm uppercase tracking-wider hover:bg-pink-700 hover:text-white transition-all transform hover:scale-105"
                             >
                                 View All Doctors

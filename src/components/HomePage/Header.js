@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import { motion, AnimatePresence } from "framer-motion";
 
 const labels = [
-    { title: "Request Appointment", path: "/find-doctor" },
+    { title: "Request Appointment", path: "/find-doctor/" },
     { title: "Online Consultation", path: "" },
     { title: "Health Checkup", path: "/health-package" },
     { title: "View Report", path: "" },

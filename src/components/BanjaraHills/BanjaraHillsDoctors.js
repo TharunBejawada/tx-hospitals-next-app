@@ -105,7 +105,7 @@ export default function BanjaraHillsDoctors() {
                         Expert Doctors at TX Hospitals Banjara Hills
                     </h2>
                     <Link
-                        href="/find-doctor?location=Banjara%20Hills"
+                        href="/find-doctor/?location=Banjara%20Hills"
                         className="text-[#b3204d] hover:text-[#971b41] font-bold text-sm transition-colors duration-300 hover:underline decoration-2 underline-offset-4"
                     >
                         View All Doctors →

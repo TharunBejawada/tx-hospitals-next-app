@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
 import { Award, MapPin, Calendar, Phone } from 'lucide-react';
 import BookAppointmentForm from '@/components/Blogs/BookAppointemntForm';
@@ -150,13 +151,13 @@ const BanjaraHillsNewDoctors = ({ initialDoctors = [] }) => {
                         </div>
 
                         <div className="text-center mt-6">
-                            <a
-                                href="/find-doctor?location=Banjara%20Hills"
+                            <Link
+                                href="/find-doctor/?location=Banjara%20Hills"
                                 className="inline-block px-8 py-2.5 rounded transition-all hover:bg-[#BD385C] hover:text-white font-medium"
                                 style={{ background: 'rgb(255, 255, 255)', fontSize: '14px', color: 'rgb(189, 56, 92)', border: '1.5px solid rgb(189, 56, 92)' }}
                             >
                                 View All Doctors
-                            </a>
+                            </Link>
                         </div>
                     </>
                 )}

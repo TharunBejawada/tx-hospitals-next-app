@@ -28,7 +28,22 @@ export default function App({ Component, pageProps }) {
   }, []);
 
   // Compute canonical URL dynamically
-  let path = router.asPath.split("#")[0].split("?")[0];
+  let path = router.asPath.split("#")[0];
+  let queryString = "";
+
+  // Retain location filter query parameters for /find-doctor/ to enable indexable self-canonical URLs
+  if (path.startsWith("/find-doctor") && router.asPath.includes("location=")) {
+    const [basePath, qs] = path.split("?");
+    path = basePath;
+    const params = new URLSearchParams(qs);
+    const loc = params.get("location");
+    if (loc) {
+      queryString = `?location=${encodeURIComponent(loc)}`;
+    }
+  } else {
+    path = path.split("?")[0];
+  }
+
   if (!path.startsWith("/")) {
     path = "/" + path;
   }
@@ -41,7 +56,7 @@ export default function App({ Component, pageProps }) {
     }
   }
 
-  const canonicalUrl = `https://txhospitals.in${path}`;
+  const canonicalUrl = `https://txhospitals.in${path}${queryString}`;
 
   return (
     <div className="font-sans">

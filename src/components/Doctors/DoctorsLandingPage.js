@@ -19,7 +19,7 @@ const locations = [
     { value: "Miyapur", label: "Miyapur" },
 ];
 
-export default function DoctorsLandingPage({ initialDoctors = null }) {
+export default function DoctorsLandingPage({ initialDoctors = null, initialLocation = "" }) {
 
     const router = useRouter();
     const hasInitial = Array.isArray(initialDoctors) && initialDoctors.length > 0;
@@ -49,7 +49,7 @@ export default function DoctorsLandingPage({ initialDoctors = null }) {
         });
         return uniqueDepartments.sort((a, b) => a.localeCompare(b));
     });
-    const [selectedLocation, setSelectedLocation] = useState("");
+    const [selectedLocation, setSelectedLocation] = useState(() => initialLocation || "");
     const [selectedSpeciality, setSelectedSpeciality] = useState("");
     const [visibleDoctors, setVisibleDoctors] = useState(20);
     const isMobile = useIsMobile();
@@ -62,8 +62,10 @@ export default function DoctorsLandingPage({ initialDoctors = null }) {
         window.scrollTo({ left: document.body.scrollWidth, top: 0, behavior: "smooth" });
         if (router.query.location) {
             setSelectedLocation(router.query.location);
+        } else if (initialLocation) {
+            setSelectedLocation(initialLocation);
         }
-    }, [router.query.location]);
+    }, [router.query.location, initialLocation]);
 
     const filteredDoctors = useMemo(() => {
         return doctorsData.filter((doctor) => {
