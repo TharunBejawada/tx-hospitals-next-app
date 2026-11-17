@@ -8,7 +8,7 @@ import MedicalOpinion from "@/components/InternationalPatients/MedicalOpinion";
 import IPBranchesSection from "@/components/InternationalPatients/IPBranchesSection";
 import IPCTASection from "@/components/InternationalPatients/IPCTASection";
 import IPFAQSection from "@/components/InternationalPatients/IPFAQSection";
-import IPAutoAppointmentModal from "@/components/InternationalPatients/IPAutoAppointmentModal";
+import BookAppointmentForm from "@/components/Blogs/BookAppointemntForm";
 
 export default function IPLandingPage() {
     const [isAppointmentModalOpen, setIsAppointmentModalOpen] = useState(false);
@@ -24,11 +24,15 @@ export default function IPLandingPage() {
 
     return (
         <div className="bg-white">
-            {/* Auto Book Appointment Popup on Page Land/Refresh */}
-            <IPAutoAppointmentModal
-                isOpen={isAppointmentModalOpen}
-                onClose={() => setIsAppointmentModalOpen(false)}
-            />
+            {/* Auto Book Appointment Popup on Page Land/Refresh (Same popup as location Book Now) */}
+            {isAppointmentModalOpen && (
+                <BookAppointmentForm
+                    showModal={isAppointmentModalOpen}
+                    setShowModal={setIsAppointmentModalOpen}
+                    defaultLocation=""
+                    redirectUrl="/thank-you/"
+                />
+            )}
 
             {/* Step 1: Redesigned Hero Section with 4-Branches Carousel & Overlapping Enquiry Form */}
             <IPHeroSection />
