@@ -118,12 +118,9 @@ export default function MedicalOpinion({ onSelectCountry }) {
 
                                         {/* Country Name */}
                                         <div className="w-full">
-                                            <p className="text-xs font-bold text-gray-800 group-hover:text-[#BD2850] transition-colors truncate">
+                                            <p className="text-xs sm:text-[13px] font-bold text-gray-800 group-hover:text-[#BD2850] transition-colors truncate">
                                                 {flag.name}
                                             </p>
-                                            <span className="text-[11px] font-medium text-gray-400 group-hover:text-[#BD2850] transition-colors">
-                                                {countryInfo.dialCode}
-                                            </span>
                                         </div>
                                     </button>
                                 );
