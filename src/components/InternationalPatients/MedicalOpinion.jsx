@@ -1,370 +1,189 @@
-import { useEffect, useState } from "react";
-import { submitMyKareLead } from '@/utils/leadService';
-import Image from "next/image";
-import countryOptions from "@/utils/countryOptions";
-import useIsMobile from "@/hooks/useIsMobile";
+import React, { useEffect, useState } from "react";
 import { countryFlags } from "@/utils/countryFlags";
-import { useRouter } from "next/router";
 import CONFIG from "@/config";
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import axios from 'axios';
-import SearchableDropdown from '@/components/Common/SearchableDropdown';
+import { Video, Globe, Sparkles } from "lucide-react";
 
-export default function MedicalOpinion() {
+export const getCountryFromFlagName = (flagName) => {
+    const upper = (flagName || "").trim().toUpperCase();
+    if (upper === "BANGLADESH") return { country: "Bangladesh", dialCode: "+880" };
+    if (upper === "NEPAL") return { country: "Nepal", dialCode: "+977" };
+    if (upper === "SRI LANKA") return { country: "Sri Lanka", dialCode: "+94" };
+    if (upper === "OMAN") return { country: "Oman", dialCode: "+968" };
+    if (upper === "IRAQ") return { country: "Iraq", dialCode: "+964" };
+    if (upper === "NIGERIA") return { country: "Nigeria", dialCode: "+234" };
+    if (upper === "KENYA" || upper === "NAIROBI") return { country: "Kenya", dialCode: "+254" };
+    if (upper === "UAE") return { country: "UAE", dialCode: "+971" };
+    if (upper === "YEMEN") return { country: "Yemen", dialCode: "+967" };
+    if (upper === "SUDAN") return { country: "Sudan", dialCode: "+249" };
+    if (upper === "SOUTH SUDAN") return { country: "South Sudan", dialCode: "+211" };
+    if (upper === "ETHIOPIA") return { country: "Ethiopia", dialCode: "+251" };
+    if (upper === "SOMALIA") return { country: "Somalia", dialCode: "+252" };
+    if (upper === "DJIBOUTI") return { country: "Djibouti", dialCode: "+253" };
+    if (upper === "USA") return { country: "USA", dialCode: "+1" };
+    return { country: "Other", dialCode: "+00" };
+};
 
-    const router = useRouter();
-    const isMobile = useIsMobile();
+export default function MedicalOpinion({ onSelectCountry }) {
     const [videos, setVideos] = useState([]);
-    const [selectedCountryObj, setSelectedCountryObj] = useState(null);
-    const [formData, setFormData] = useState({
-        name: "",
-        email: "",
-        whatsapp: "",
-        country: "",
-        query: "",
-        fileUrl: "",
-    });
 
     useEffect(() => {
         const fetchVideos = async () => {
             try {
                 const response = await fetch(`${CONFIG.API_BASE_URL}/patient-testimonials`);
                 const data = await response.json();
-                const formattedVideos = data.videos
-                    .slice(0, 3)
-                    .map((url) => {
-                        const videoId = new URL(url).pathname.split("/").pop();
-                        return { id: videoId, title: "Patient Testimonial" };
-                    });
-                setVideos(formattedVideos);
+                if (data && Array.isArray(data.videos)) {
+                    const formattedVideos = data.videos
+                        .slice(0, 3)
+                        .map((url) => {
+                            try {
+                                const videoId = new URL(url).pathname.split("/").pop();
+                                return { id: videoId, title: "Patient Testimonial" };
+                            } catch {
+                                return null;
+                            }
+                        })
+                        .filter(Boolean);
+                    setVideos(formattedVideos);
+                }
             } catch (error) {
-                console.error("Error fetching videos:", error);
+                console.error("Error fetching patient testimonials:", error);
             }
         };
 
         fetchVideos();
     }, []);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
-    };
-
-    const handleCountryChange = (e) => {
-        const selected = countryOptions.find((c) => c.name === e.target.value);
-        setSelectedCountryObj(selected || null);
-        setFormData((prev) => ({ ...prev, country: e.target.value, whatsapp: "" }));
-    };
-
-    const handleWhatsappChange = (e) => {
-        const digits = e.target.value.replace(/[^0-9]/g, "");
-        setFormData((prev) => ({ ...prev, whatsapp: digits }));
-    };
-
-    const handleFileUpload = async (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-
-        const formData = new FormData();
-        formData.append("file", file);
-
-        try {
-            const response = await axios.post(`${CONFIG.API_BASE_URL}/upload`, formData);
-            const { fileUrl } = response.data;
-
-            setFormData((prev) => ({ ...prev, fileUrl }));
-            toast.success("File uploaded successfully!");
-        } catch (error) {
-            toast.error("File upload failed");
+    const handleFlagClick = (flag) => {
+        const countryData = getCountryFromFlagName(flag.name);
+        if (onSelectCountry) {
+            onSelectCountry(countryData);
         }
     };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (!formData.country) {
-            toast.error('Please select a country');
-            return;
-        }
-        try {
-            const payload = {
-                ...formData,
-                whatsapp: selectedCountryObj
-                    ? `${selectedCountryObj.code} ${formData.whatsapp}`
-                    : formData.whatsapp,
-            };
-            const res = await fetch(`${CONFIG.API_BASE_URL}/send-email/international-patients-query-form`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(payload),
-            });
-            submitMyKareLead(payload);
-
-            router.push("/thank-you/");
-        } catch (err) {
-            console.error("Submission error:", err);
-        }
-    };
-
-    // Reusable WhatsApp field with locked dial code prefix
-    const WhatsAppField = ({ className = "" }) => (
-        <div className={`relative flex items-center border border-gray-300 rounded bg-white ${className}`}>
-            {selectedCountryObj && (
-                <div className="flex items-center gap-1 pl-2 pr-2 border-r border-gray-300 pointer-events-none select-none shrink-0">
-                    <Image
-                        src={selectedCountryObj.flag}
-                        alt={selectedCountryObj.name}
-                        width={18}
-                        height={13}
-                        className="inline-block"
-                    />
-                    <span className="text-sm font-medium text-gray-700 whitespace-nowrap">{selectedCountryObj.code}</span>
-                </div>
-            )}
-            <input
-                type="tel"
-                name="whatsapp"
-                placeholder="WhatsApp No*"
-                required
-                value={formData.whatsapp}
-                onChange={handleWhatsappChange}
-                className="w-full px-2 py-2 font-inter outline-none bg-transparent"
-            />
-        </div>
-    );
 
     return (
-        <>
-            {isMobile ? (
-                <>
-                    <div className="flex flex-col gap-8 mt-2 p-2">
-                        {/* Left Side */}
-                        <div className="w-full space-y-2 rounded-lg shadow-md border border-gray-200 bg-gray-200 px-4 py-4">
-                            {/* Get Free Medical Opinion */}
-                            <div>
-                                <h2 className="text-2xl font-semibold text-pink-700 font-inter text-center mb-4">Get Free Medical Opinion</h2>
-                                <div className="grid grid-cols-3 gap-4">
-                                    {countryFlags.map((flag, idx) => (
-                                        <div key={idx} className="border border-black bg-white rounded-lg p-1 text-center hover:shadow-md transition">
-                                            <img loading="lazy" src={flag.src} alt={flag.name} className="h-10 mx-auto mb-2" />
-                                            <p className="text-[10px] font-inter font-medium">{flag.name}</p>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
+        <section id="medical-opinion" className="py-10 sm:py-14 md:py-16 bg-[#FAF7F8] border-t border-gray-100 font-sans">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                {/* Section Header */}
+                <div className="text-center max-w-3xl mx-auto mb-10">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-pink-100 text-[#BD2850] mb-2.5">
+                        <Globe size={13} />
+                        Global Patient Consultations
+                    </span>
+                    <h2 className="text-3xl sm:text-4xl font-extrabold text-[#1F1A1C] tracking-tight">
+                        Get Free Medical Opinion
+                    </h2>
+                    <p className="mt-2 text-sm sm:text-base text-gray-600">
+                        Click on your country flag below to connect directly with our international specialists and receive a confidential diagnosis &amp; transparent cost estimate.
+                    </p>
+                </div>
 
-                            {/* Talk to Our Experts Form */}
-                            <div className="bg-white p-3 rounded-lg shadow-md">
-                                <h2 className="text-lg font-inter font-semibold text-pink-800 mb-2">TALK TO OUR EXPERTS</h2>
-                                <form
-                                    className="space-y-4"
-                                    onSubmit={handleSubmit}
-                                >
-                                    <div className="grid grid-cols-1 gap-4">
-                                        <input
-                                            type="text"
-                                            name="name"
-                                            placeholder="Name*"
-                                            required
-                                            value={formData.name}
-                                            onChange={handleChange}
-                                            className="border font-inter p-2 rounded"
-                                        />
-                                        {/* Country Dropdown */}
-                                        <SearchableDropdown
-                                            name="country"
-                                            value={formData.country}
-                                            placeholder="Select Country*"
-                                            options={countryOptions.map((c) => ({
-                                                label: `${c.name} (${c.code})`,
-                                                value: c.name,
-                                            }))}
-                                            onChange={handleCountryChange}
-                                            className="w-full text-sm border border-gray-300 font-inter p-2 rounded bg-white text-gray-800"
-                                            style={{ background: 'white', borderRadius: '4px' }}
-                                        />
-                                        {/* WhatsApp with locked dial code */}
-                                        <WhatsAppField />
-                                        <input
-                                            type="email"
-                                            name="email"
-                                            placeholder="Email*"
-                                            required
-                                            value={formData.email}
-                                            onChange={handleChange}
-                                            className="border font-inter p-2 rounded"
-                                        />
-                                        <div>
-                                            <label className="block mb-1 font-inter text-sm font-medium">
-                                                Upload Reports (pdf/doc/jpg):
-                                            </label>
-                                            <input
-                                                type="file"
-                                                name="attachment"
-                                                accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                                                onChange={handleFileUpload}
-                                                className="border p-1 font-inter rounded w-full"
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                    {/* LEFT COLUMN: 16 COUNTRY FLAGS GRID (Interactive Cards) */}
+                    <div className="lg:col-span-7 bg-white rounded-3xl p-5 sm:p-7 shadow-sm border border-gray-200">
+                        <div className="flex items-center justify-between pb-4 mb-5 border-b border-gray-100">
+                            <div>
+                                <h3 className="text-lg sm:text-xl font-bold text-gray-900 flex items-center gap-2">
+                                    <span>Select Your Country</span>
+                                    <Sparkles size={16} className="text-[#BD2850]" />
+                                </h3>
+                                <p className="text-xs text-gray-500 mt-0.5">
+                                    Tap any flag to instantly open consultation form with your dial code
+                                </p>
+                            </div>
+                            <span className="hidden sm:inline-block text-[11px] font-semibold text-[#BD2850] bg-pink-50 px-2.5 py-1 rounded-full border border-pink-100">
+                                16 Countries Supported
+                            </span>
+                        </div>
+
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-3.5">
+                            {countryFlags.map((flag, idx) => {
+                                const countryInfo = getCountryFromFlagName(flag.name);
+                                return (
+                                    <button
+                                        key={idx}
+                                        type="button"
+                                        onClick={() => handleFlagClick(flag)}
+                                        aria-label={`Select ${countryInfo.country} (${countryInfo.dialCode}) for free medical opinion`}
+                                        className="group relative bg-[#FDFBFC] hover:bg-white border border-gray-200 hover:border-[#BD2850] rounded-2xl p-3 sm:p-3.5 text-center transition-all duration-200 hover:shadow-lg hover:-translate-y-1 active:scale-95 cursor-pointer flex flex-col items-center justify-between min-h-[110px]"
+                                    >
+                                        {/* Flag Image */}
+                                        <div className="h-10 sm:h-12 w-full flex items-center justify-center overflow-hidden mb-1.5">
+                                            <img
+                                                loading="lazy"
+                                                src={flag.src}
+                                                alt={flag.name}
+                                                className="max-h-full max-w-[80px] object-contain drop-shadow-sm group-hover:scale-105 transition-transform"
                                             />
                                         </div>
-                                    </div>
 
-                                    <textarea
-                                        name="query"
-                                        placeholder="Query"
-                                        value={formData.query}
-                                        onChange={handleChange}
-                                        required
-                                        className="border p-2 font-inter rounded w-full"
-                                        rows="3"
-                                    ></textarea>
-                                    <button
-                                        type="submit"
-                                        className="bg-pink-800 font-inter text-white px-6 py-2 rounded hover:bg-pink-700"
-                                    >
-                                        <span className="font-inter">Submit</span>
+                                        {/* Country Name */}
+                                        <div className="w-full">
+                                            <p className="text-xs font-bold text-gray-800 group-hover:text-[#BD2850] transition-colors truncate">
+                                                {flag.name}
+                                            </p>
+                                            <span className="text-[11px] font-medium text-gray-400 group-hover:text-[#BD2850] transition-colors">
+                                                {countryInfo.dialCode}
+                                            </span>
+                                        </div>
                                     </button>
-                                </form>
+                                );
+                            })}
+                        </div>
+                    </div>
+
+                    {/* RIGHT COLUMN: PATIENT TESTIMONIALS */}
+                    <div className="lg:col-span-5 bg-gradient-to-br from-[#FFF5F7] to-[#FFEBEF] rounded-3xl p-5 sm:p-7 shadow-sm border border-pink-100 flex flex-col">
+                        <div className="flex items-center gap-2 mb-4">
+                            <div className="w-8 h-8 rounded-full bg-[#BD2850] text-white flex items-center justify-center shrink-0">
+                                <Video size={16} />
+                            </div>
+                            <div>
+                                <h3 className="text-lg sm:text-xl font-bold text-gray-900 leading-tight">
+                                    Patient Testimonials
+                                </h3>
+                                <p className="text-xs text-gray-600">
+                                    Hear inspiring recovery stories from our international patients
+                                </p>
                             </div>
                         </div>
 
-                        {/* Right Side - Testimonials */}
-                        <div className="w-full space-y-3 rounded-lg shadow-md border border-gray-200 bg-rose-200 px-1 py-1">
-                            <h2 className="text-2xl font-inter font-semibold text-pink-700 text-center">Testimonials</h2>
-                            {videos.map((video, idx) => (
-                                <div key={idx} className="rounded-lg px-1 overflow-hidden shadow-md">
+                        <div className="space-y-4">
+                            {videos.length > 0 ? (
+                                videos.map((video, idx) => (
+                                    <div
+                                        key={idx}
+                                        className="rounded-2xl overflow-hidden shadow-md bg-black aspect-video border border-pink-200"
+                                    >
+                                        <iframe
+                                            title={video.title || `Patient Testimonial ${idx + 1}`}
+                                            width="100%"
+                                            height="100%"
+                                            src={`https://www.youtube.com/embed/${video.id}`}
+                                            frameBorder="0"
+                                            allowFullScreen
+                                            className="w-full h-full"
+                                            loading="lazy"
+                                        />
+                                    </div>
+                                ))
+                            ) : (
+                                <div className="rounded-2xl overflow-hidden shadow-md bg-black aspect-video border border-pink-200">
                                     <iframe
-                                        title={video.title}
+                                        title="Patient Testimonial"
                                         width="100%"
-                                        height="200"
-                                        src={`https://www.youtube.com/embed/${video.id}`}
+                                        height="100%"
+                                        src="https://www.youtube.com/embed/videoseries?list=PLTxHospitals"
                                         frameBorder="0"
                                         allowFullScreen
                                         className="w-full h-full"
+                                        loading="lazy"
                                     />
                                 </div>
-                            ))}
+                            )}
                         </div>
-                    </div>
-                </>
-            ) : (
-                <div className="flex flex-row gap-4 py-6 px-6 lg:px-12 max-w-7xl mx-auto">
-                    {/* Left Side */}
-                    <div className="w-[60%] space-y-8 rounded-lg shadow-md border border-gray-200 bg-gray-200 px-4 py-4">
-                        {/* Get Free Medical Opinion */}
-                        <div>
-                            <h2 className="text-4xl font-semibold text-pink-700 font-inter text-center mb-8">Get Free Medical Opinion</h2>
-                            <div className="grid grid-cols-4 gap-4">
-                                {countryFlags.map((flag, idx) => (
-                                    <div key={idx} className="border border-black bg-white rounded-lg p-2 text-center hover:shadow-md transition">
-                                        <img loading="lazy" src={flag.src} alt={flag.name} className="h-20 mx-auto mb-2" />
-                                        <p className="text-sm font-inter font-medium">{flag.name}</p>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Talk to Our Experts Form */}
-                        <div className="bg-white p-6 rounded-lg shadow-md">
-                            <h2 className="text-xl font-inter font-semibold text-pink-800 mb-4">TALK TO OUR EXPERTS</h2>
-                            <form
-                                className="space-y-4"
-                                onSubmit={handleSubmit}
-                            >
-                                <div className="grid grid-cols-2 gap-4">
-                                    <input
-                                        type="text"
-                                        name="name"
-                                        placeholder="Name*"
-                                        required
-                                        value={formData.name}
-                                        onChange={handleChange}
-                                        className="border font-inter p-2 rounded"
-                                    />
-                                    <input
-                                        type="email"
-                                        name="email"
-                                        placeholder="Email*"
-                                        required
-                                        value={formData.email}
-                                        onChange={handleChange}
-                                        className="border font-inter p-2 rounded"
-                                    />
-                                    {/* Country Dropdown - spans full width */}
-                                    <div className="col-span-2">
-                                        <SearchableDropdown
-                                            name="country"
-                                            value={formData.country}
-                                            placeholder="Select Country*"
-                                            options={countryOptions.map((c) => ({
-                                                label: `${c.name} (${c.code})`,
-                                                value: c.name,
-                                            }))}
-                                            onChange={handleCountryChange}
-                                            className="w-full text-sm border border-gray-300 font-inter p-2 rounded bg-white text-gray-800"
-                                            style={{ background: 'white', borderRadius: '4px' }}
-                                        />
-                                    </div>
-                                    {/* WhatsApp with locked dial code - spans full width */}
-                                    <div className="col-span-2">
-                                        <WhatsAppField />
-                                    </div>
-                                    <div className="col-span-2">
-                                        <label className="block mb-1 font-inter text-sm font-medium">
-                                            Upload Reports (pdf/doc/jpg):
-                                        </label>
-                                        <input
-                                            type="file"
-                                            name="attachment"
-                                            accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                                            onChange={handleFileUpload}
-                                            className="border p-1 font-inter rounded w-full"
-                                        />
-                                    </div>
-                                </div>
-
-                                <textarea
-                                    name="query"
-                                    placeholder="Query"
-                                    value={formData.query}
-                                    onChange={handleChange}
-                                    required
-                                    className="border p-2 font-inter rounded w-full"
-                                    rows="3"
-                                ></textarea>
-                                <button
-                                    type="submit"
-                                    className="bg-pink-800 font-inter text-white px-6 py-2 rounded hover:bg-pink-700"
-                                >
-                                    <span className="font-inter">Submit</span>
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-
-                    {/* Right Side - Testimonials */}
-                    <div className="w-[40%] space-y-6 rounded-lg shadow-md border border-gray-200 bg-rose-200 p-4">
-                        <h2 className="text-4xl font-inter font-semibold text-pink-700 text-center">Testimonials</h2>
-                        {videos.map((video, idx) => (
-                            <div key={idx} className="rounded-lg overflow-hidden shadow-md">
-                                <iframe
-                                    title={video.title}
-                                    width="100%"
-                                    height="200"
-                                    src={`https://www.youtube.com/embed/${video.id}`}
-                                    frameBorder="0"
-                                    allowFullScreen
-                                    className="w-full h-72"
-                                />
-                            </div>
-                        ))}
                     </div>
                 </div>
-            )}
-        </>
+            </div>
+        </section>
     );
 }

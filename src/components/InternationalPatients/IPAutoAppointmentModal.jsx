@@ -11,7 +11,6 @@ import {
     Check,
     X,
     Loader2,
-    Plane,
     Globe,
     ShieldCheck,
     PhoneCall,
@@ -40,6 +39,7 @@ const COUNTRY_DIAL_CODES = {
     "South Sudan": "+211",
     "Ethiopia": "+251",
     "Somalia": "+252",
+    "Djibouti": "+253",
     "USA": "+1",
     "UK": "+44",
     "India": "+91",
@@ -62,6 +62,7 @@ const COUNTRIES = [
     "South Sudan",
     "Ethiopia",
     "Somalia",
+    "Djibouti",
     "USA",
     "UK",
     "Other",
@@ -95,18 +96,27 @@ const generateCaptchaCode = () => {
     return code;
 };
 
-export default function IPAutoAppointmentModal({ isOpen, onClose }) {
+export default function IPAutoAppointmentModal({
+    isOpen,
+    onClose,
+    initialCountry = "",
+    initialCountryCode = "+00",
+    initialLocation = "TX Hospitals Banjara Hills",
+}) {
     const router = useRouter();
 
     const [formData, setFormData] = useState({
-        country: "",
+        country: initialCountry || "",
         speciality: "",
         name: "",
         email: "",
         passportNumber: "",
-        countryCode: "+00",
+        countryCode: initialCountry
+            ? (COUNTRY_DIAL_CODES[initialCountry] || initialCountryCode || "+00")
+            : initialCountryCode,
         mobile: "",
         whatsapp: "",
+        location: initialLocation,
         message: "",
         captchaInput: "",
     });
@@ -122,6 +132,24 @@ export default function IPAutoAppointmentModal({ isOpen, onClose }) {
     useEffect(() => {
         setCaptchaCode(generateCaptchaCode());
     }, []);
+
+    // Sync pre-selected country, code, and location when modal opens or props change
+    useEffect(() => {
+        if (isOpen) {
+            const country = initialCountry || "";
+            const countryCode = country
+                ? (COUNTRY_DIAL_CODES[country] || initialCountryCode || "+00")
+                : (initialCountryCode || "+00");
+            const location = initialLocation || "TX Hospitals Banjara Hills";
+            setFormData((prev) => ({
+                ...prev,
+                country,
+                countryCode,
+                location,
+            }));
+            setCaptchaCode(generateCaptchaCode());
+        }
+    }, [isOpen, initialCountry, initialCountryCode, initialLocation]);
 
     // Refresh captcha and clear input
     const refreshCaptcha = () => {
@@ -272,6 +300,7 @@ export default function IPAutoAppointmentModal({ isOpen, onClose }) {
         const reportsList = fileUrls.length > 0 ? fileUrls.join("\n") : "";
 
         const combinedMessage = [
+            formData.location ? `Preferred Branch: ${formData.location}` : "",
             formData.speciality ? `Speciality: ${formData.speciality}` : "",
             formData.passportNumber ? `Passport: ${formData.passportNumber}` : "",
             fullWhatsapp ? `WhatsApp: ${fullWhatsapp}` : "",
@@ -286,6 +315,7 @@ export default function IPAutoAppointmentModal({ isOpen, onClose }) {
             email: formData.email,
             mobile: fullPhone,
             country: formData.country,
+            location: formData.location,
             message: combinedMessage,
             speciality: formData.speciality,
             passportNumber: formData.passportNumber,
@@ -385,13 +415,6 @@ export default function IPAutoAppointmentModal({ isOpen, onClose }) {
 
                                 {/* Trust Badges */}
                                 <div className="mt-5 space-y-2.5">
-                                    <div className="flex items-center gap-2.5 text-xs text-pink-50">
-                                        <div className="w-6 h-6 rounded-lg bg-white/10 flex items-center justify-center shrink-0">
-                                            <Plane className="w-3.5 h-3.5 text-pink-200" />
-                                        </div>
-                                        <span>Complimentary Airport Pickup & Visa Letter</span>
-                                    </div>
-
                                     <div className="flex items-center gap-2.5 text-xs text-pink-50">
                                         <div className="w-6 h-6 rounded-lg bg-white/10 flex items-center justify-center shrink-0">
                                             <Stethoscope className="w-3.5 h-3.5 text-pink-200" />

@@ -2,8 +2,16 @@ import React, { useState } from "react";
 import BookAppointmentForm from "@/components/Blogs/BookAppointemntForm";
 import { Phone, Calendar } from "lucide-react";
 
-export default function IPCTASection() {
+export default function IPCTASection({ onOpenAppointmentModal }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleOpenModal = () => {
+        if (onOpenAppointmentModal) {
+            onOpenAppointmentModal();
+        } else {
+            setIsModalOpen(true);
+        }
+    };
 
     return (
         <section className="py-6 sm:py-8 md:py-10 bg-white">
@@ -32,7 +40,7 @@ export default function IPCTASection() {
                             {/* Book Appointment CTA */}
                             <button
                                 type="button"
-                                onClick={() => setIsModalOpen(true)}
+                                onClick={handleOpenModal}
                                 className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 rounded-full bg-white text-[#BD2850] font-bold text-sm sm:text-base shadow-lg hover:bg-pink-50 transition-all duration-200 active:scale-95 cursor-pointer"
                             >
                                 <Calendar className="w-4 h-4 text-[#BD2850]" />

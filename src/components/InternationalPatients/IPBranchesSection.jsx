@@ -43,13 +43,17 @@ const branches = [
     }
 ];
 
-export default function IPBranchesSection() {
+export default function IPBranchesSection({ onBookNow }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedBranch, setSelectedBranch] = useState(branches[0]);
 
     const handleBookNow = (branch) => {
-        setSelectedBranch(branch);
-        setIsModalOpen(true);
+        if (onBookNow) {
+            onBookNow(branch.defaultLocation || branch.name);
+        } else {
+            setSelectedBranch(branch);
+            setIsModalOpen(true);
+        }
     };
 
     return (
