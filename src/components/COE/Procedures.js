@@ -133,7 +133,7 @@ export default function Procedures({ department: propDepartment, initialData = n
     return (
         <>
             <Head>
-                {data?.seoDetails?.seoTitle && <title>{data.seoDetails.seoTitle}</title>}
+                {data?.seoDetails?.seoTitle && <title key="title">{data.seoDetails.seoTitle}</title>}
                 {data?.seoDetails?.metaDescription && (
                     <meta
                         name="description"

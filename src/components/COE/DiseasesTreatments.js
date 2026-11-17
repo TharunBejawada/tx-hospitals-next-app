@@ -133,7 +133,7 @@ export default function DiseasesTreatments({ department: propDepartment, initial
     return (
         <>
             <Head>
-                {data?.seoDetails?.seoTitle && <title>{data.seoDetails.seoTitle}</title>}
+                {data?.seoDetails?.seoTitle && <title key="title">{data.seoDetails.seoTitle}</title>}
                 {data?.seoDetails?.metaDescription && (
                     <meta
                         name="description"

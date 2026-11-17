@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import IPHeroSection from "@/components/InternationalPatients/IPHeroSection";
 import IPServicesSection from "@/components/InternationalPatients/IPServicesSection";
 import PlanYourTrip from "@/components/InternationalPatients/PlanYourTrip";
@@ -8,10 +8,28 @@ import MedicalOpinion from "@/components/InternationalPatients/MedicalOpinion";
 import IPBranchesSection from "@/components/InternationalPatients/IPBranchesSection";
 import IPCTASection from "@/components/InternationalPatients/IPCTASection";
 import IPFAQSection from "@/components/InternationalPatients/IPFAQSection";
+import IPAutoAppointmentModal from "@/components/InternationalPatients/IPAutoAppointmentModal";
 
 export default function IPLandingPage() {
+    const [isAppointmentModalOpen, setIsAppointmentModalOpen] = useState(false);
+
+    // Automatically trigger the Book Appointment popup on page land or refresh
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setIsAppointmentModalOpen(true);
+        }, 700);
+
+        return () => clearTimeout(timer);
+    }, []);
+
     return (
         <div className="bg-white">
+            {/* Auto Book Appointment Popup on Page Land/Refresh */}
+            <IPAutoAppointmentModal
+                isOpen={isAppointmentModalOpen}
+                onClose={() => setIsAppointmentModalOpen(false)}
+            />
+
             {/* Step 1: Redesigned Hero Section with 4-Branches Carousel & Overlapping Enquiry Form */}
             <IPHeroSection />
 

@@ -302,7 +302,7 @@ export default function Doctors({ department: propDepartment, initialData = null
     return (
         <>
             <Head>
-                {data?.seoDetails?.seoTitle && <title>{data.seoDetails.seoTitle}</title>}
+                {data?.seoDetails?.seoTitle && <title key="title">{data.seoDetails.seoTitle}</title>}
                 {data?.seoDetails?.metaDescription && (
                     <meta
                         name="description"

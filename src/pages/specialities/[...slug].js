@@ -257,7 +257,7 @@ export default function CenterOfExcellencePage({
     if (!routeType) return (
         <>
             <Head>
-                <title>{pageSeoTitle}</title>
+                <title key="title">{pageSeoTitle}</title>
                 <meta name="description" content={pageSeoDesc} key="description" />
             </Head>
             <div className="flex flex-row justify-center items-center mt-20 mb-4 gap-2">
@@ -273,7 +273,7 @@ export default function CenterOfExcellencePage({
         return (
             <>
                 <Head>
-                    <title>{pageSeoTitle}</title>
+                    <title key="title">{pageSeoTitle}</title>
                     <meta name="description" content={pageSeoDesc} key="description" />
                     <meta name="keywords" content={pageSeoKeywords} key="keywords" />
                 </Head>
@@ -291,7 +291,7 @@ export default function CenterOfExcellencePage({
         return (
             <>
                 <Head>
-                    <title>{pageSeoTitle}</title>
+                    <title key="title">{pageSeoTitle}</title>
                     <meta name="description" content={pageSeoDesc} key="description" />
                     <meta name="keywords" content={pageSeoKeywords} key="keywords" />
                 </Head>
@@ -308,7 +308,7 @@ export default function CenterOfExcellencePage({
     return (
         <>
             <Head>
-                <title>{pageSeoTitle}</title>
+                <title key="title">{pageSeoTitle}</title>
                 <meta name="description" content={pageSeoDesc} key="description" />
                 <meta name="keywords" content={pageSeoKeywords} key="keywords" />
             </Head>
