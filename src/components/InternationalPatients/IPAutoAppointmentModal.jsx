@@ -1,48 +1,135 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
-import { IoClose } from "react-icons/io5";
-import { User, Phone, Calendar, MapPin, Stethoscope } from "lucide-react";
+import {
+    IoClose,
+} from "react-icons/io5";
+import {
+    RotateCw,
+    Check,
+    X,
+    Loader2,
+    Plane,
+    Globe,
+    ShieldCheck,
+    PhoneCall,
+    Award,
+    Stethoscope
+} from "lucide-react";
 import { toast } from "react-toastify";
 import CONFIG from "@/config";
 import { submitMyKareLead } from "@/utils/leadService";
+import FormDropdown from "./FormDropdown";
 
-const LOCATIONS = [
-    "TX Hospitals Banjara Hills",
-    "TX Hospitals Uppal",
-    "TX Hospitals Kachiguda",
-    "TX Hospitals Miyapur"
+const COUNTRY_DIAL_CODES = {
+    "Bangladesh": "+880",
+    "Nepal": "+977",
+    "Sri Lanka": "+94",
+    "Maldives": "+960",
+    "Oman": "+968",
+    "Iraq": "+964",
+    "Nigeria": "+234",
+    "Kenya": "+254",
+    "Tanzania": "+255",
+    "Uzbekistan": "+998",
+    "UAE": "+971",
+    "Yemen": "+967",
+    "Sudan": "+249",
+    "South Sudan": "+211",
+    "Ethiopia": "+251",
+    "Somalia": "+252",
+    "USA": "+1",
+    "UK": "+44",
+    "India": "+91",
+};
+
+const COUNTRIES = [
+    "Bangladesh",
+    "Nepal",
+    "Sri Lanka",
+    "Maldives",
+    "Oman",
+    "Iraq",
+    "Nigeria",
+    "Kenya",
+    "Tanzania",
+    "Uzbekistan",
+    "UAE",
+    "Yemen",
+    "Sudan",
+    "South Sudan",
+    "Ethiopia",
+    "Somalia",
+    "USA",
+    "UK",
+    "Other",
 ];
 
-const SPECIALTIES = [
-    "Transplant Surgery (Liver & Kidney)",
+const SPECIALITIES = [
+    "Transplant Surgery",
     "Robotic Surgery",
-    "Cardiology & Cardiac Surgery",
-    "Neurology & Neurosurgery",
-    "Gastroenterology & GI Surgery",
-    "Nephrology & Dialysis",
-    "Orthopaedics & Joint Replacement",
-    "Oncology & Cancer Care",
-    "Urology & Andrology",
-    "Pulmonology & Critical Care",
-    "Mother & Child Care / Gynaecology",
-    "Other Speciality"
+    "Cardiology",
+    "Cardiothoracic and Vascular Surgery",
+    "Neurology",
+    "Gastroenterology",
+    "Nephrology",
+    "Urology",
+    "Orthopaedics",
+    "Pulmonology",
+    "Mother & Child Care",
+    "Oncology",
+    "ENT",
+    "Internal Medicine",
+    "Other",
 ];
+
+// Helper to generate a 5-character readable captcha
+const generateCaptchaCode = () => {
+    const chars = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
+    let code = "";
+    for (let i = 0; i < 5; i++) {
+        code += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return code;
+};
 
 export default function IPAutoAppointmentModal({ isOpen, onClose }) {
     const router = useRouter();
 
     const [formData, setFormData] = useState({
+        country: "",
+        speciality: "",
         name: "",
-        phone: "",
-        date: "",
-        location: "TX Hospitals Banjara Hills",
-        speciality: "Transplant Surgery (Liver & Kidney)",
+        email: "",
+        passportNumber: "",
+        countryCode: "+00",
+        mobile: "",
+        whatsapp: "",
+        message: "",
+        captchaInput: "",
     });
-    const [loading, setLoading] = useState(false);
 
-    // Close on Escape key press
+    const [sameAsMobile, setSameAsMobile] = useState(false);
+    const [fileUrls, setFileUrls] = useState([]);
+    const [uploadedFiles, setUploadedFiles] = useState([]); // [{ name, url }]
+    const [isUploadingFile, setIsUploadingFile] = useState(false);
+    const [captchaCode, setCaptchaCode] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const fileInputRef = useRef(null);
+
+    useEffect(() => {
+        setCaptchaCode(generateCaptchaCode());
+    }, []);
+
+    // Refresh captcha and clear input
+    const refreshCaptcha = () => {
+        setCaptchaCode(generateCaptchaCode());
+        setFormData((prev) => ({ ...prev, captchaInput: "" }));
+    };
+
+    // Keyboard Escape key handler
     useEffect(() => {
         const handleKeyDown = (e) => {
             if (e.key === "Escape" && isOpen) {
@@ -53,289 +140,779 @@ export default function IPAutoAppointmentModal({ isOpen, onClose }) {
         return () => window.removeEventListener("keydown", handleKeyDown);
     }, [isOpen, onClose]);
 
-    const handleChange = (e) => {
+    const handleInputChange = (e) => {
         const { name, value } = e.target;
+        setFormData((prev) => {
+            const updated = { ...prev, [name]: value };
+            if (name === "mobile" && sameAsMobile) {
+                updated.whatsapp = value;
+            }
+            return updated;
+        });
+    };
+
+    const handleCountryChange = (e) => {
+        const selected = e.target.value;
+        const dial = COUNTRY_DIAL_CODES[selected] || "+";
         setFormData((prev) => ({
             ...prev,
-            [name]: value,
+            country: selected,
+            countryCode: dial,
         }));
     };
 
-    const getTomorrowDateString = () => {
-        const tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        const yyyy = tomorrow.getFullYear();
-        const mm = String(tomorrow.getMonth() + 1).padStart(2, "0");
-        const dd = String(tomorrow.getDate()).padStart(2, "0");
-        return `${yyyy}-${mm}-${dd}`;
+    const handleSameAsMobileToggle = (e) => {
+        const checked = e.target.checked;
+        setSameAsMobile(checked);
+        if (checked) {
+            setFormData((prev) => ({ ...prev, whatsapp: prev.mobile }));
+        }
+    };
+
+    // Upload medical reports to S3 via /upload endpoint
+    const handleFileUpload = async (e) => {
+        const files = Array.from(e.target.files || []);
+        if (files.length === 0) return;
+
+        setIsUploadingFile(true);
+        const newUrls = [];
+        const newMeta = [];
+
+        try {
+            for (const file of files) {
+                const data = new FormData();
+                data.append("file", file);
+
+                const response = await axios.post(`${CONFIG.API_BASE_URL}/upload`, data, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                });
+
+                if (response.data?.fileUrl) {
+                    newUrls.push(response.data.fileUrl);
+                    newMeta.push({ name: file.name, url: response.data.fileUrl });
+                }
+            }
+
+            if (newUrls.length > 0) {
+                setFileUrls((prev) => [...prev, ...newUrls]);
+                setUploadedFiles((prev) => [...prev, ...newMeta]);
+                toast.success(
+                    newUrls.length > 1
+                        ? `${newUrls.length} medical reports uploaded successfully!`
+                        : "Medical report uploaded successfully!"
+                );
+            }
+        } catch (error) {
+            console.error("File upload error:", error);
+            toast.error("File upload failed. Please try again.");
+        } finally {
+            setIsUploadingFile(false);
+            if (fileInputRef.current) {
+                fileInputRef.current.value = "";
+            }
+        }
+    };
+
+    const handleRemoveFile = (indexToRemove) => {
+        setUploadedFiles((prev) => prev.filter((_, idx) => idx !== indexToRemove));
+        setFileUrls((prev) => prev.filter((_, idx) => idx !== indexToRemove));
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Validate name
+        // 1. Validate Dropdowns
+        if (!formData.country) {
+            toast.error("Please select your country.");
+            return;
+        }
+
+        if (!formData.speciality) {
+            toast.error("Please select a medical speciality.");
+            return;
+        }
+
+        // 2. Validate Full Name
         if (!formData.name.trim()) {
-            toast.error("Please enter patient name.");
+            toast.error("Please enter your full name.");
             return;
         }
 
-        // Validate phone: flexible to allow both Indian 10-digit and international numbers
-        const cleanPhone = formData.phone.replace(/[\s\-()]/g, "");
-        if (cleanPhone.length < 7 || cleanPhone.length > 16) {
-            toast.error("Please enter a valid phone number (minimum 7 digits).");
+        // 3. Validate Email
+        if (!formData.email.trim()) {
+            toast.error("Please enter your email address.");
             return;
         }
 
-        // Validate date
-        if (formData.date) {
-            const selectedDate = new Date(formData.date);
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-            if (selectedDate <= today) {
-                toast.error("Please select a future appointment date.");
-                return;
-            }
+        // 4. Validate Mobile
+        if (!formData.mobile.trim()) {
+            toast.error("Please enter your mobile number.");
+            return;
         }
 
-        setLoading(true);
+        // 5. Client-side Captcha Validation
+        if (formData.captchaInput.trim().toUpperCase() !== captchaCode.toUpperCase()) {
+            toast.error("Incorrect verification code. Please check and try again.");
+            refreshCaptcha();
+            return;
+        }
+
+        // Wait if files are actively uploading
+        if (isUploadingFile) {
+            toast.info("Please wait while your reports finish uploading...");
+            return;
+        }
+
+        setIsSubmitting(true);
+
+        const fullPhone = `${formData.countryCode} ${formData.mobile}`.trim();
+        const fullWhatsapp = formData.whatsapp ? `${formData.countryCode} ${formData.whatsapp}`.trim() : "";
+        const reportsList = fileUrls.length > 0 ? fileUrls.join("\n") : "";
+
+        const combinedMessage = [
+            formData.speciality ? `Speciality: ${formData.speciality}` : "",
+            formData.passportNumber ? `Passport: ${formData.passportNumber}` : "",
+            fullWhatsapp ? `WhatsApp: ${fullWhatsapp}` : "",
+            reportsList ? `Medical Reports URL: ${reportsList}` : "",
+            formData.message ? `Health Concern / Query: ${formData.message}` : "",
+        ]
+            .filter(Boolean)
+            .join("\n");
 
         const payload = {
-            to: "crm.txhospitals@gmail.com, venudas@txhospitals.in",
-            cc: "info.txhospitals@gmail.com",
-            subject: `International Patient Appointment Inquiry - ${formData.location}`,
-            html: `
-                <h3>New International Patient Appointment Request</h3>
-                <p><strong>Patient Name:</strong> ${formData.name}</p>
-                <p><strong>Phone / WhatsApp:</strong> ${formData.phone}</p>
-                <p><strong>Preferred Date:</strong> ${formData.date || "Not specified"}</p>
-                <p><strong>Preferred Branch:</strong> ${formData.location}</p>
-                <p><strong>Speciality:</strong> ${formData.speciality}</p>
-                <p><strong>Source Page:</strong> International Patient Services (${typeof window !== 'undefined' ? window.location.href : 'Direct'})</p>
-            `,
-            page: "International Patient Services - Appointment Popup",
-            location: formData.location,
             name: formData.name,
-            mobile: formData.phone,
-            phone: formData.phone,
-            date: formData.date,
+            email: formData.email,
+            mobile: fullPhone,
+            country: formData.country,
+            message: combinedMessage,
             speciality: formData.speciality,
-            notes: `Speciality: ${formData.speciality} | Preferred Date: ${formData.date} | Branch: ${formData.location}`,
+            passportNumber: formData.passportNumber,
+            whatsapp: fullWhatsapp,
+            fileUrl: fileUrls.length > 0 ? fileUrls.join(", ") : "",
+            fileUrls: fileUrls,
+            countryCode: formData.countryCode,
         };
 
         try {
-            // 1. Dynamic email API
-            await axios.post(`${CONFIG.API_BASE_URL}/send-email/dynamic-form`, payload).catch((err) => {
-                console.warn("Dynamic form email warning:", err);
-            });
-
-            // 2. International email endpoint
+            // Call API endpoint for international patient submission
             await fetch(`${CONFIG.API_BASE_URL}/send-email/international-patients`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    name: formData.name,
-                    mobile: formData.phone,
-                    country: "International Patient",
-                    speciality: formData.speciality,
-                    message: `Appointment requested for ${formData.date || "soonest"} at ${formData.location}.`,
-                }),
-            }).catch((err) => console.warn("International email warning:", err));
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(payload),
+            }).catch((err) => console.warn("Internal email error:", err));
 
-            // 3. Lead service integration
-            submitMyKareLead({
+            // Submit to MyKare lead transfer
+            await submitMyKareLead({
                 name: formData.name,
-                phoneNumber: formData.phone,
-                countryCode: "+",
-                notes: `Speciality: ${formData.speciality} | Date: ${formData.date} | Branch: ${formData.location}`,
-                email: "",
-                country: "International",
+                phoneNumber: fullPhone,
+                countryCode: formData.countryCode,
+                notes: combinedMessage,
+                email: formData.email,
+                country: formData.country,
                 speciality: formData.speciality,
             });
 
-            toast.success("Thank you! Your appointment request has been received. Our team will contact you shortly.");
+            toast.success("Thank you! Our International Patient Desk will contact you shortly.");
             onClose();
             router.push("/thank-you/");
         } catch (error) {
-            console.error("Error submitting appointment:", error);
-            toast.error("Failed to submit request. Please try calling our 24/7 international helpline.");
+            console.error("Form submission error:", error);
+            toast.error("Failed to submit enquiry. Please try again or call our helpline.");
         } finally {
-            setLoading(false);
+            setIsSubmitting(false);
         }
     };
 
     return (
         <AnimatePresence>
             {isOpen && (
-                <div className="fixed inset-0 flex items-center justify-center z-[99999] px-4 font-inter">
-                    {/* Dark Blurred Backdrop */}
+                <div className="fixed inset-0 flex items-center justify-center z-[99999] p-2 sm:p-4 md:p-6 font-inter">
+                    {/* Backdrop */}
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.25 }}
                         onClick={onClose}
-                        className="absolute inset-0 bg-black/60 backdrop-blur-sm cursor-pointer"
+                        className="absolute inset-0 bg-black/65 backdrop-blur-sm cursor-pointer"
                         aria-hidden="true"
                     />
 
-                    {/* Modal Card */}
+                    {/* Modal Container: Full-width on desktop with two columns */}
                     <motion.div
-                        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                        initial={{ opacity: 0, scale: 0.96, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                        transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                        className="relative w-full max-w-lg bg-white rounded-3xl overflow-hidden shadow-2xl border border-gray-100 flex flex-col max-h-[92vh] z-10"
+                        exit={{ opacity: 0, scale: 0.96, y: 20 }}
+                        transition={{ type: "spring", damping: 25, stiffness: 280 }}
+                        className="relative w-full max-w-[1240px] bg-white rounded-3xl overflow-hidden shadow-2xl border border-gray-100 flex flex-col lg:flex-row max-h-[92vh] z-10"
                         role="dialog"
                         aria-modal="true"
-                        aria-labelledby="ip-modal-title"
+                        aria-labelledby="ip-expert-title"
                     >
-                        {/* Branded Header */}
-                        <div className="bg-gradient-to-r from-[#BD2850] to-[#8C1436] py-5 px-6 sm:px-8 text-white text-center relative shadow-md">
-                            <h2 id="ip-modal-title" className="text-xl sm:text-2xl font-bold tracking-tight">
-                                Book an Appointment
-                            </h2>
-                            <p className="text-pink-100/80 text-[11px] sm:text-xs font-semibold uppercase tracking-wider mt-1">
-                                TX Hospitals • International Patient Services
-                            </p>
+                        {/* Close Button at top-right */}
+                        <button
+                            type="button"
+                            onClick={onClose}
+                            aria-label="Close modal"
+                            className="absolute top-4 right-4 z-50 text-gray-500 hover:text-white bg-gray-100 hover:bg-[#BD2850] p-2 rounded-full transition-all duration-200 shadow-md cursor-pointer"
+                        >
+                            <IoClose size={22} />
+                        </button>
 
-                            <button
-                                type="button"
-                                onClick={onClose}
-                                aria-label="Close appointment popup"
-                                className="absolute top-4 right-4 sm:top-5 sm:right-6 text-white/70 hover:text-white bg-white/10 hover:bg-white/20 p-1.5 rounded-full transition-all cursor-pointer"
-                            >
-                                <IoClose size={22} />
-                            </button>
+                        {/* LEFT COLUMN: DESKTOP PROPER BRAND & DOCTOR IMAGE PANEL */}
+                        <div className="hidden lg:flex lg:w-[32%] xl:w-[30%] bg-gradient-to-br from-[#BD2850] via-[#8C1436] to-[#4A0A1C] text-white flex-col justify-between relative overflow-hidden p-6 xl:p-8 select-none">
+                            {/* Background Ambient Glows & Accents */}
+                            <div className="absolute top-0 right-0 w-64 h-64 bg-pink-400/10 rounded-full blur-3xl pointer-events-none" />
+                            <div className="absolute bottom-0 left-0 w-64 h-64 bg-red-900/30 rounded-full blur-2xl pointer-events-none" />
+
+                            {/* Top Section: Header & Badge */}
+                            <div className="relative z-10">
+                                <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider text-pink-100 mb-4 border border-white/20">
+                                    <Globe className="w-3.5 h-3.5" />
+                                    <span>Global Patient Care</span>
+                                </div>
+
+                                <h3 className="text-2xl xl:text-3xl font-extrabold leading-tight tracking-tight">
+                                    World-Class Care For Global Patients
+                                </h3>
+                                <p className="text-pink-100/85 text-xs xl:text-sm mt-2 leading-relaxed">
+                                    Personalized treatment plans, visa support, and priority appointments across 4 flagship multi-speciality centers in Hyderabad.
+                                </p>
+
+                                {/* Trust Badges */}
+                                <div className="mt-5 space-y-2.5">
+                                    <div className="flex items-center gap-2.5 text-xs text-pink-50">
+                                        <div className="w-6 h-6 rounded-lg bg-white/10 flex items-center justify-center shrink-0">
+                                            <Plane className="w-3.5 h-3.5 text-pink-200" />
+                                        </div>
+                                        <span>Complimentary Airport Pickup & Visa Letter</span>
+                                    </div>
+
+                                    <div className="flex items-center gap-2.5 text-xs text-pink-50">
+                                        <div className="w-6 h-6 rounded-lg bg-white/10 flex items-center justify-center shrink-0">
+                                            <Stethoscope className="w-3.5 h-3.5 text-pink-200" />
+                                        </div>
+                                        <span>Multi-Organ Transplant & Robotic Surgery</span>
+                                    </div>
+
+                                    <div className="flex items-center gap-2.5 text-xs text-pink-50">
+                                        <div className="w-6 h-6 rounded-lg bg-white/10 flex items-center justify-center shrink-0">
+                                            <ShieldCheck className="w-3.5 h-3.5 text-pink-200" />
+                                        </div>
+                                        <span>Transparent Quotes & Free Second Opinion</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Center/Bottom: High Quality Doctor Image */}
+                            <div className="relative z-10 mt-4 flex flex-col items-center justify-end">
+                                <div className="relative w-full h-[240px] xl:h-[270px]">
+                                    <Image
+                                        src="/assets/Footer/Doctor Lady Image.png"
+                                        alt="TX Hospitals Expert Medical Care"
+                                        fill
+                                        sizes="(max-width: 1024px) 100vw, 32vw"
+                                        className="object-contain object-bottom drop-shadow-2xl"
+                                        priority
+                                    />
+                                </div>
+
+                                {/* 24/7 Helpline Pill */}
+                                <div className="w-full mt-2 bg-white/15 backdrop-blur-md border border-white/20 rounded-2xl py-2 px-3 text-center">
+                                    <p className="text-[10px] uppercase font-bold tracking-widest text-pink-200 flex items-center justify-center gap-1.5">
+                                        <PhoneCall className="w-3 h-3" />
+                                        <span>24/7 International Helpline</span>
+                                    </p>
+                                    <a
+                                        href="tel:+919144514459"
+                                        className="text-white font-bold text-sm tracking-wide hover:underline"
+                                    >
+                                        +91 91445 14459
+                                    </a>
+                                </div>
+                            </div>
                         </div>
 
-                        {/* Modal Body / Form */}
-                        <div className="p-6 sm:p-8 overflow-y-auto">
-                            <p className="text-xs sm:text-sm text-gray-600 mb-5 text-center">
-                                Connect with our international healthcare coordinators for priority consultation and treatment planning.
-                            </p>
-
-                            <form onSubmit={handleSubmit} className="space-y-4">
-                                {/* Patient Name */}
-                                <div className="space-y-1">
-                                    <label className="text-[11px] font-bold text-gray-600 uppercase tracking-wider flex items-center gap-1.5">
-                                        <User className="w-3.5 h-3.5 text-[#BD2850]" />
-                                        <span>Patient Name <span className="text-red-500">*</span></span>
-                                    </label>
-                                    <input
-                                        type="text"
-                                        name="name"
-                                        placeholder="Full Name"
-                                        required
-                                        value={formData.name}
-                                        onChange={handleChange}
-                                        className="w-full bg-gray-50 border border-gray-200 rounded-xl py-2.5 px-4 text-gray-900 font-medium focus:bg-white focus:border-[#BD2850] focus:ring-2 focus:ring-pink-500/20 outline-none transition-all text-sm"
-                                    />
+                        {/* RIGHT COLUMN: THE EXACT FORM FROM THE SCREENSHOT */}
+                        <div className="w-full lg:w-[68%] xl:w-[70%] p-5 sm:p-7 xl:p-8 overflow-y-auto flex flex-col justify-start">
+                            <form onSubmit={handleSubmit} className="flex flex-col gap-3.5">
+                                {/* Header Row */}
+                                <div className="flex flex-wrap justify-between items-center gap-2 pb-3 border-b border-[#F1E8EB] pr-8 sm:pr-10">
+                                    <div>
+                                        <h2
+                                            id="ip-expert-title"
+                                            className="text-xl sm:text-2xl font-bold font-inter text-[#1F1A1C] tracking-tight"
+                                        >
+                                            Talk to Our Experts
+                                        </h2>
+                                        <p className="text-xs sm:text-[13px] text-[#5B4F53] mt-0.5">
+                                            Our International Patient Desk is ready to assist you.
+                                        </p>
+                                    </div>
+                                    <span className="text-xs sm:text-[13px] text-[#5B4F53]">
+                                        Fields marked <span className="text-[#BD2850] font-bold">*</span> are required
+                                    </span>
                                 </div>
 
-                                {/* Phone / WhatsApp */}
-                                <div className="space-y-1">
-                                    <label className="text-[11px] font-bold text-gray-600 uppercase tracking-wider flex items-center gap-1.5">
-                                        <Phone className="w-3.5 h-3.5 text-[#BD2850]" />
-                                        <span>Phone / WhatsApp Number <span className="text-red-500">*</span></span>
-                                    </label>
-                                    <input
-                                        type="tel"
-                                        name="phone"
-                                        placeholder="e.g. +91 9144514459 or Mobile Number"
+                                {/* Form Fields Grid (Matching screenshot layout) */}
+                                <div
+                                    style={{
+                                        display: "grid",
+                                        gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+                                        gap: "12px 14px",
+                                        alignItems: "end",
+                                    }}
+                                >
+                                    {/* 1. Country (Reusable Dropdown) */}
+                                    <FormDropdown
+                                        label="Country"
+                                        name="country"
+                                        value={formData.country}
+                                        onChange={handleCountryChange}
+                                        options={COUNTRIES}
+                                        placeholder="Select your country"
                                         required
-                                        value={formData.phone}
-                                        onChange={handleChange}
-                                        className="w-full bg-gray-50 border border-gray-200 rounded-xl py-2.5 px-4 text-gray-900 font-medium focus:bg-white focus:border-[#BD2850] focus:ring-2 focus:ring-pink-500/20 outline-none transition-all text-sm"
                                     />
-                                </div>
 
-                                {/* Grid: Date and Branch */}
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                    {/* Date */}
-                                    <div className="space-y-1">
-                                        <label className="text-[11px] font-bold text-gray-600 uppercase tracking-wider flex items-center gap-1.5">
-                                            <Calendar className="w-3.5 h-3.5 text-[#BD2850]" />
-                                            <span>Preferred Date</span>
-                                        </label>
+                                    {/* 2. Medical Speciality (Reusable Dropdown) */}
+                                    <FormDropdown
+                                        label="Medical Speciality"
+                                        name="speciality"
+                                        value={formData.speciality}
+                                        onChange={handleInputChange}
+                                        options={SPECIALITIES}
+                                        placeholder="Select speciality"
+                                        required
+                                    />
+
+                                    {/* 3. Full Name */}
+                                    <label
+                                        style={{
+                                            display: "flex",
+                                            flexDirection: "column",
+                                            gap: "4px",
+                                            fontSize: "12.5px",
+                                            fontWeight: 600,
+                                            color: "rgb(58, 49, 52)",
+                                        }}
+                                    >
+                                        <span>
+                                            Full Name <span style={{ color: "rgb(189, 40, 80)" }}>*</span>
+                                        </span>
                                         <input
-                                            type="date"
-                                            name="date"
-                                            value={formData.date}
-                                            onChange={handleChange}
-                                            min={getTomorrowDateString()}
-                                            className="w-full bg-gray-50 border border-gray-200 rounded-xl py-2.5 px-4 text-gray-900 font-medium focus:bg-white focus:border-[#BD2850] focus:ring-2 focus:ring-pink-500/20 outline-none transition-all text-sm cursor-pointer"
+                                            type="text"
+                                            required
+                                            name="name"
+                                            value={formData.name}
+                                            onChange={handleInputChange}
+                                            placeholder="Enter your full name"
+                                            style={{
+                                                minHeight: "40px",
+                                                padding: "0px 12px",
+                                                border: "1px solid rgb(227, 214, 218)",
+                                                borderRadius: "10px",
+                                                background: "rgb(253, 251, 252)",
+                                                color: "rgb(31, 26, 28)",
+                                                fontSize: "13.5px",
+                                                outline: "none",
+                                            }}
+                                        />
+                                    </label>
+
+                                    {/* 4. Email Address */}
+                                    <label
+                                        style={{
+                                            display: "flex",
+                                            flexDirection: "column",
+                                            gap: "4px",
+                                            fontSize: "12.5px",
+                                            fontWeight: 600,
+                                            color: "rgb(58, 49, 52)",
+                                        }}
+                                    >
+                                        <span>
+                                            Email Address <span style={{ color: "rgb(189, 40, 80)" }}>*</span>
+                                        </span>
+                                        <input
+                                            type="email"
+                                            required
+                                            name="email"
+                                            value={formData.email}
+                                            onChange={handleInputChange}
+                                            placeholder="Enter your email"
+                                            style={{
+                                                minHeight: "40px",
+                                                padding: "0px 12px",
+                                                border: "1px solid rgb(227, 214, 218)",
+                                                borderRadius: "10px",
+                                                background: "rgb(253, 251, 252)",
+                                                color: "rgb(31, 26, 28)",
+                                                fontSize: "13.5px",
+                                                outline: "none",
+                                            }}
+                                        />
+                                    </label>
+
+                                    {/* 5. Passport Number */}
+                                    <label
+                                        style={{
+                                            display: "flex",
+                                            flexDirection: "column",
+                                            gap: "4px",
+                                            fontSize: "12.5px",
+                                            fontWeight: 600,
+                                            color: "rgb(58, 49, 52)",
+                                        }}
+                                    >
+                                        <span>Passport Number</span>
+                                        <input
+                                            type="text"
+                                            name="passportNumber"
+                                            value={formData.passportNumber}
+                                            onChange={handleInputChange}
+                                            placeholder="Enter your passport number"
+                                            style={{
+                                                minHeight: "40px",
+                                                padding: "0px 12px",
+                                                border: "1px solid rgb(227, 214, 218)",
+                                                borderRadius: "10px",
+                                                background: "rgb(253, 251, 252)",
+                                                color: "rgb(31, 26, 28)",
+                                                fontSize: "13.5px",
+                                                outline: "none",
+                                            }}
+                                        />
+                                    </label>
+
+                                    {/* 6. Mobile Number */}
+                                    <label
+                                        style={{
+                                            display: "flex",
+                                            flexDirection: "column",
+                                            gap: "4px",
+                                            fontSize: "12.5px",
+                                            fontWeight: 600,
+                                            color: "rgb(58, 49, 52)",
+                                        }}
+                                    >
+                                        <span>
+                                            Mobile Number <span style={{ color: "rgb(189, 40, 80)" }}>*</span>
+                                        </span>
+                                        <span style={{ display: "flex", gap: "6px" }}>
+                                            <input
+                                                type="text"
+                                                aria-label="Country code"
+                                                name="countryCode"
+                                                value={formData.countryCode}
+                                                onChange={handleInputChange}
+                                                placeholder="+00"
+                                                style={{
+                                                    width: "60px",
+                                                    minHeight: "40px",
+                                                    padding: "0px 6px",
+                                                    textAlign: "center",
+                                                    border: "1px solid rgb(227, 214, 218)",
+                                                    borderRadius: "10px",
+                                                    background: "rgb(253, 251, 252)",
+                                                    color: "rgb(31, 26, 28)",
+                                                    fontSize: "13px",
+                                                    fontWeight: 600,
+                                                    outline: "none",
+                                                }}
+                                            />
+                                            <input
+                                                type="tel"
+                                                required
+                                                name="mobile"
+                                                value={formData.mobile}
+                                                onChange={handleInputChange}
+                                                placeholder="Enter number"
+                                                style={{
+                                                    flex: "1 1 0%",
+                                                    minWidth: 0,
+                                                    minHeight: "40px",
+                                                    padding: "0px 12px",
+                                                    border: "1px solid rgb(227, 214, 218)",
+                                                    borderRadius: "10px",
+                                                    background: "rgb(253, 251, 252)",
+                                                    color: "rgb(31, 26, 28)",
+                                                    fontSize: "13.5px",
+                                                    outline: "none",
+                                                }}
+                                            />
+                                        </span>
+                                    </label>
+
+                                    {/* 7. WhatsApp Number */}
+                                    <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                                        <span
+                                            style={{
+                                                display: "flex",
+                                                flexWrap: "wrap",
+                                                justifyContent: "space-between",
+                                                alignItems: "center",
+                                                gap: "6px",
+                                            }}
+                                        >
+                                            <label
+                                                htmlFor="tx-popup-wa"
+                                                style={{
+                                                    fontSize: "12.5px",
+                                                    fontWeight: 600,
+                                                    color: "rgb(58, 49, 52)",
+                                                }}
+                                            >
+                                                WhatsApp Number
+                                            </label>
+                                            <label
+                                                style={{
+                                                    display: "inline-flex",
+                                                    alignItems: "center",
+                                                    gap: "5px",
+                                                    fontSize: "12px",
+                                                    color: "rgb(91, 79, 83)",
+                                                    cursor: "pointer",
+                                                }}
+                                            >
+                                                <input
+                                                    type="checkbox"
+                                                    checked={sameAsMobile}
+                                                    onChange={handleSameAsMobileToggle}
+                                                    style={{
+                                                        width: "14px",
+                                                        height: "14px",
+                                                        accentColor: "rgb(189, 40, 80)",
+                                                        cursor: "pointer",
+                                                    }}
+                                                />
+                                                Same as mobile
+                                            </label>
+                                        </span>
+                                        <input
+                                            id="tx-popup-wa"
+                                            type="tel"
+                                            name="whatsapp"
+                                            value={formData.whatsapp}
+                                            onChange={handleInputChange}
+                                            disabled={sameAsMobile}
+                                            placeholder="WhatsApp number"
+                                            style={{
+                                                minHeight: "40px",
+                                                padding: "0px 12px",
+                                                border: "1px solid rgb(227, 214, 218)",
+                                                borderRadius: "10px",
+                                                background: sameAsMobile ? "rgb(243, 240, 241)" : "rgb(253, 251, 252)",
+                                                color: "rgb(31, 26, 28)",
+                                                fontSize: "13.5px",
+                                                outline: "none",
+                                            }}
                                         />
                                     </div>
 
-                                    {/* Hospital Center / Location */}
-                                    <div className="space-y-1">
-                                        <label className="text-[11px] font-bold text-gray-600 uppercase tracking-wider flex items-center gap-1.5">
-                                            <MapPin className="w-3.5 h-3.5 text-[#BD2850]" />
-                                            <span>Hospital Branch</span>
-                                        </label>
-                                        <select
-                                            name="location"
-                                            value={formData.location}
-                                            onChange={handleChange}
-                                            className="w-full bg-gray-50 border border-gray-200 rounded-xl py-2.5 px-3 text-gray-900 font-medium focus:bg-white focus:border-[#BD2850] focus:ring-2 focus:ring-pink-500/20 outline-none transition-all text-sm cursor-pointer"
-                                        >
-                                            {LOCATIONS.map((loc) => (
-                                                <option key={loc} value={loc}>
-                                                    {loc}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                </div>
-
-                                {/* Medical Specialty */}
-                                <div className="space-y-1">
-                                    <label className="text-[11px] font-bold text-gray-600 uppercase tracking-wider flex items-center gap-1.5">
-                                        <Stethoscope className="w-3.5 h-3.5 text-[#BD2850]" />
-                                        <span>Medical Speciality</span>
-                                    </label>
-                                    <select
-                                        name="speciality"
-                                        value={formData.speciality}
-                                        onChange={handleChange}
-                                        className="w-full bg-gray-50 border border-gray-200 rounded-xl py-2.5 px-3 text-gray-900 font-medium focus:bg-white focus:border-[#BD2850] focus:ring-2 focus:ring-pink-500/20 outline-none transition-all text-sm cursor-pointer"
+                                    {/* 8. Upload Medical Reports */}
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            flexDirection: "column",
+                                            gap: "4px",
+                                            fontSize: "12.5px",
+                                            fontWeight: 600,
+                                            color: "rgb(58, 49, 52)",
+                                        }}
                                     >
-                                        {SPECIALTIES.map((spec) => (
-                                            <option key={spec} value={spec}>
-                                                {spec}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
+                                        <span className="flex items-center justify-between">
+                                            <span>Upload Medical Reports</span>
+                                            {isUploadingFile && (
+                                                <span className="flex items-center gap-1 text-[11px] font-semibold text-[#BD2850]">
+                                                    <Loader2 size={12} className="animate-spin" />
+                                                    Uploading...
+                                                </span>
+                                            )}
+                                            {!isUploadingFile && uploadedFiles.length > 0 && (
+                                                <span className="text-[11px] font-semibold text-emerald-600">
+                                                    {uploadedFiles.length} uploaded
+                                                </span>
+                                            )}
+                                        </span>
+                                        <input
+                                            ref={fileInputRef}
+                                            type="file"
+                                            multiple
+                                            accept=".pdf,.jpg,.jpeg,.png"
+                                            onChange={handleFileUpload}
+                                            disabled={isUploadingFile}
+                                            style={{
+                                                padding: "6px 10px",
+                                                border: "1.5px dashed rgb(215, 179, 190)",
+                                                borderRadius: "10px",
+                                                background: isUploadingFile ? "rgb(243, 240, 241)" : "rgb(253, 247, 249)",
+                                                fontSize: "12.5px",
+                                                color: "rgb(91, 79, 83)",
+                                                cursor: isUploadingFile ? "not-allowed" : "pointer",
+                                            }}
+                                        />
 
-                                {/* Submit Button */}
-                                <div className="pt-2">
+                                        {/* List of uploaded files */}
+                                        {uploadedFiles.length > 0 && (
+                                            <div className="flex flex-wrap gap-1.5 mt-1">
+                                                {uploadedFiles.map((file, idx) => (
+                                                    <div
+                                                        key={idx}
+                                                        className="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-800 text-[11px] font-medium px-2 py-0.5 rounded-md border border-emerald-200"
+                                                    >
+                                                        <Check size={12} className="text-emerald-600 shrink-0" />
+                                                        <span className="truncate max-w-[120px]" title={file.name}>
+                                                            {file.name}
+                                                        </span>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => handleRemoveFile(idx)}
+                                                            className="text-emerald-700 hover:text-red-600 ml-0.5 cursor-pointer"
+                                                            title="Remove file"
+                                                        >
+                                                            <X size={12} />
+                                                        </button>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {/* 9. Message (Full Width) */}
+                                    <label
+                                        style={{
+                                            gridColumn: "1 / -1",
+                                            display: "flex",
+                                            flexDirection: "column",
+                                            gap: "4px",
+                                            fontSize: "12.5px",
+                                            fontWeight: 600,
+                                            color: "rgb(58, 49, 52)",
+                                        }}
+                                    >
+                                        <span>Message</span>
+                                        <textarea
+                                            rows={2}
+                                            name="message"
+                                            value={formData.message}
+                                            onChange={handleInputChange}
+                                            placeholder="Briefly describe your health concern"
+                                            style={{
+                                                padding: "10px 12px",
+                                                border: "1px solid rgb(227, 214, 218)",
+                                                borderRadius: "10px",
+                                                background: "rgb(253, 251, 252)",
+                                                resize: "vertical",
+                                                fontSize: "13.5px",
+                                                outline: "none",
+                                            }}
+                                        />
+                                    </label>
+
+                                    {/* 10. Verification Code (Captcha) */}
+                                    <div style={{ display: "flex", alignItems: "end", gap: "8px" }}>
+                                        <div className="flex items-center gap-1">
+                                            <span
+                                                aria-label={`Captcha code: ${captchaCode}`}
+                                                style={{
+                                                    minHeight: "40px",
+                                                    padding: "0px 12px",
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    borderRadius: "10px",
+                                                    background: "rgb(243, 236, 238)",
+                                                    fontFamily: '"Courier New", monospace',
+                                                    fontWeight: 700,
+                                                    fontSize: "16px",
+                                                    letterSpacing: "0.25em",
+                                                    color: "rgb(91, 79, 83)",
+                                                    userSelect: "none",
+                                                }}
+                                            >
+                                                {captchaCode}
+                                            </span>
+                                            <button
+                                                type="button"
+                                                onClick={refreshCaptcha}
+                                                title="Generate new code"
+                                                aria-label="Refresh verification code"
+                                                className="p-2 text-gray-500 hover:text-[#BD2850] transition cursor-pointer"
+                                            >
+                                                <RotateCw size={15} />
+                                            </button>
+                                        </div>
+
+                                        <label
+                                            style={{
+                                                flex: "1 1 0%",
+                                                minWidth: 0,
+                                                display: "flex",
+                                                flexDirection: "column",
+                                                gap: "4px",
+                                                fontSize: "12.5px",
+                                                fontWeight: 600,
+                                                color: "rgb(58, 49, 52)",
+                                            }}
+                                        >
+                                            <span>
+                                                Verification Code <span style={{ color: "rgb(189, 40, 80)" }}>*</span>
+                                            </span>
+                                            <input
+                                                type="text"
+                                                required
+                                                name="captchaInput"
+                                                value={formData.captchaInput}
+                                                onChange={handleInputChange}
+                                                placeholder="Enter captcha"
+                                                style={{
+                                                    minHeight: "40px",
+                                                    padding: "0px 12px",
+                                                    border: "1px solid rgb(227, 214, 218)",
+                                                    borderRadius: "10px",
+                                                    background: "rgb(253, 251, 252)",
+                                                    color: "rgb(31, 26, 28)",
+                                                    fontSize: "13.5px",
+                                                    outline: "none",
+                                                }}
+                                            />
+                                        </label>
+                                    </div>
+
+                                    {/* 11. Submit Button */}
                                     <button
                                         type="submit"
-                                        disabled={loading}
-                                        className={`w-full bg-gradient-to-r from-[#BD2850] to-[#8C1436] hover:from-[#a52144] hover:to-[#78102e] text-white font-bold py-3.5 px-6 rounded-xl shadow-lg shadow-pink-900/20 transition-all active:scale-[0.98] text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer ${
-                                            loading ? "opacity-75 cursor-not-allowed" : ""
-                                        }`}
+                                        disabled={isSubmitting || isUploadingFile}
+                                        style={{
+                                            minHeight: "44px",
+                                            border: 0,
+                                            borderRadius: "10px",
+                                            background: "rgb(189, 40, 80)",
+                                            color: "rgb(255, 255, 255)",
+                                            fontWeight: 700,
+                                            fontSize: "14.5px",
+                                            cursor: isSubmitting || isUploadingFile ? "not-allowed" : "pointer",
+                                            display: "inline-flex",
+                                            alignItems: "center",
+                                            justifyContent: "center",
+                                            gap: "8px",
+                                            padding: "0 20px",
+                                            boxShadow: "rgba(189, 40, 80, 0.25) 0px 8px 18px",
+                                            transition: "background 0.2s, transform 0.1s",
+                                        }}
+                                        className="hover:opacity-95 active:scale-[0.98]"
                                     >
-                                        {loading ? (
+                                        {isSubmitting ? (
                                             <>
-                                                <div className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
-                                                <span>Scheduling Consultation...</span>
+                                                <Loader2 size={16} className="animate-spin" />
+                                                <span>Submitting...</span>
                                             </>
                                         ) : (
-                                            <span>Book Appointment</span>
+                                            <span>Talk to Our Experts</span>
                                         )}
-                                    </button>
-                                </div>
-
-                                {/* Dismiss text link */}
-                                <div className="text-center pt-1">
-                                    <button
-                                        type="button"
-                                        onClick={onClose}
-                                        className="text-xs text-gray-500 hover:text-gray-800 underline transition-colors cursor-pointer"
-                                    >
-                                        I&apos;ll explore services first
                                     </button>
                                 </div>
                             </form>
