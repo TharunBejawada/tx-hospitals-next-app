@@ -1,0 +1,587 @@
+{
+  "doctors": [
+    {
+      "priority": "1",
+      "title": "Cardiologists in Hyderabad",
+      "urlPath": "/specialities/cardiac-sciences/our-clinical-team/"
+    },
+    {
+      "priority": "2",
+      "title": "Neurologists in Hyderabad",
+      "urlPath": "/specialities/neuro-sciences/our-clinical-team/"
+    },
+    {
+      "priority": "3",
+      "title": "Gastroenterologists in Hyderabad",
+      "urlPath": "/specialities/gastro-sciences/our-clinical-team/"
+    },
+    {
+      "priority": "4",
+      "title": "Orthopaedic Doctors in Hyderabad",
+      "urlPath": "/specialities/orthopaedics/our-clinical-team/"
+    },
+    {
+      "priority": "5",
+      "title": "Urologists in Hyderabad",
+      "urlPath": "/specialities/urology/our-clinical-team/"
+    },
+    {
+      "priority": "6",
+      "title": "Nephrologists in Hyderabad",
+      "urlPath": "/specialities/nephrology/our-clinical-team/"
+    },
+    {
+      "priority": "7",
+      "title": "Oncologists in Hyderabad",
+      "urlPath": "/specialities/oncology/our-clinical-team/"
+    },
+    {
+      "priority": "8",
+      "title": "Paediatricians in Hyderabad",
+      "urlPath": "/specialities/pediatric-hospitals/our-clinical-team/"
+    },
+    {
+      "priority": "9",
+      "title": "Pulmonologists in Hyderabad",
+      "urlPath": "/specialities/pulmonology/our-clinical-team/"
+    },
+    {
+      "priority": "10",
+      "title": "Gynaecologists in Hyderabad",
+      "urlPath": "/specialities/gynecology-hospitals/our-clinical-team/"
+    },
+    {
+      "priority": "11",
+      "title": "ENT Specialists in Hyderabad",
+      "urlPath": "/specialities/ent/our-clinical-team/"
+    },
+    {
+      "priority": "12",
+      "title": "Vascular Surgeons in Hyderabad",
+      "urlPath": "/dr-avinash-dal-cardio-thoracic-and-vascular-surgeon/"
+    },
+    {
+      "priority": "13",
+      "title": "Ophthalmologists in Hyderabad",
+      "urlPath": "/specialities/eye-ophthalmology/our-clinical-team/"
+    },
+    {
+      "priority": "14",
+      "title": "Dentists in Hyderabad",
+      "urlPath": "/specialities/dental-and-maxillofacial-care/our-clinical-team/"
+    },
+    {
+      "priority": "15",
+      "title": "Dermatologists in Hyderabad",
+      "urlPath": "/specialities/dermatology-cosmetic-care/our-clinical-team/"
+    },
+    {
+      "priority": "16",
+      "title": "General Physicians in Hyderabad",
+      "urlPath": "/specialities/internal-medicine/our-clinical-team/"
+    },
+    {
+      "priority": "17",
+      "title": "Rheumatologists in Hyderabad",
+      "urlPath": "/specialities/rheumatology/our-clinical-team/"
+    }
+  ],
+  "modifiedAt": "2026-11-05T10:15:27.495Z",
+  "library": {
+    "Diagnostics Guide": [
+      {
+        "priority": "",
+        "title": "Coronary Angiography",
+        "urlPath": ""
+      },
+      {
+        "priority": "",
+        "title": "Colonoscopy",
+        "urlPath": ""
+      },
+      {
+        "priority": "",
+        "title": "Electrocardiogram (ECG)",
+        "urlPath": ""
+      },
+      {
+        "priority": "",
+        "title": "Endoscopy",
+        "urlPath": ""
+      },
+      {
+        "priority": "",
+        "title": "Magnetic Resonance Imaging (MRI)",
+        "urlPath": ""
+      },
+      {
+        "priority": "",
+        "title": "Ultrasound",
+        "urlPath": ""
+      },
+      {
+        "priority": "",
+        "title": "Pulmonary Function Test (PFT)",
+        "urlPath": ""
+      },
+      {
+        "priority": "",
+        "title": "Liver Function Tests (LFT)",
+        "urlPath": ""
+      },
+      {
+        "priority": "",
+        "title": "Complete Blood Count (CBC)",
+        "urlPath": ""
+      },
+      {
+        "priority": "",
+        "title": "View More",
+        "urlPath": ""
+      }
+    ],
+    "Health Package": [
+      {
+        "priority": "1",
+        "title": "Whole Body Checkup",
+        "urlPath": "/health-package/whole-body-check-up-package/"
+      },
+      {
+        "priority": "2",
+        "title": "Executive Health Checkup – Pro",
+        "urlPath": "/health-package/executive-health-checkup-pro-package/"
+      },
+      {
+        "priority": "3",
+        "title": "Master Health Checkup",
+        "urlPath": "/health-package/master-health-check-up-package/"
+      },
+      {
+        "priority": "4",
+        "title": "Lifestyle Screen Quick Checkup",
+        "urlPath": "/health-package/lifestyle-screen-quick-check-up-package/"
+      },
+      {
+        "priority": "5",
+        "title": "General Quick Checkup",
+        "urlPath": "/health-package/general-quick-health-check-up-package/"
+      },
+      {
+        "priority": "6",
+        "title": "Cardiac Health Checkup",
+        "urlPath": "/health-package/cardiac-health-check-up-package/"
+      },
+      {
+        "priority": "7",
+        "title": "Gastro Health Checkup",
+        "urlPath": "/health-package/gastro-health-check-up-package/"
+      },
+      {
+        "priority": "8",
+        "title": "Kidney Health Checkup",
+        "urlPath": "/health-package/kidney-health-check-up-package/"
+      },
+      {
+        "priority": "9",
+        "title": "Lungs Health Checkup",
+        "urlPath": "/health-package/lungs-health-check-up-package/"
+      },
+      {
+        "priority": "10",
+        "title": "Orthopedic Health Checkup",
+        "urlPath": "/health-package/orthopedic-health-check-up-package/"
+      },
+      {
+        "priority": "",
+        "title": "View More",
+        "urlPath": "/health-package/"
+      }
+    ],
+    "Medical Technology": [],
+    "Medicine Guide": [
+      {
+        "priority": "",
+        "title": "Aceclofenac",
+        "urlPath": ""
+      },
+      {
+        "priority": "",
+        "title": "Abacavir",
+        "urlPath": ""
+      },
+      {
+        "priority": "",
+        "title": "Acetaminophen",
+        "urlPath": ""
+      },
+      {
+        "priority": "",
+        "title": "Baclofen",
+        "urlPath": ""
+      },
+      {
+        "priority": "",
+        "title": "Betamethasone",
+        "urlPath": ""
+      },
+      {
+        "priority": "",
+        "title": "Budesonide",
+        "urlPath": ""
+      },
+      {
+        "priority": "",
+        "title": "Carvedilol",
+        "urlPath": ""
+      },
+      {
+        "priority": "",
+        "title": "Carbidopa",
+        "urlPath": ""
+      },
+      {
+        "priority": "",
+        "title": "Deflazacort",
+        "urlPath": ""
+      },
+      {
+        "priority": "",
+        "title": "Diclofenac",
+        "urlPath": ""
+      },
+      {
+        "priority": "",
+        "title": "Dexamethasone",
+        "urlPath": ""
+      },
+      {
+        "priority": "",
+        "title": "View More",
+        "urlPath": ""
+      }
+    ],
+    "News & Media": [],
+    "Second Opinion": [
+      {
+        "priority": "1",
+        "title": "Arthroscopic Joint Surgery",
+        "urlPath": "/arthroscopic-joint-surgery/"
+      },
+      {
+        "priority": "2",
+        "title": "Brain tumor Surgery",
+        "urlPath": "/brain-tumor-surgery/"
+      },
+      {
+        "priority": "3",
+        "title": "Breast Augmentation Surgery",
+        "urlPath": "/breast-augmentation-surgery/"
+      },
+      {
+        "priority": "4",
+        "title": "Cerebral Aneurysm Surgery",
+        "urlPath": "/cerebral-aneurysm-surgery/"
+      },
+      {
+        "priority": "5",
+        "title": "Coronary Artery Bypass Grafting Surgery",
+        "urlPath": "/coronary-artery-bypass-grafting-surgery/"
+      },
+      {
+        "priority": "6",
+        "title": "Fistula Surgery",
+        "urlPath": "/fistula-surgery/"
+      },
+      {
+        "priority": "7",
+        "title": "Hernia Surgery",
+        "urlPath": "/hernia-surgery/"
+      },
+      {
+        "priority": "8",
+        "title": "Hysterectomy Surgery",
+        "urlPath": "/hysterectomy-surgery/"
+      },
+      {
+        "priority": "9",
+        "title": "Knee Replacement Surgery",
+        "urlPath": "/knee-replacement-surgery/"
+      },
+      {
+        "priority": "10",
+        "title": "Rhinoplasty surgery",
+        "urlPath": "/rhinoplasty-nose-surgery/"
+      },
+      {
+        "priority": "",
+        "title": "View More",
+        "urlPath": "/surgery-care/"
+      },
+      {
+        "priority": "",
+        "title": "",
+        "urlPath": ""
+      },
+      {
+        "priority": "",
+        "title": "",
+        "urlPath": ""
+      }
+    ],
+    "Symptoms Guide": [
+      {
+        "priority": "",
+        "title": "Abdominal Pain",
+        "urlPath": ""
+      },
+      {
+        "priority": "",
+        "title": "Abnormal bleeding",
+        "urlPath": ""
+      },
+      {
+        "priority": "",
+        "title": "Back pain",
+        "urlPath": ""
+      },
+      {
+        "priority": "",
+        "title": "Bleeding gums",
+        "urlPath": ""
+      },
+      {
+        "priority": "",
+        "title": "Blurred vision",
+        "urlPath": ""
+      },
+      {
+        "priority": "",
+        "title": "Chest pain",
+        "urlPath": ""
+      },
+      {
+        "priority": "",
+        "title": "Confusion",
+        "urlPath": ""
+      },
+      {
+        "priority": "",
+        "title": "Cough",
+        "urlPath": ""
+      },
+      {
+        "priority": "",
+        "title": "Diarrhoea",
+        "urlPath": ""
+      },
+      {
+        "priority": "",
+        "title": "Dehydration",
+        "urlPath": ""
+      },
+      {
+        "priority": "",
+        "title": "View More",
+        "urlPath": ""
+      }
+    ],
+    "Treatment & Procedures": [
+      {
+        "priority": "",
+        "title": "ACL reconstruction surgery",
+        "urlPath": ""
+      },
+      {
+        "priority": "",
+        "title": "ASD Closure",
+        "urlPath": ""
+      },
+      {
+        "priority": "",
+        "title": "Aneurysm Clipping",
+        "urlPath": ""
+      },
+      {
+        "priority": "",
+        "title": "Adenoidectomy Surgery",
+        "urlPath": ""
+      },
+      {
+        "priority": "",
+        "title": "Bariatric Surgery",
+        "urlPath": ""
+      },
+      {
+        "priority": "",
+        "title": "Brain Tumor Surgery",
+        "urlPath": ""
+      },
+      {
+        "priority": "",
+        "title": "Carpal Tunnel Release surgery",
+        "urlPath": ""
+      },
+      {
+        "priority": "",
+        "title": "Coronary Artery Bypass Grafting (CABG)",
+        "urlPath": ""
+      },
+      {
+        "priority": "",
+        "title": "Diabetic Foot Surgery",
+        "urlPath": ""
+      },
+      {
+        "priority": "",
+        "title": "Endometrial Ablation",
+        "urlPath": ""
+      },
+      {
+        "priority": "",
+        "title": "ERCP",
+        "urlPath": ""
+      },
+      {
+        "priority": "",
+        "title": "View More",
+        "urlPath": ""
+      },
+      {
+        "priority": "",
+        "title": "",
+        "urlPath": ""
+      }
+    ]
+  },
+  "specialities": [
+    {
+      "priority": "1",
+      "title": "Cardiology",
+      "urlPath": "/specialities/cardiac-sciences/"
+    },
+    {
+      "priority": "2",
+      "title": "Gastroenterology ",
+      "urlPath": "/specialities/gastro-sciences/"
+    },
+    {
+      "priority": "3",
+      "title": "Neurology",
+      "urlPath": "/specialities/neuro-sciences/"
+    },
+    {
+      "priority": "4",
+      "title": "Orthopaedics",
+      "urlPath": "/specialities/orthopaedics/"
+    },
+    {
+      "priority": "5",
+      "title": "Gynecology",
+      "urlPath": "/specialities/gynecology-hospitals/"
+    },
+    {
+      "priority": "6",
+      "title": "Oncology",
+      "urlPath": "/specialities/oncology/"
+    },
+    {
+      "priority": "7",
+      "title": "Internal Medicine",
+      "urlPath": "/specialities/internal-medicine/"
+    },
+    {
+      "priority": "8",
+      "title": "Pulmonology",
+      "urlPath": "/specialities/pulmonology/"
+    },
+    {
+      "priority": "9",
+      "title": "ENT",
+      "urlPath": "/specialities/ent/"
+    },
+    {
+      "priority": "10",
+      "title": "Skin & Cosmetic Care",
+      "urlPath": "/specialities/dermatology-cosmetic-care/"
+    },
+    {
+      "priority": "11",
+      "title": "Dental & Maxillofacial ",
+      "urlPath": "/specialities/dental-and-maxillofacial-care/"
+    },
+    {
+      "priority": "12",
+      "title": "EYE/ Opthalmology",
+      "urlPath": "/specialities/eye-ophthalmology/"
+    },
+    {
+      "priority": "13",
+      "title": "Anaesthesia & Pain management",
+      "urlPath": "/specialities/anaesthesia-and-pain-management/"
+    },
+    {
+      "priority": "14",
+      "title": "pediatrics",
+      "urlPath": "/specialities/pediatric-hospitals/"
+    },
+    {
+      "priority": "",
+      "title": "View more",
+      "urlPath": "/specialities/"
+    }
+  ],
+  "about": [
+    {
+      "priority": "1",
+      "title": "Chairman’s message",
+      "urlPath": "/"
+    },
+    {
+      "priority": "2",
+      "title": "Overview",
+      "urlPath": "/about-us/"
+    },
+    {
+      "priority": "3",
+      "title": "Board of Directors",
+      "urlPath": "/board-of-directors/"
+    },
+    {
+      "priority": "4",
+      "title": "Management",
+      "urlPath": "/management/"
+    },
+    {
+      "priority": "5",
+      "title": "International Patient",
+      "urlPath": "/international-patient-services/"
+    },
+    {
+      "priority": "6",
+      "title": "Why Choose Us",
+      "urlPath": "/why-tx-hospitals/"
+    },
+    {
+      "priority": "7",
+      "title": "FAQs",
+      "urlPath": "/faqs/"
+    },
+    {
+      "priority": "8",
+      "title": "Contact Us ",
+      "urlPath": "/contact-us/"
+    },
+    {
+      "priority": "9",
+      "title": "Biomedical Wastage",
+      "urlPath": "biomedical-wastage"
+    },
+    {
+      "priority": "10",
+      "title": "Health Awareness Calender",
+      "urlPath": "/health-awareness-calender/"
+    }
+  ],
+  "createdAt": "2026-11-05T10:15:27.495Z",
+  "footerId": "9bf15042-da4e-4968-9e55-119cc8b4c6b9"
+}
