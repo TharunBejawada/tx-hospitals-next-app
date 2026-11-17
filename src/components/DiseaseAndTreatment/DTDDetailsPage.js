@@ -21,15 +21,16 @@ import TakeFirstStepDT from "@/components/DiseaseAndTreatment/TakeFirstStepDT";
 import FAQDT from "@/components/DiseaseAndTreatment/FAQDT";
 import Breadcrumb from "@/components/Common/Breadcrumb";
 
-export default function DTDDetailsPage({ url }) {
+export default function DTDDetailsPage({ url, initialData = null }) {
     const router = useRouter();
 
-    const [loading, setLoading] = useState(true);
-    const [data, setData] = useState(null);
+    const [data, setData] = useState(initialData);
+    const [loading, setLoading] = useState(!initialData);
     const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
         if (!url) return;
+        if (initialData) return;
         const fetchData = async () => {
             try {
                 // Fetching from the new API with encoded slug
@@ -45,7 +46,7 @@ export default function DTDDetailsPage({ url }) {
         };
 
         fetchData();
-    }, [url]);
+    }, [url, initialData]);
 
     useEffect(() => {
         if (!loading && !data) {
@@ -71,9 +72,9 @@ export default function DTDDetailsPage({ url }) {
     return (
         <>
             <Head>
-                <title>{data.seoTitle}</title>
-                <meta name="description" content={data.metaKeywords} />
-                <meta name="keywords" content={data.metaDescription} />
+                <title>{data.seoTitle || data.dtTitle}</title>
+                <meta name="description" content={data.metaDescription || data.dtdescription || data.metaKeywords} key="description" />
+                <meta name="keywords" content={data.metaKeywords || data.seoTitle} key="keywords" />
             </Head>
 
             {(data.dtTitle || data.dtdescription) && (

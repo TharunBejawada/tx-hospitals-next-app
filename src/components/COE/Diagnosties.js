@@ -14,15 +14,15 @@ import BacklinkSection from "@/components/COE/BacklinkSection";
 import countryOptions from "@/utils/countryOptions";
 import ActionButtons from "@/components/Common/ActionButtons";
 
-export default function Diagnosties({ department: propDepartment }) {
+export default function Diagnosties({ department: propDepartment, initialData = null }) {
     const router = useRouter();
     const contentRef = useRef(null);
     const { slug } = router.query;
     const department = propDepartment || slug?.[0] || null;
     const tab = slug?.[1] || "";
     const isMobile = useIsMobile();
-    const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [data, setData] = useState(initialData || null);
+    const [loading, setLoading] = useState(!initialData);
     const [error, setError] = useState(null);
     const [activeIndex, setActiveIndex] = useState(null);
     const [country, setCountry] = useState("India");
@@ -49,6 +49,10 @@ export default function Diagnosties({ department: propDepartment }) {
     };
 
     useEffect(() => {
+        if (!department) return;
+        if (initialData && (initialData.department === department || !initialData.department)) {
+            return;
+        }
         const fetchData = async () => {
             try {
                 const endpoint = `${CONFIG.API_BASE_URL}/coe/getCategoryData/${department}/Diagnosties`;
@@ -62,7 +66,7 @@ export default function Diagnosties({ department: propDepartment }) {
         };
 
         fetchData();
-    }, [department, tab]);
+    }, [department, tab, initialData]);
 
     if (loading) {
         return (
@@ -129,15 +133,21 @@ export default function Diagnosties({ department: propDepartment }) {
     return (
         <>
             <Head>
-                <title>{data?.seoDetails?.seoTitle}</title>
-                <meta
-                    name="description"
-                    content={data?.seoDetails?.metaDescription}
-                />
-                <meta
-                    name="keywords"
-                    content={data?.seoDetails?.metaKeywords}
-                />
+                {data?.seoDetails?.seoTitle && <title>{data.seoDetails.seoTitle}</title>}
+                {data?.seoDetails?.metaDescription && (
+                    <meta
+                        name="description"
+                        content={data.seoDetails.metaDescription}
+                        key="description"
+                    />
+                )}
+                {data?.seoDetails?.metaKeywords && (
+                    <meta
+                        name="keywords"
+                        content={data.seoDetails.metaKeywords}
+                        key="keywords"
+                    />
+                )}
             </Head>
             {!isMobile ? (
                 <div className="font-inter">

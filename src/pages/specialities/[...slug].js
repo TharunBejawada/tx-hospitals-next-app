@@ -1,5 +1,31 @@
+import { useState, useEffect } from "react";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import axios from "axios";
+import { motion, AnimatePresence } from "framer-motion";
+import useIsMobile from "@/hooks/useIsMobile";
+import SecondaryLayout from "@/components/Layouts/SecondaryLayout";
+import COEOverview from "@/components/COE/COEOverview";
+import DiseasesTreatments from "@/components/COE/DiseasesTreatments";
+import Diagnosties from "@/components/COE/Diagnosties";
+import Procedures from "@/components/COE/Procedures";
+import Doctors from "@/components/COE/Doctors";
+import { getDepartmentDetails } from "@/utils/departmentUtils";
+import Breadcrumb from "@/components/Common/Breadcrumb";
+import DTDDetailsPage from "@/components/DiseaseAndTreatment/DTDDetailsPage";
+import ProcedureDetailsPage from "@/components/Procedures/ProcedureDetailsPage";
+import CONFIG from "@/config";
+import dynamic from "next/dynamic";
+
+const OurLocations = dynamic(() => import("@/components/HomePage/OurLocations"), {
+    loading: () => <div className="w-full min-h-[200px] animate-pulse bg-white" />
+});
 
 export async function getServerSideProps(context) {
+    if (context.res) {
+        context.res.setHeader('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300');
+    }
+
     const slug = context.params?.slug || [];
     if (!slug || slug.length === 0) {
         return { redirect: { destination: "/specialities/", permanent: false } };
@@ -48,37 +74,63 @@ export async function getServerSideProps(context) {
         }
     }
 
+    let initialData = null;
+    let initialDoctors = null;
+    const timeout = 6000;
+
+    try {
+        if (initialRouteType === "coe-main" && dep) {
+            const res = await axios.get(`${CONFIG.API_BASE_URL}/coe/getCategoryData/${dep}/Overview`, { timeout });
+            initialData = res?.data || null;
+        } else if (initialRouteType === "coe-tab" && dep) {
+            if (initialTab === "disease-and-treatment") {
+                const res = await axios.get(`${CONFIG.API_BASE_URL}/coe/getCategoryData/${dep}/${encodeURIComponent('Diseases & Treatment')}`, { timeout });
+                initialData = res?.data || null;
+            } else if (initialTab === "diagnostics") {
+                const res = await axios.get(`${CONFIG.API_BASE_URL}/coe/getCategoryData/${dep}/Diagnosties`, { timeout });
+                initialData = res?.data || null;
+            } else if (initialTab === "procedures") {
+                const res = await axios.get(`${CONFIG.API_BASE_URL}/coe/getCategoryData/${dep}/Procedures`, { timeout });
+                initialData = res?.data || null;
+            } else if (initialTab === "our-clinical-team") {
+                const [metaRes, docsRes] = await Promise.all([
+                    axios.get(`${CONFIG.API_BASE_URL}/coe/getCategoryData/${dep}/Doctors`, { timeout }).catch(() => null),
+                    axios.get(`${CONFIG.API_BASE_URL}/getDoctorsList`, { timeout }).catch(() => axios.get(`${CONFIG.API_BASE_URL}/getAllDoctors`, { timeout })).catch(() => null)
+                ]);
+                initialData = metaRes?.data || null;
+                initialDoctors = Array.isArray(docsRes?.data) ? docsRes.data : [];
+            }
+        } else if (initialRouteType === "dat-detail" && initialUrl) {
+            const res = await axios.get(`${CONFIG.API_BASE_URL}/new-dieseasesandtreatments/getNewDATbyURL/${encodeURIComponent(initialUrl)}`, { timeout });
+            initialData = Array.isArray(res?.data) ? res.data[0] : (res?.data || null);
+        } else if (initialRouteType === "procedure-detail" && initialUrl) {
+            const res = await axios.get(`${CONFIG.API_BASE_URL}/new-procedures/getNewProceduresbyURL/${encodeURIComponent(initialUrl)}`, { timeout });
+            initialData = Array.isArray(res?.data) ? res.data[0] : (res?.data || null);
+        }
+    } catch (err) {
+        console.error("SSR error in specialities [...slug].js:", err.message);
+    }
+
     return {
         props: {
             initialRouteType,
             initialDepartment: dep,
             initialTab,
-            initialUrl
+            initialUrl,
+            initialData,
+            initialDoctors
         }
     };
 }
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
-import { motion, AnimatePresence } from "framer-motion";
-import useIsMobile from "@/hooks/useIsMobile";
-import SecondaryLayout from "@/components/Layouts/SecondaryLayout";
-import COEOverview from "@/components/COE/COEOverview";
-import DiseasesTreatments from "@/components/COE/DiseasesTreatments";
-import Diagnosties from "@/components/COE/Diagnosties";
-import Procedures from "@/components/COE/Procedures";
-import Doctors from "@/components/COE/Doctors";
-import { getDepartmentDetails } from "@/utils/departmentUtils";
-import Breadcrumb from "@/components/Common/Breadcrumb";
-import DTDDetailsPage from "@/components/DiseaseAndTreatment/DTDDetailsPage";
-import ProcedureDetailsPage from "@/components/Procedures/ProcedureDetailsPage";
-import dynamic from "next/dynamic";
-
-const OurLocations = dynamic(() => import("@/components/HomePage/OurLocations"), {
-    loading: () => <div className="w-full min-h-[200px] animate-pulse bg-white" />
-});
-
-export default function CenterOfExcellencePage({ initialRouteType = null, initialDepartment = null, initialTab = null, initialUrl = null }) {
+export default function CenterOfExcellencePage({
+    initialRouteType = null,
+    initialDepartment = null,
+    initialTab = null,
+    initialUrl = null,
+    initialData = null,
+    initialDoctors = null
+}) {
     const router = useRouter();
     const { slug } = router.query;
     const [routeType, setRouteType] = useState(initialRouteType);
@@ -177,133 +229,185 @@ export default function CenterOfExcellencePage({ initialRouteType = null, initia
         { label: title },
     ];
 
+    // Robust fallback / SSR SEO meta so <title> and <meta description> are NEVER empty
+    const pageSeoTitle =
+        initialData?.seoDetails?.seoTitle ||
+        initialData?.seoTitle ||
+        (routeType === "coe-tab" && tab === "disease-and-treatment"
+            ? `${title} Diseases and Treatments in Hyderabad | TX Hospitals`
+            : routeType === "coe-tab" && tab === "diagnostics"
+            ? `${title} Diagnostics in Hyderabad | TX Hospitals`
+            : routeType === "coe-tab" && tab === "procedures"
+            ? `${title} Procedures in Hyderabad | TX Hospitals`
+            : routeType === "coe-tab" && tab === "our-clinical-team"
+            ? `Best ${title} Doctors in Hyderabad | TX Hospitals`
+            : `Best ${title} Hospital in Hyderabad | TX Hospitals`);
+
+    const pageSeoDesc =
+        initialData?.seoDetails?.metaDescription ||
+        initialData?.metaDescription ||
+        initialData?.dtdescription ||
+        `Consult top ${title} specialists at TX Hospitals Hyderabad. Advanced diagnostics, treatments, and comprehensive care across Banjara Hills, Uppal, Kachiguda & Miyapur.`;
+
+    const pageSeoKeywords =
+        initialData?.seoDetails?.metaKeywords ||
+        initialData?.metaKeywords ||
+        `${title} in Hyderabad, best ${title} hospital, TX Hospitals ${title}`;
+
     if (!routeType) return (
-        <div className="flex flex-row justify-center items-center mt-20 mb-4 gap-2">
-            <div className="w-8 h-8 border-2 border-pink-700 border-t-transparent rounded-full animate-spin"></div>
-            <div className="text-pink-700 text-lg font-medium animate-pulse">
-                Loading...
+        <>
+            <Head>
+                <title>{pageSeoTitle}</title>
+                <meta name="description" content={pageSeoDesc} key="description" />
+            </Head>
+            <div className="flex flex-row justify-center items-center mt-20 mb-4 gap-2">
+                <div className="w-8 h-8 border-2 border-pink-700 border-t-transparent rounded-full animate-spin"></div>
+                <div className="text-pink-700 text-lg font-medium animate-pulse">
+                    Loading...
+                </div>
             </div>
-        </div>
+        </>
     );
 
     if (routeType === "dat-detail") {
         return (
-            <SecondaryLayout>
-                <DTDDetailsPage url={url} />
-                <div className="mt-8 md:mt-12">
-                    <OurLocations />
-                </div>
-            </SecondaryLayout>
+            <>
+                <Head>
+                    <title>{pageSeoTitle}</title>
+                    <meta name="description" content={pageSeoDesc} key="description" />
+                    <meta name="keywords" content={pageSeoKeywords} key="keywords" />
+                </Head>
+                <SecondaryLayout>
+                    <DTDDetailsPage url={url} initialData={initialData} />
+                    <div className="mt-8 md:mt-12">
+                        <OurLocations />
+                    </div>
+                </SecondaryLayout>
+            </>
         );
     }
 
     if (routeType === "procedure-detail") {
         return (
-            <SecondaryLayout>
-                <ProcedureDetailsPage url={url} />
-                <div className="mt-8 md:mt-12">
-                    <OurLocations />
-                </div>
-            </SecondaryLayout>
+            <>
+                <Head>
+                    <title>{pageSeoTitle}</title>
+                    <meta name="description" content={pageSeoDesc} key="description" />
+                    <meta name="keywords" content={pageSeoKeywords} key="keywords" />
+                </Head>
+                <SecondaryLayout>
+                    <ProcedureDetailsPage url={url} initialData={initialData} />
+                    <div className="mt-8 md:mt-12">
+                        <OurLocations />
+                    </div>
+                </SecondaryLayout>
+            </>
         );
     }
 
     return (
-        <SecondaryLayout>
-            {!isMobile ? (
-                <div className="pt-4 pb-2 font-inter mx-[5%]">
-                    <Breadcrumb items={breadcrumbItems} />
-                    <h2 className="text-4xl font-bold text-pink-700 text-center">{title}</h2>
-                    <img src={image} alt={title} className="w-full h-full mt-2" />
-                    <motion.div
-                        className="flex items-center justify-center gap-10 mx-[1%] mt-6"
-                        initial="hidden"
-                        animate="visible"
-                        variants={{
-                            hidden: { opacity: 0 },
-                            visible: { opacity: 1, transition: { staggerChildren: 0.2 } },
-                        }}
-                    >
-                        {tabs.map(({ name, key }, index) => (
-                            <motion.button
-                                key={key}
-                                onClick={() => handleTabClick(key)}
-                                className="relative w-auto border border-gray-800 font-semibold text-black text-2xl px-4 py-1 rounded-2xl overflow-hidden whitespace-nowrap"
-                                initial={false}
-                                animate={{ x: 0, opacity: 1 }}
-                            >
-                                {tab === key && (
-                                    <motion.div
-                                        className="absolute inset-0 bg-pink-700"
-                                        initial={{ x: "-100%" }}
-                                        animate={{ x: "0%" }}
-                                        transition={{ type: "tween", duration: 0.4 }}
-                                    />
-                                )}
-                                <motion.span
-                                    className={`relative text-lg ${tab === key ? "text-white" : "text-black"
-                                        }`}
+        <>
+            <Head>
+                <title>{pageSeoTitle}</title>
+                <meta name="description" content={pageSeoDesc} key="description" />
+                <meta name="keywords" content={pageSeoKeywords} key="keywords" />
+            </Head>
+            <SecondaryLayout>
+                {!isMobile ? (
+                    <div className="pt-4 pb-2 font-inter mx-[5%]">
+                        <Breadcrumb items={breadcrumbItems} />
+                        <h2 className="text-4xl font-bold text-pink-700 text-center">{title}</h2>
+                        <img src={image} alt={title} className="w-full h-full mt-2" />
+                        <motion.div
+                            className="flex items-center justify-center gap-10 mx-[1%] mt-6"
+                            initial="hidden"
+                            animate="visible"
+                            variants={{
+                                hidden: { opacity: 0 },
+                                visible: { opacity: 1, transition: { staggerChildren: 0.2 } },
+                            }}
+                        >
+                            {tabs.map(({ name, key }, index) => (
+                                <motion.button
+                                    key={key}
+                                    onClick={() => handleTabClick(key)}
+                                    className="relative w-auto border border-gray-800 font-semibold text-black text-2xl px-4 py-1 rounded-2xl overflow-hidden whitespace-nowrap"
+                                    initial={false}
+                                    animate={{ x: 0, opacity: 1 }}
                                 >
-                                    {name}
-                                </motion.span>
-                            </motion.button>
-                        ))}
-                    </motion.div>
-                    <AnimatePresence mode="wait">
-                        {tab === "" && <COEOverview department={department} />}
-                        {tab === "disease-and-treatment" && <DiseasesTreatments department={department} />}
-                        {tab === "diagnostics" && <Diagnosties department={department} />}
-                        {tab === "procedures" && <Procedures department={department} />}
-                        {tab === "our-clinical-team" && <Doctors department={department} />}
-                    </AnimatePresence>
-                </div>
-            ) : (
-                <div className="pt-4 pb-2 px-4 font-inter">
-                    <Breadcrumb items={breadcrumbItems} />
-                    <h2 className="text-2xl font-bold text-pink-700 text-center">{title}</h2>
-                    <img src={image} alt={title} className="w-full h-full" />
-                    <motion.div
-                        className="grid grid-cols-2 gap-2 m-2"
-                        initial="hidden"
-                        animate="visible"
-                        variants={{
-                            hidden: { opacity: 0 },
-                            visible: { opacity: 1, transition: { staggerChildren: 0.2 } },
-                        }}
-                    >
-                        {tabs.map(({ name, key }, index) => (
-                            <motion.button
-                                key={key}
-                                onClick={() => handleTabClick(key)}
-                                className={`relative border border-gray-800 font-semibold text-black text-sm px-1 py-1 rounded-2xl overflow-hidden 
-                ${tab === key ? "bg-pink-700 text-white" : ""}
-                ${index === tabs.length - 1 && tabs.length % 2 !== 0 ? "col-span-2 justify-self-center w-1/2" : ""}
-            `}
-                                initial={false}
-                                animate={{ x: 0, opacity: 1 }}
-                                transition={{ type: "spring", stiffness: 120, damping: 15 }}
-                            >
-                                <motion.span
-                                    className={`relative ${tab === key ? "text-white" : "text-black"
-                                        }`}
+                                    {tab === key && (
+                                        <motion.div
+                                            className="absolute inset-0 bg-pink-700"
+                                            initial={{ x: "-100%" }}
+                                            animate={{ x: "0%" }}
+                                            transition={{ type: "tween", duration: 0.4 }}
+                                        />
+                                    )}
+                                    <motion.span
+                                        className={`relative text-lg ${tab === key ? "text-white" : "text-black"
+                                            }`}
+                                    >
+                                        {name}
+                                    </motion.span>
+                                </motion.button>
+                            ))}
+                        </motion.div>
+                        <AnimatePresence mode="wait">
+                            {tab === "" && <COEOverview department={department} initialData={tab === "" ? initialData : null} />}
+                            {tab === "disease-and-treatment" && <DiseasesTreatments department={department} initialData={tab === "disease-and-treatment" ? initialData : null} />}
+                            {tab === "diagnostics" && <Diagnosties department={department} initialData={tab === "diagnostics" ? initialData : null} />}
+                            {tab === "procedures" && <Procedures department={department} initialData={tab === "procedures" ? initialData : null} />}
+                            {tab === "our-clinical-team" && <Doctors department={department} initialData={tab === "our-clinical-team" ? initialData : null} initialDoctorsData={initialDoctors} />}
+                        </AnimatePresence>
+                    </div>
+                ) : (
+                    <div className="pt-4 pb-2 px-4 font-inter">
+                        <Breadcrumb items={breadcrumbItems} />
+                        <h2 className="text-2xl font-bold text-pink-700 text-center">{title}</h2>
+                        <img src={image} alt={title} className="w-full h-full" />
+                        <motion.div
+                            className="grid grid-cols-2 gap-2 m-2"
+                            initial="hidden"
+                            animate="visible"
+                            variants={{
+                                hidden: { opacity: 0 },
+                                visible: { opacity: 1, transition: { staggerChildren: 0.2 } },
+                            }}
+                        >
+                            {tabs.map(({ name, key }, index) => (
+                                <motion.button
+                                    key={key}
+                                    onClick={() => handleTabClick(key)}
+                                    className={`relative border border-gray-800 font-semibold text-black text-sm px-1 py-1 rounded-2xl overflow-hidden 
+                    ${tab === key ? "bg-pink-700 text-white" : ""}
+                    ${index === tabs.length - 1 && tabs.length % 2 !== 0 ? "col-span-2 justify-self-center w-1/2" : ""}
+                `}
+                                    initial={false}
+                                    animate={{ x: 0, opacity: 1 }}
+                                    transition={{ type: "spring", stiffness: 120, damping: 15 }}
                                 >
-                                    {name}
-                                </motion.span>
-                            </motion.button>
-                        ))}
-                    </motion.div>
-                    <AnimatePresence mode="wait">
-                        {tab === "" && <COEOverview department={department} />}
-                        {tab === "disease-and-treatment" && <DiseasesTreatments department={department} />}
-                        {tab === "diagnostics" && <Diagnosties department={department} />}
-                        {tab === "procedures" && <Procedures department={department} />}
-                        {tab === "our-clinical-team" && <Doctors department={department} />}
-                    </AnimatePresence>
+                                    <motion.span
+                                        className={`relative ${tab === key ? "text-white" : "text-black"
+                                            }`}
+                                    >
+                                        {name}
+                                    </motion.span>
+                                </motion.button>
+                            ))}
+                        </motion.div>
+                        <AnimatePresence mode="wait">
+                            {tab === "" && <COEOverview department={department} initialData={tab === "" ? initialData : null} />}
+                            {tab === "disease-and-treatment" && <DiseasesTreatments department={department} initialData={tab === "disease-and-treatment" ? initialData : null} />}
+                            {tab === "diagnostics" && <Diagnosties department={department} initialData={tab === "diagnostics" ? initialData : null} />}
+                            {tab === "procedures" && <Procedures department={department} initialData={tab === "procedures" ? initialData : null} />}
+                            {tab === "our-clinical-team" && <Doctors department={department} initialData={tab === "our-clinical-team" ? initialData : null} initialDoctorsData={initialDoctors} />}
+                        </AnimatePresence>
+                    </div>
+                )}
+                <div className="mt-8 md:mt-12">
+                    <OurLocations />
                 </div>
-            )}
-            <div className="mt-8 md:mt-12">
-                <OurLocations />
-            </div>
-        </SecondaryLayout>
+            </SecondaryLayout>
+        </>
     );
 }

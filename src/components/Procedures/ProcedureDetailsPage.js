@@ -18,15 +18,16 @@ import ProcedureFAQ from "./ProcedureFAQ";
 import CONFIG from "@/config";
 import Breadcrumb from "@/components/Common/Breadcrumb";
 
-export default function ProcedureDetailsPage({ url }) {
+export default function ProcedureDetailsPage({ url, initialData = null }) {
     console.log("Received URL prop:", url);
-    const [loading, setLoading] = useState(true);
-    const [data, setData] = useState(null);
+    const [data, setData] = useState(initialData);
+    const [loading, setLoading] = useState(!initialData);
     const [showModal, setShowModal] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
         if (!url) return;
+        if (initialData) return;
         const fetchData = async () => {
             try {
                 // Fetching from the new API with encoded slug
@@ -42,7 +43,7 @@ export default function ProcedureDetailsPage({ url }) {
         };
 
         fetchData();
-    }, [url]);
+    }, [url, initialData]);
 
     useEffect(() => {
         if (!loading && (!data || !data.pHeroSection)) {
@@ -70,9 +71,9 @@ export default function ProcedureDetailsPage({ url }) {
     return (
         <>
             <Head>
-                <title>{data?.seoTitle} - TX Hospitals</title>
-                <meta name="description" content={data?.metaDescription} />
-                <meta name="keywords" content={data?.metaKeywords} />
+                <title>{data?.seoTitle ? `${data.seoTitle} - TX Hospitals` : "Procedure - TX Hospitals"}</title>
+                <meta name="description" content={data?.metaDescription} key="description" />
+                <meta name="keywords" content={data?.metaKeywords} key="keywords" />
             </Head>
 
             <div className="font-inter bg-white text-black text-left">

@@ -152,16 +152,27 @@ function SpecialtyDoctorCard({ doctor, isCompact, onBookAppointment, onViewProfi
     );
 }
 
-export default function Doctors({ department: propDepartment }) {
+export default function Doctors({ department: propDepartment, initialData = null, initialDoctorsData = [] }) {
     const router = useRouter();
     const contentRef = useRef(null);
     const { slug } = router.query;
     const department = propDepartment || slug?.[0] || null;
     const tab = slug?.[1] || "";
     const isMobile = useIsMobile();
-    const [data, setData] = useState(null);
-    const [doctorsData, setDoctorsData] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [data, setData] = useState(initialData || null);
+
+    const initialMatched = Array.isArray(initialDoctorsData) && initialDoctorsData.length > 0 && department
+        ? sortDoctorsByPriority(
+            initialDoctorsData
+                .filter((doc) => isActiveDoctor(doc) && matchesDepartment(department, doc))
+                .filter((doctor, index, self) =>
+                    self.findIndex((d) => (d.id || d.name) === (doctor.id || doctor.name)) === index
+                )
+          )
+        : [];
+
+    const [doctorsData, setDoctorsData] = useState(initialMatched);
+    const [loading, setLoading] = useState(initialMatched.length === 0 && !initialData);
     const [error, setError] = useState(null);
     const [activeIndex, setActiveIndex] = useState(null);
     const [open, setOpen] = useState(false);
@@ -179,9 +190,12 @@ export default function Doctors({ department: propDepartment }) {
     };
 
     useEffect(() => {
+        if (!department) return;
+        if (initialData && (initialData.department === department || !initialData.department)) {
+            return;
+        }
         let cancelled = false;
         const fetchData = async () => {
-            if (!department) return;
             try {
                 const endpoint = `${CONFIG.API_BASE_URL}/coe/getCategoryData/${department}/Doctors`;
                 const response = await axios.get(endpoint);
@@ -196,9 +210,13 @@ export default function Doctors({ department: propDepartment }) {
         return () => {
             cancelled = true;
         };
-    }, [department, tab]);
+    }, [department, tab, initialData]);
 
     useEffect(() => {
+        if (!department) return;
+        if (initialMatched.length > 0) {
+            return;
+        }
         let cancelled = false;
         const fetchDoctorsData = async () => {
             if (!department) return;
@@ -253,7 +271,7 @@ export default function Doctors({ department: propDepartment }) {
         return () => {
             cancelled = true;
         };
-    }, [department, tab]);
+    }, [department, tab, initialMatched.length]);
 
     if (loading) {
         return (
@@ -284,15 +302,21 @@ export default function Doctors({ department: propDepartment }) {
     return (
         <>
             <Head>
-                <title>{data?.seoDetails?.seoTitle}</title>
-                <meta
-                    name="description"
-                    content={data?.seoDetails?.metaDescription}
-                />
-                <meta
-                    name="keywords"
-                    content={data?.seoDetails?.metaKeywords}
-                />
+                {data?.seoDetails?.seoTitle && <title>{data.seoDetails.seoTitle}</title>}
+                {data?.seoDetails?.metaDescription && (
+                    <meta
+                        name="description"
+                        content={data.seoDetails.metaDescription}
+                        key="description"
+                    />
+                )}
+                {data?.seoDetails?.metaKeywords && (
+                    <meta
+                        name="keywords"
+                        content={data.seoDetails.metaKeywords}
+                        key="keywords"
+                    />
+                )}
             </Head>
             {!isMobile ? (
                 <div className="font-inter">
