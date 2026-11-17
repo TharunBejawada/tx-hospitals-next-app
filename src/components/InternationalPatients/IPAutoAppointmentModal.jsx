@@ -10,7 +10,13 @@ import {
     RotateCw,
     Check,
     X,
-    Loader2
+    Loader2,
+    Plane,
+    Globe,
+    ShieldCheck,
+    PhoneCall,
+    Award,
+    Stethoscope
 } from "lucide-react";
 import { toast } from "react-toastify";
 import CONFIG from "@/config";
@@ -357,22 +363,77 @@ export default function IPAutoAppointmentModal({ isOpen, onClose }) {
                             <IoClose size={22} />
                         </button>
 
-                        {/* LEFT COLUMN: DESKTOP PROPER IMAGE (Clean image, no text on image) */}
-                        <div className="hidden lg:flex lg:w-[32%] xl:w-[30%] bg-gradient-to-br from-[#BD2850] via-[#8C1436] to-[#4A0A1C] relative overflow-hidden select-none items-end justify-center">
+                        {/* LEFT COLUMN: DESKTOP PROPER BRAND & DOCTOR IMAGE PANEL */}
+                        <div className="hidden lg:flex lg:w-[32%] xl:w-[30%] bg-gradient-to-br from-[#BD2850] via-[#8C1436] to-[#4A0A1C] text-white flex-col justify-between relative overflow-hidden p-6 xl:p-8 select-none">
                             {/* Background Ambient Glows & Accents */}
                             <div className="absolute top-0 right-0 w-64 h-64 bg-pink-400/10 rounded-full blur-3xl pointer-events-none" />
                             <div className="absolute bottom-0 left-0 w-64 h-64 bg-red-900/30 rounded-full blur-2xl pointer-events-none" />
 
-                            {/* Proper High Quality Doctor Image without any text on it */}
-                            <div className="relative w-full h-full min-h-[580px]">
-                                <Image
-                                    src="/assets/Footer/Doctor Lady Image.png"
-                                    alt="TX Hospitals Expert Medical Care"
-                                    fill
-                                    sizes="(max-width: 1024px) 100vw, 32vw"
-                                    className="object-contain object-bottom drop-shadow-2xl"
-                                    priority
-                                />
+                            {/* Top Section: Header & Badge */}
+                            <div className="relative z-10">
+                                <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider text-pink-100 mb-4 border border-white/20">
+                                    <Globe className="w-3.5 h-3.5" />
+                                    <span>Global Patient Care</span>
+                                </div>
+
+                                <h3 className="text-2xl xl:text-3xl font-extrabold leading-tight tracking-tight">
+                                    World-Class Care For Global Patients
+                                </h3>
+                                <p className="text-pink-100/85 text-xs xl:text-sm mt-2 leading-relaxed">
+                                    Personalized treatment plans, visa support, and priority appointments across 4 flagship multi-speciality centers in Hyderabad.
+                                </p>
+
+                                {/* Trust Badges */}
+                                <div className="mt-5 space-y-2.5">
+                                    <div className="flex items-center gap-2.5 text-xs text-pink-50">
+                                        <div className="w-6 h-6 rounded-lg bg-white/10 flex items-center justify-center shrink-0">
+                                            <Plane className="w-3.5 h-3.5 text-pink-200" />
+                                        </div>
+                                        <span>Complimentary Airport Pickup & Visa Letter</span>
+                                    </div>
+
+                                    <div className="flex items-center gap-2.5 text-xs text-pink-50">
+                                        <div className="w-6 h-6 rounded-lg bg-white/10 flex items-center justify-center shrink-0">
+                                            <Stethoscope className="w-3.5 h-3.5 text-pink-200" />
+                                        </div>
+                                        <span>Multi-Organ Transplant & Robotic Surgery</span>
+                                    </div>
+
+                                    <div className="flex items-center gap-2.5 text-xs text-pink-50">
+                                        <div className="w-6 h-6 rounded-lg bg-white/10 flex items-center justify-center shrink-0">
+                                            <ShieldCheck className="w-3.5 h-3.5 text-pink-200" />
+                                        </div>
+                                        <span>Transparent Quotes & Free Second Opinion</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Center/Bottom: High Quality Doctor Image */}
+                            <div className="relative z-10 mt-4 flex flex-col items-center justify-end">
+                                <div className="relative w-full h-[240px] xl:h-[270px]">
+                                    <Image
+                                        src="/assets/Footer/Doctor Lady Image.png"
+                                        alt="TX Hospitals Expert Medical Care"
+                                        fill
+                                        sizes="(max-width: 1024px) 100vw, 32vw"
+                                        className="object-contain object-bottom drop-shadow-2xl"
+                                        priority
+                                    />
+                                </div>
+
+                                {/* 24/7 Helpline Pill */}
+                                <div className="w-full mt-2 bg-white/15 backdrop-blur-md border border-white/20 rounded-2xl py-2 px-3 text-center">
+                                    <p className="text-[10px] uppercase font-bold tracking-widest text-pink-200 flex items-center justify-center gap-1.5">
+                                        <PhoneCall className="w-3 h-3" />
+                                        <span>24/7 International Helpline</span>
+                                    </p>
+                                    <a
+                                        href="tel:+919144514459"
+                                        className="text-white font-bold text-sm tracking-wide hover:underline"
+                                    >
+                                        +91 91445 14459
+                                    </a>
+                                </div>
                             </div>
                         </div>
 
