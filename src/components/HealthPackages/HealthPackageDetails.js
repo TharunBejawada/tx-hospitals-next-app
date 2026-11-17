@@ -78,8 +78,8 @@ export default function HealthPackageDetails({ initialPackageData = null }) {
         <>
             <Head>
                 <title>{packageData?.seoTitle}</title>
-                <meta name="description" content={packageData?.metaKeywords} />
-                <meta name="keywords" content={packageData?.metaDescription} />
+                <meta name="description" content={packageData?.metaDescription} />
+                <meta name="keywords" content={packageData?.metaKeywords} />
             </Head>
             {isMobile ? (
                 <>

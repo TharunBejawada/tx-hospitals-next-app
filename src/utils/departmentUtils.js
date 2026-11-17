@@ -91,8 +91,16 @@ export const departmentData = {
         title: "Gynaecology",
         image: "/assets/COE/GYNAECOLOGY.webp",
     },
+    "gynecology": {
+        title: "Gynecology",
+        image: "/assets/COE/GYNAECOLOGY.webp",
+    },
     "paediatrics": {
         title: "Paediatrics",
+        image: "/assets/COE/PAEDIATRICS.webp",
+    },
+    "pediatrics": {
+        title: "Pediatrics",
         image: "/assets/COE/PAEDIATRICS.webp",
     },
 };

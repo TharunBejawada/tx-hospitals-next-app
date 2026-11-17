@@ -10,6 +10,7 @@ import LanguageDropdown from "@/components/HomePage/LanguageDropdown";
 import useIsMobile from "@/hooks/useIsMobile";
 import { dropdowns, quickLinks, managementNames, directorsNames, locations, departments, healthConditions, treatmetnAndProcedures, diagnosticsGuide, symptomsGuide, medicineGuide, medicalTechnology, secondOpinion, healthPackages } from "@/utils/dropdownValues";
 import { useNavigationConfig } from "@/context/NavigationConfigContext";
+import CONFIG from "@/config";
 
 export default function HospitalNavbar({ variant = "primary", forceSecondary = false, setForceSecondary }) {
 
@@ -19,7 +20,87 @@ export default function HospitalNavbar({ variant = "primary", forceSecondary = f
     const isMobile = useIsMobile();
     const [openMenu, setOpenMenu] = useState(null);
     const [hoveredAboutItem, setHoveredAboutItem] = useState(null);
-    const [hoveredLibraryItem, setHoveredLibraryItem] = useState(null);
+    const [hoveredLibraryItem, setHoveredLibraryItem] = useState("Health Conditions");
+
+    // Default fallback Library structure if API is loading or offline
+    const fallbackLibrary = {
+        "Health Conditions": healthConditions.map((item, i) => ({
+            title: typeof item === "object" ? item.name : item,
+            urlPath: typeof item === "object" ? item.path : "#",
+            priority: String(i + 1)
+        })),
+        "Treatments & Procedures": treatmetnAndProcedures.map((name, i) => ({
+            title: name,
+            urlPath: "#",
+            priority: String(i + 1)
+        })),
+        "Diagnostics Guide": diagnosticsGuide.map((name, i) => ({
+            title: name,
+            urlPath: "#",
+            priority: String(i + 1)
+        })),
+        "Medicine Guide": medicineGuide.map((name, i) => ({
+            title: name,
+            urlPath: "#",
+            priority: String(i + 1)
+        })),
+        "Symptoms Guide": symptomsGuide.map((name, i) => ({
+            title: name,
+            urlPath: "#",
+            priority: String(i + 1)
+        })),
+        "Medical Technology": medicalTechnology.map((name, i) => ({
+            title: name,
+            urlPath: "#",
+            priority: String(i + 1)
+        })),
+        "Second Opinion": secondOpinion.map((item, i) => ({
+            title: item.name,
+            urlPath: item.path || "#",
+            priority: String(i + 1)
+        })),
+        "Health Packages": healthPackages.map((item, i) => ({
+            title: item.name,
+            urlPath: item.path || "#",
+            priority: String(i + 1)
+        })),
+        "News & Media": [
+            { title: "News & Media", urlPath: "/news-and-media/", priority: "1" }
+        ]
+    };
+
+    const [navbarLibraryData, setNavbarLibraryData] = useState(fallbackLibrary);
+
+    useEffect(() => {
+        let isMounted = true;
+        const fetchNavbarLibrary = async () => {
+            try {
+                const res = await fetch(`${CONFIG.API_BASE_URL}/navbar/get`);
+                if (!res.ok) return;
+                const data = await res.json();
+                if (isMounted && Array.isArray(data) && data[0]?.library && Object.keys(data[0].library).length > 0) {
+                    setNavbarLibraryData(data[0].library);
+                }
+            } catch (err) {
+                // Fallback already set
+            }
+        };
+        fetchNavbarLibrary();
+        return () => { isMounted = false; };
+    }, []);
+
+    const getLibraryItemsForCategory = (catName) => {
+        const rawList = navbarLibraryData?.[catName] || fallbackLibrary[catName] || [];
+        return rawList.slice().sort((a, b) => {
+            const pA = parseInt(a?.priority || "999", 10);
+            const pB = parseInt(b?.priority || "999", 10);
+            return pA - pB;
+        });
+    };
+
+    const libraryCategories = Object.keys(navbarLibraryData || fallbackLibrary);
+    const activeHoveredCategory = hoveredLibraryItem || libraryCategories[0] || "Health Conditions";
+    const currentCategoryItems = getLibraryItemsForCategory(activeHoveredCategory);
     const [navHeight, setNavHeight] = useState(0);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isMobileAboutOpen, setIsMobileAboutOpen] = useState(false);
@@ -56,7 +137,11 @@ export default function HospitalNavbar({ variant = "primary", forceSecondary = f
     };
 
     const handleMenuClick = (path, scrollId = null) => {
-        if (!path) return;
+        if (!path || path === "#") {
+            handleClose();
+            router.push("/");
+            return;
+        }
 
         // Check if URL should open in New Tab (_blank) or Same Page (_self)
         const target = getLinkTarget(path);
@@ -223,91 +308,58 @@ export default function HospitalNavbar({ variant = "primary", forceSecondary = f
             style={{ top: navHeight }}
         >
             <div className="max-w-7xl mx-auto flex justify-between text-black text-sm gap-6">
-                {/* Left: Library items */}
+                {/* Left: Library categories */}
                 <div className="flex flex-col gap-2 min-w-[220px] border-r border-gray-200 pr-4">
-                    {dropdowns.library.map((item, idx) => (
-                        <div
-                            key={idx}
-                            onMouseEnter={() => setHoveredLibraryItem(item?.name)}
-                            onClick={() => {
-                                if (item?.path) handleNavigate(item?.path);
-                                setHoveredLibraryItem(item?.name);
-                            }}
-                            className={`flex items-center justify-between py-2 px-3 rounded cursor-pointer transition-colors font-bold
-                                ${hoveredLibraryItem === item?.name ? "bg-pink-100 text-pink-700" : "text-gray-800 hover:bg-gray-100"}`}
-                        >
-                            <span>{item?.name}</span>
-                            {item?.name !== "News & Media" && (
-                                <FiChevronRight className={`${hoveredLibraryItem === item?.name ? "opacity-100" : "opacity-50"}`} />
-                            )}
-                        </div>
-                    ))}
+                    {libraryCategories.map((catName, idx) => {
+                        const items = getLibraryItemsForCategory(catName);
+                        const hasItems = items && items.length > 0 && catName !== "News & Media";
+                        const isSelected = activeHoveredCategory === catName;
+                        return (
+                            <div
+                                key={idx}
+                                onMouseEnter={() => setHoveredLibraryItem(catName)}
+                                onClick={() => {
+                                    if (!hasItems || catName === "News & Media") {
+                                        handleNavigate(catName === "News & Media" ? "/news-and-media/" : "#");
+                                    }
+                                    setHoveredLibraryItem(catName);
+                                }}
+                                className={`flex items-center justify-between py-2 px-3 rounded cursor-pointer transition-colors font-bold
+                                    ${isSelected ? "bg-pink-100 text-pink-700" : "text-gray-800 hover:bg-gray-100"}`}
+                            >
+                                <span>{catName}</span>
+                                {hasItems && catName !== "News & Media" && (
+                                    <FiChevronRight className={`${isSelected ? "opacity-100" : "opacity-50"}`} />
+                                )}
+                            </div>
+                        );
+                    })}
                 </div>
 
-                {/* Center: Dynamic content based on hovered item */}
+                {/* Center: Dynamic content based on hovered category */}
                 <div className="flex-1 min-w-[400px] border-r border-gray-200 pr-4 overflow-y-auto max-h-[400px] [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                     <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-1">
-                        {hoveredLibraryItem === "Health Conditions" && healthConditions.map((item, i) => {
-                            const name = typeof item === "object" ? item.name : item;
-                            const path = typeof item === "object" ? item.path : null;
+                        {currentCategoryItems.map((item, i) => {
+                            const title = item?.title || item?.name || item;
+                            const path = item?.urlPath || item?.path || "#";
+                            const isViewMore = title === "View More";
                             return (
                                 <button
                                     key={i}
                                     onClick={() => {
-                                        if (path) {
-                                            handleMenuClick(path);
-                                            setOpenMenu(null);
-                                        }
+                                        handleMenuClick(path);
+                                        setOpenMenu(null);
                                     }}
-                                    className={`text-left py-2 px-2 transition-colors font-medium border-b border-gray-100 ${path ? "text-gray-700 hover:text-pink-700 cursor-pointer" : "text-gray-700"}`}
+                                    className={`text-left py-2 px-2 transition-colors font-medium border-b border-gray-100 ${
+                                        isViewMore
+                                            ? "text-pink-700 underline font-bold cursor-pointer"
+                                            : "text-gray-700 hover:text-pink-700 cursor-pointer"
+                                    }`}
                                 >
-                                    {name}
+                                    {title}
                                 </button>
                             );
                         })}
-                        {hoveredLibraryItem === "Treatments & Procedures" && treatmetnAndProcedures.map((name, i) => (
-                            <button key={i} className="text-left text-gray-700 hover:text-pink-700 py-2 px-2 transition-colors font-medium border-b border-gray-100">
-                                {name}
-                            </button>
-                        ))}
-                        {hoveredLibraryItem === "Diagnostics Guide" && diagnosticsGuide.map((name, i) => (
-                            <button key={i} className="text-left text-gray-700 hover:text-pink-700 py-2 px-2 transition-colors font-medium border-b border-gray-100">
-                                {name}
-                            </button>
-                        ))}
-                        {hoveredLibraryItem === "Medicine Guide" && medicineGuide.map((name, i) => (
-                            <button key={i} className="text-left text-gray-700 hover:text-pink-700 py-2 px-2 transition-colors font-medium border-b border-gray-100">
-                                {name}
-                            </button>
-                        ))}
-                        {hoveredLibraryItem === "Symptoms Guide" && symptomsGuide.map((name, i) => (
-                            <button key={i} className="text-left text-gray-700 hover:text-pink-700 py-2 px-2 transition-colors font-medium border-b border-gray-100">
-                                {name}
-                            </button>
-                        ))}
-                        {hoveredLibraryItem === "Medical Technology" && medicalTechnology.map((name, i) => (
-                            <button key={i} className="text-left text-gray-700 hover:text-pink-700 py-2 px-2 transition-colors font-medium border-b border-gray-100">
-                                {name}
-                            </button>
-                        ))}
-                        {hoveredLibraryItem === "Second Opinion" && secondOpinion.map((item, i) => (
-                            <button
-                                key={i}
-                                onClick={() => { handleMenuClick(item?.path); setOpenMenu(null); }}
-                                className={`text-left py-2 px-2 transition-colors font-medium border-b border-gray-100 
-                                ${item.name === "View More"
-                                        ? "text-pink-700 underline font-bold"
-                                        : "text-gray-700 hover:text-pink-700"
-                                    }`}
-                            >
-                                {item?.name}
-                            </button>
-                        ))}
-                        {hoveredLibraryItem === "Health Packages" && healthPackages.map((item, i) => (
-                            <button key={i} onClick={() => { handleMenuClick(item?.path); setOpenMenu(null); }} className="text-left text-gray-700 hover:text-pink-700 py-2 px-2 transition-colors font-medium border-b border-gray-100">
-                                {item?.name}
-                            </button>
-                        ))}
                     </div>
                 </div>
 
@@ -513,8 +565,12 @@ export default function HospitalNavbar({ variant = "primary", forceSecondary = f
     };
 
     const handleNavigate = (path) => {
-        const target = getLinkTarget(path);
         setIsMenuOpen(false);
+        if (!path || path === "#") {
+            router.push("/");
+            return;
+        }
+        const target = getLinkTarget(path);
         if (target === "_blank") {
             if (typeof window !== "undefined") {
                 window.open(path, "_blank", "noopener,noreferrer");
@@ -710,53 +766,48 @@ export default function HospitalNavbar({ variant = "primary", forceSecondary = f
                                     </button>
                                     {isMobileLibraryOpen && (
                                         <ul className="ml-4 mt-2 space-y-2 border-l-2 border-pink-100 pl-4">
-                                            {dropdowns.library.map((item, idx) => {
-                                                const hasSub = item.name !== "News & Media"; // Only News & Media has no sub-menu in desktop either
-                                                const isSubOpen = mobileOpenSubItem === `lib-${item.name}`;
+                                            {libraryCategories.map((catName, idx) => {
+                                                const items = getLibraryItemsForCategory(catName);
+                                                const hasSub = items && items.length > 0 && catName !== "News & Media";
+                                                const isSubOpen = mobileOpenSubItem === `lib-${catName}`;
                                                 return (
                                                     <li key={idx}>
                                                         <div className="flex flex-col">
                                                             <button
                                                                 className={`text-sm flex justify-between items-center text-left w-full py-2 transition-colors ${isSubOpen ? 'text-pink-600 font-semibold' : 'text-gray-600 hover:text-pink-500'}`}
                                                                 onClick={() => {
-                                                                    if (hasSub) setMobileOpenSubItem(isSubOpen ? null : `lib-${item.name}`);
-                                                                    else if (item.path || item.name === "News & Media") {
-                                                                        handleNavigate(item.path || "/news-and-media/");
+                                                                    if (hasSub) setMobileOpenSubItem(isSubOpen ? null : `lib-${catName}`);
+                                                                    else if (catName === "News & Media") {
+                                                                        handleNavigate("/news-and-media/");
+                                                                        setIsMenuOpen(false);
+                                                                    } else {
+                                                                        handleNavigate("#");
                                                                         setIsMenuOpen(false);
                                                                     }
                                                                 }}
                                                             >
-                                                                {item.name}
+                                                                {catName}
                                                                 {hasSub && (isSubOpen ? <FiChevronUp className="text-xs" /> : <FiChevronDown className="text-xs" />)}
                                                             </button>
-                                                            {isSubOpen && (
+                                                            {isSubOpen && hasSub && (
                                                                 <ul className="ml-4 space-y-1 border-l border-gray-100 pl-3 py-1 grid grid-cols-1 overflow-y-auto max-h-[250px]">
-                                                                    {item.name === "Health Conditions" && healthConditions.map((sub, i) => {
-                                                                        const name = typeof sub === "object" ? sub.name : sub;
-                                                                        const path = typeof sub === "object" ? sub.path : null;
+                                                                    {items.map((sub, i) => {
+                                                                        const title = sub?.title || sub?.name || sub;
+                                                                        const path = sub?.urlPath || sub?.path || "#";
                                                                         return (
                                                                             <li key={i}>
                                                                                 <button
                                                                                     className="text-xs text-gray-500 py-1 text-left w-full hover:text-pink-700"
                                                                                     onClick={() => {
-                                                                                        if (path) {
-                                                                                            handleNavigate(path);
-                                                                                        }
+                                                                                        handleNavigate(path);
                                                                                         setIsMenuOpen(false);
                                                                                     }}
                                                                                 >
-                                                                                    {name}
+                                                                                    {title}
                                                                                 </button>
                                                                             </li>
                                                                         );
                                                                     })}
-                                                                    {item.name === "Treatments & Procedures" && treatmetnAndProcedures.map((n, i) => <li key={i}><button className="text-xs text-gray-500 py-1 text-left w-full" onClick={() => { handleNavigate('#'); setIsMenuOpen(false); }}>{n}</button></li>)}
-                                                                    {item.name === "Diagnostics Guide" && diagnosticsGuide.map((n, i) => <li key={i}><button className="text-xs text-gray-500 py-1 text-left w-full" onClick={() => { handleNavigate('#'); setIsMenuOpen(false); }}>{n}</button></li>)}
-                                                                    {item.name === "Medicine Guide" && medicineGuide.map((n, i) => <li key={i}><button className="text-xs text-gray-500 py-1 text-left w-full" onClick={() => { handleNavigate('#'); setIsMenuOpen(false); }}>{n}</button></li>)}
-                                                                    {item.name === "Symptoms Guide" && symptomsGuide.map((n, i) => <li key={i}><button className="text-xs text-gray-500 py-1 text-left w-full" onClick={() => { handleNavigate('#'); setIsMenuOpen(false); }}>{n}</button></li>)}
-                                                                    {item.name === "Medical Technology" && medicalTechnology.map((n, i) => <li key={i}><button className="text-xs text-gray-500 py-1 text-left w-full" onClick={() => { handleNavigate('#'); setIsMenuOpen(false); }}>{n}</button></li>)}
-                                                                    {item.name === "Second Opinion" && secondOpinion.map((sub, i) => <li key={i}><button className="text-xs text-gray-500 py-1 text-left w-full" onClick={() => { handleNavigate(sub.path); setIsMenuOpen(false); }}>{sub.name}</button></li>)}
-                                                                    {item.name === "Health Packages" && healthPackages.map((sub, i) => <li key={i}><button className="text-xs text-gray-500 py-1 text-left w-full" onClick={() => { handleNavigate(sub.path); setIsMenuOpen(false); }}>{sub.name}</button></li>)}
                                                                 </ul>
                                                             )}
                                                         </div>

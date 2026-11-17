@@ -41,9 +41,9 @@ export async function getServerSideProps(context) {
         dep = "medical-gastroenterology";
     } else if (dep === "surgical-gastro-hospitals" || dep === "surgical-gastroenterology-hospitals") {
         dep = "surgical-gastroenterology";
-    } else if (dep === "gynecology-hospitals") {
+    } else if (dep === "gynecology-hospitals" || dep === "gynecology") {
         dep = "gynaecology";
-    } else if (dep === "pediatric-hospitals") {
+    } else if (dep === "pediatric-hospitals" || dep === "pediatrics") {
         dep = "paediatrics";
     }
 
@@ -153,9 +153,9 @@ export default function CenterOfExcellencePage({
             dep = "medical-gastroenterology";
         } else if (dep === "surgical-gastro-hospitals" || dep === "surgical-gastroenterology-hospitals") {
             dep = "surgical-gastroenterology";
-        } else if (dep === "gynecology-hospitals") {
+        } else if (dep === "gynecology-hospitals" || dep === "gynecology") {
             dep = "gynaecology";
-        } else if (dep === "pediatric-hospitals") {
+        } else if (dep === "pediatric-hospitals" || dep === "pediatrics") {
             dep = "paediatrics";
         }
 

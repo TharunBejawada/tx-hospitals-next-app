@@ -194,9 +194,9 @@ export default function SpecialitiesHomepage({ isClinicalResearch = false }) {
                         />
                         <div className="absolute inset-0 bg-white/30 backdrop-blur-[2px]" />
                         <div className="relative z-10">
-                            <h2 className="text-2xl mt-4 font-bold text-pink-700 mb-4">
+                            <h1 className="text-2xl mt-4 font-bold text-pink-700 mb-4">
                                 Centres of Clinical Excellence
-                            </h2>
+                            </h1>
                             <p className="text-sm text-black font-medium leading-relaxed">
                                 At TX Hospitals, we bring together medical expertise, modern technology
                                 and patient-first care under one roof. <br />
@@ -353,9 +353,9 @@ export default function SpecialitiesHomepage({ isClinicalResearch = false }) {
                         />
                         <div className="absolute inset-0 bg-white/30 backdrop-blur-[2px]" />
                         <div className="relative z-10 max-w-5xl mx-auto px-4">
-                            <h2 className="text-2xl md:text-4xl font-bold text-pink-700 mb-4">
+                            <h1 className="text-2xl md:text-4xl font-bold text-pink-700 mb-4">
                                 Centres of Clinical Excellence
-                            </h2>
+                            </h1>
                             <p className="text-lg text-black font-medium leading-relaxed">
                                 At TX Hospitals, we bring together medical expertise, modern technology
                                 and patient-first care under one roof. <br />
