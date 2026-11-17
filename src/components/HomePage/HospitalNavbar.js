@@ -98,7 +98,30 @@ export default function HospitalNavbar({ variant = "primary", forceSecondary = f
         });
     };
 
-    const libraryCategories = Object.keys(navbarLibraryData || fallbackLibrary);
+    const getCategoryOrderIndex = (catName) => {
+        const norm = (catName || "").trim().toLowerCase();
+        if (norm === "health conditions") return 0;
+        if (norm === "treatments & procedures" || norm === "treatment & procedures" || norm === "treatment and procedures" || norm === "treatments and procedures") return 1;
+        if (norm === "diagnostics guide" || norm === "diagnostic guide") return 2;
+        if (norm === "medicine guide") return 3;
+        if (norm === "symptoms guide" || norm === "symptom guide") return 4;
+        if (norm === "medical technology") return 5;
+        if (norm === "second opinion") return 6;
+        if (norm === "health packages" || norm === "health package") return 7;
+        if (norm === "news & media" || norm === "news and media") return 8;
+        return 999;
+    };
+
+    const sortLibraryCategories = (categories) => {
+        return categories.slice().sort((a, b) => {
+            const orderA = getCategoryOrderIndex(a);
+            const orderB = getCategoryOrderIndex(b);
+            if (orderA !== orderB) return orderA - orderB;
+            return a.localeCompare(b);
+        });
+    };
+
+    const libraryCategories = sortLibraryCategories(Object.keys(navbarLibraryData || fallbackLibrary));
     const activeHoveredCategory = hoveredLibraryItem || libraryCategories[0] || "Health Conditions";
     const currentCategoryItems = getLibraryItemsForCategory(activeHoveredCategory);
     const [navHeight, setNavHeight] = useState(0);
