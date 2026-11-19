@@ -4,6 +4,7 @@ import axios from "axios";
 const baseRoutes = [
     "/miyapur/",
     "/miyapur/specialties/",
+    "/miyapur-gallery/",
 ];
 
 const fallbackSpecialtyRoutes = [

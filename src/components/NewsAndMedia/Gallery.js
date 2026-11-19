@@ -43,6 +43,15 @@ const Gallery = () => {
         "/assets/NewsAndMedia/Kachiguda/6.jpeg"
     ];
 
+    const miyapurInaugurationImages = [
+        "/assets/NewsAndMedia/Miyapur/Pticture _ M _ 1.webp",
+        "/assets/NewsAndMedia/Miyapur/Pticture _ M _ 2.webp",
+        "/assets/NewsAndMedia/Miyapur/Pticture _ M _ 3.webp",
+        "/assets/NewsAndMedia/Miyapur/Pticture _ M _ 4.webp",
+        "/assets/NewsAndMedia/Miyapur/Pticture _ M _ 5.webp",
+        "/assets/NewsAndMedia/Miyapur/Pticture _ M _ 6.webp"
+    ];
+
     return (
         <div className="p-2 md:p-4">
             {/* Banjara Hills Section */}
@@ -85,6 +94,29 @@ const Gallery = () => {
             <div className="flex justify-end mt-4">
                 <button
                     onClick={() => router.push('/kachiguda-gallery')}
+                    className="flex items-center gap-2 text-pink-700 font-semibold hover:text-pink-800 transition group"
+                >
+                    View All <FiArrowRight className="transition-transform group-hover:translate-x-1" />
+                </button>
+            </div>
+
+            {/* Miyapur Section */}
+            <SectionHeader title="Miyapur Unit Inauguration" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+                {miyapurInaugurationImages.map((src, index) => (
+                    <div key={index} className="overflow-hidden rounded-2xl shadow-sm border border-gray-200 group">
+                        <img 
+                            loading="lazy" 
+                            src={src}
+                            alt={`Miyapur ${index + 1}`}
+                            className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110"
+                        />
+                    </div>
+                ))}
+            </div>
+            <div className="flex justify-end mt-4">
+                <button
+                    onClick={() => router.push('/miyapur-gallery')}
                     className="flex items-center gap-2 text-pink-700 font-semibold hover:text-pink-800 transition group"
                 >
                     View All <FiArrowRight className="transition-transform group-hover:translate-x-1" />
