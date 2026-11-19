@@ -50,9 +50,12 @@ export default function Procedures({ department: propDepartment, initialData = n
 
     useEffect(() => {
         if (!department) return;
-        if (initialData && (initialData.department === department || !initialData.department)) {
+        if (initialData && initialData.SK === "CATEGORY#Procedures") {
+            setData(initialData);
+            setLoading(false);
             return;
         }
+        setLoading(true);
         const fetchData = async () => {
             try {
                 const endpoint = `${CONFIG.API_BASE_URL}/coe/getCategoryData/${department}/Procedures`;

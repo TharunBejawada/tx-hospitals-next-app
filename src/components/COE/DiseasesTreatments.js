@@ -50,9 +50,12 @@ export default function DiseasesTreatments({ department: propDepartment, initial
 
     useEffect(() => {
         if (!department) return;
-        if (initialData && (initialData.department === department || !initialData.department)) {
+        if (initialData && initialData.SK === "CATEGORY#Diseases & Treatment") {
+            setData(initialData);
+            setLoading(false);
             return;
         }
+        setLoading(true);
         const fetchData = async () => {
             try {
                 const endpoint = `${CONFIG.API_BASE_URL}/coe/getCategoryData/${department}/Diseases & Treatment`;

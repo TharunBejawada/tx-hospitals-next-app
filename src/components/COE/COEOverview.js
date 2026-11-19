@@ -78,9 +78,12 @@ export default function COEOverview({ department: propDepartment, initialData = 
 
     useEffect(() => {
         if (!department) return;
-        if (initialData && (initialData.department === department || !initialData.department)) {
+        if (initialData && (!initialData.SK || initialData.SK === "CATEGORY#Overview")) {
+            setData(initialData);
+            setLoading(false);
             return;
         }
+        setLoading(true);
         const fetchData = async () => {
             try {
                 const endpoint = `${CONFIG.API_BASE_URL}/coe/getCategoryData/${department}/Overview`;

@@ -191,7 +191,8 @@ export default function Doctors({ department: propDepartment, initialData = null
 
     useEffect(() => {
         if (!department) return;
-        if (initialData && (initialData.department === department || !initialData.department)) {
+        if (initialData && initialData.SK === "CATEGORY#Doctors") {
+            setData(initialData);
             return;
         }
         let cancelled = false;

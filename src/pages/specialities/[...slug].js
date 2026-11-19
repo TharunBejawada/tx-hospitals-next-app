@@ -223,6 +223,9 @@ export default function CenterOfExcellencePage({
 
     const { title, image } = getDepartmentDetails(department);
 
+    const isMatchingInitial = (targetTab) =>
+        initialTab === targetTab && tab === targetTab && department === initialDepartment;
+
     const breadcrumbItems = [
         { label: "Home", href: "/" },
         { label: "Specialities", href: "/specialities/" },
@@ -353,11 +356,11 @@ export default function CenterOfExcellencePage({
                             ))}
                         </motion.div>
                         <AnimatePresence mode="wait">
-                            {tab === "" && <COEOverview department={department} initialData={tab === "" ? initialData : null} />}
-                            {tab === "disease-and-treatment" && <DiseasesTreatments department={department} initialData={tab === "disease-and-treatment" ? initialData : null} />}
-                            {tab === "diagnostics" && <Diagnosties department={department} initialData={tab === "diagnostics" ? initialData : null} />}
-                            {tab === "procedures" && <Procedures department={department} initialData={tab === "procedures" ? initialData : null} />}
-                            {tab === "our-clinical-team" && <Doctors department={department} initialData={tab === "our-clinical-team" ? initialData : null} initialDoctorsData={initialDoctors} />}
+                            {tab === "" && <COEOverview department={department} initialData={isMatchingInitial("") ? initialData : null} />}
+                            {tab === "disease-and-treatment" && <DiseasesTreatments department={department} initialData={isMatchingInitial("disease-and-treatment") ? initialData : null} />}
+                            {tab === "diagnostics" && <Diagnosties department={department} initialData={isMatchingInitial("diagnostics") ? initialData : null} />}
+                            {tab === "procedures" && <Procedures department={department} initialData={isMatchingInitial("procedures") ? initialData : null} />}
+                            {tab === "our-clinical-team" && <Doctors department={department} initialData={isMatchingInitial("our-clinical-team") ? initialData : null} initialDoctorsData={isMatchingInitial("our-clinical-team") ? initialDoctors : null} />}
                         </AnimatePresence>
                     </div>
                 ) : (
@@ -396,11 +399,11 @@ export default function CenterOfExcellencePage({
                             ))}
                         </motion.div>
                         <AnimatePresence mode="wait">
-                            {tab === "" && <COEOverview department={department} initialData={tab === "" ? initialData : null} />}
-                            {tab === "disease-and-treatment" && <DiseasesTreatments department={department} initialData={tab === "disease-and-treatment" ? initialData : null} />}
-                            {tab === "diagnostics" && <Diagnosties department={department} initialData={tab === "diagnostics" ? initialData : null} />}
-                            {tab === "procedures" && <Procedures department={department} initialData={tab === "procedures" ? initialData : null} />}
-                            {tab === "our-clinical-team" && <Doctors department={department} initialData={tab === "our-clinical-team" ? initialData : null} initialDoctorsData={initialDoctors} />}
+                            {tab === "" && <COEOverview department={department} initialData={isMatchingInitial("") ? initialData : null} />}
+                            {tab === "disease-and-treatment" && <DiseasesTreatments department={department} initialData={isMatchingInitial("disease-and-treatment") ? initialData : null} />}
+                            {tab === "diagnostics" && <Diagnosties department={department} initialData={isMatchingInitial("diagnostics") ? initialData : null} />}
+                            {tab === "procedures" && <Procedures department={department} initialData={isMatchingInitial("procedures") ? initialData : null} />}
+                            {tab === "our-clinical-team" && <Doctors department={department} initialData={isMatchingInitial("our-clinical-team") ? initialData : null} initialDoctorsData={isMatchingInitial("our-clinical-team") ? initialDoctors : null} />}
                         </AnimatePresence>
                     </div>
                 )}
