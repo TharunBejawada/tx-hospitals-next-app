@@ -145,7 +145,7 @@ const MiyapurDoctors = ({ initialDoctors = [] }) => {
 
                         <div className="text-center mt-6">
                             <Link
-                                href="/find-doctor/?location=Miyapur"
+                                href="/find-doctor/miyapur-doctors/"
                                 className="inline-block px-8 py-2.5 rounded transition-all hover:bg-[#BD385C] hover:text-white font-medium"
                                 style={{ background: 'rgb(255, 255, 255)', fontSize: '15px', color: 'rgb(189, 56, 92)', border: '1.5px solid rgb(189, 56, 92)' }}
                             >

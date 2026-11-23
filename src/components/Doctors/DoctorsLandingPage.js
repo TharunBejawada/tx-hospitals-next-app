@@ -19,6 +19,20 @@ const locations = [
     { value: "Miyapur", label: "Miyapur" },
 ];
 
+const getAvailabilityDateInfo = (dayLabel) => {
+    const d = new Date();
+    if (dayLabel === "Tomorrow") {
+        d.setDate(d.getDate() + 1);
+    }
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, "0");
+    const dd = String(d.getDate()).padStart(2, "0");
+    return {
+        dateStr: `${yyyy}-${mm}-${dd}`,
+        isSunday: d.getDay() === 0,
+    };
+};
+
 export default function DoctorsLandingPage({ initialDoctors = null, initialLocation = "" }) {
 
     const router = useRouter();
@@ -51,7 +65,9 @@ export default function DoctorsLandingPage({ initialDoctors = null, initialLocat
     });
     const [selectedLocation, setSelectedLocation] = useState(() => initialLocation || "");
     const [selectedSpeciality, setSelectedSpeciality] = useState("");
-    const [visibleDoctors, setVisibleDoctors] = useState(20);
+    const [selectedAvailability, setSelectedAvailability] = useState("");
+    const [availabilityMap, setAvailabilityMap] = useState({});
+    const [availabilityLoading, setAvailabilityLoading] = useState(false);
     const isMobile = useIsMobile();
     const [locationSearch, setLocationSearch] = useState("");
     const [specialitySearch, setSpecialitySearch] = useState("");
@@ -85,9 +101,18 @@ export default function DoctorsLandingPage({ initialDoctors = null, initialLocat
                 matchesDepartment(searchTerm.toLowerCase(), doctor)
             );
 
-            return matchesSpeciality && matchesLocation && matchesSearch;
+            let matchesAvailability = true;
+            if (selectedAvailability) {
+                const { dateStr } = getAvailabilityDateInfo(selectedAvailability);
+                const mapForDate = availabilityMap[dateStr];
+                if (mapForDate && doctor?.id) {
+                    matchesAvailability = mapForDate[doctor.id] !== false;
+                }
+            }
+
+            return matchesSpeciality && matchesLocation && matchesSearch && matchesAvailability;
         });
-    }, [doctorsData, selectedSpeciality, selectedLocation, searchTerm]);
+    }, [doctorsData, selectedSpeciality, selectedLocation, searchTerm, selectedAvailability, availabilityMap]);
 
     const categoryOrder = [
         "Cardiothoracic & Vascular Surgery",
@@ -117,6 +142,107 @@ export default function DoctorsLandingPage({ initialDoctors = null, initialLocat
     ];
 
     // Sorted and deduplicated doctors: each doctor appears EXACTLY ONCE
+    // Fetch availability on demand when user selects Today / Tomorrow
+    useEffect(() => {
+        if (!selectedAvailability || !doctorsData || doctorsData.length === 0) return;
+
+        const { dateStr, isSunday } = getAvailabilityDateInfo(selectedAvailability);
+        if (availabilityMap[dateStr]) return;
+
+        let isMounted = true;
+        setAvailabilityLoading(true);
+
+        const fetchAvailabilityForDate = async () => {
+            try {
+                const results = await Promise.all(
+                    doctorsData.map(async (doc) => {
+                        if (!doc?.id) return [doc?.id, true];
+                        try {
+                            const res = await fetch(
+                                `${CONFIG.API_BASE_URL}/getDoctorAvailabilityByDate/${encodeURIComponent(doc.id)}/${dateStr}`
+                            );
+                            const data = await res.json();
+                            if (Array.isArray(data) && data.length > 0) {
+                                const hasAvailable = data.some(
+                                    (item) => item.available === true || item.available === undefined
+                                );
+                                const allUnavailable = data.every((item) => item.available === false);
+                                return [doc.id, hasAvailable && !allUnavailable];
+                            }
+                            return [doc.id, !isSunday];
+                        } catch (_) {
+                            return [doc.id, !isSunday];
+                        }
+                    })
+                );
+
+                if (isMounted) {
+                    const mapForDate = Object.fromEntries(results);
+                    setAvailabilityMap((prev) => ({
+                        ...prev,
+                        [dateStr]: mapForDate,
+                    }));
+                }
+            } catch (err) {
+                console.error("Availability fetch error:", err);
+            } finally {
+                if (isMounted) {
+                    setAvailabilityLoading(false);
+                }
+            }
+        };
+
+        fetchAvailabilityForDate();
+
+        return () => {
+            isMounted = false;
+        };
+    }, [selectedAvailability, doctorsData, availabilityMap]);
+
+    // Background prefetch Today & Tomorrow availability quietly after load
+    useEffect(() => {
+        if (!doctorsData || doctorsData.length === 0) return;
+
+        const timer = setTimeout(async () => {
+            const todayInfo = getAvailabilityDateInfo("Today");
+            const tomorrowInfo = getAvailabilityDateInfo("Tomorrow");
+
+            for (const info of [todayInfo, tomorrowInfo]) {
+                if (availabilityMap[info.dateStr]) continue;
+                try {
+                    const results = await Promise.all(
+                        doctorsData.map(async (doc) => {
+                            if (!doc?.id) return [doc?.id, true];
+                            try {
+                                const res = await fetch(
+                                    `${CONFIG.API_BASE_URL}/getDoctorAvailabilityByDate/${encodeURIComponent(doc.id)}/${info.dateStr}`
+                                );
+                                const data = await res.json();
+                                if (Array.isArray(data) && data.length > 0) {
+                                    const hasAvailable = data.some(
+                                        (item) => item.available === true || item.available === undefined
+                                    );
+                                    const allUnavailable = data.every((item) => item.available === false);
+                                    return [doc.id, hasAvailable && !allUnavailable];
+                                }
+                                return [doc.id, !info.isSunday];
+                            } catch (_) {
+                                return [doc.id, !info.isSunday];
+                            }
+                        })
+                    );
+                    const map = Object.fromEntries(results);
+                    setAvailabilityMap((prev) => ({
+                        ...prev,
+                        [info.dateStr]: map,
+                    }));
+                } catch (_) {}
+            }
+        }, 1500);
+
+        return () => clearTimeout(timer);
+    }, [doctorsData, availabilityMap]);
+
     const sortedDoctors = useMemo(() => {
         const getCategoryRank = (doc) => {
             const specs = getDoctorSpecialities(doc).map(s => s.toLowerCase());
@@ -148,22 +274,7 @@ export default function DoctorsLandingPage({ initialDoctors = null, initialLocat
         });
     }, [filteredDoctors]);
 
-    // Reset pagination when filter criteria changes
-    useEffect(() => {
-        setVisibleDoctors(20);
-    }, [selectedLocation, selectedSpeciality, searchTerm]);
-
-    // Load more doctors when scrolling
-    useEffect(() => {
-        const handleScroll = () => {
-            if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
-                setVisibleDoctors(prev => prev + 20);
-            }
-        };
-
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
+    
 
     useEffect(() => {
         if (hasInitial) {
@@ -259,7 +370,7 @@ export default function DoctorsLandingPage({ initialDoctors = null, initialLocat
                     <div className="flex justify-between items-center pt-4 px-4">
                         {/* Breadcrumbs */}
                         <div>
-                            <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Doctors" }]} />
+                            <Breadcrumb items={selectedLocation ? [{ label: "Home", href: "/" }, { label: "Doctors", href: "/find-doctor/" }, { label: selectedLocation }] : [{ label: "Home", href: "/" }, { label: "Doctors" }]} />
                         </div>
                     </div>
                     <div className="p-4 max-w-full relative flex flex-col gap-6 items-start">
@@ -275,12 +386,23 @@ export default function DoctorsLandingPage({ initialDoctors = null, initialLocat
                             setLocationSearch={setLocationSearch}
                             specialitySearch={specialitySearch}
                             setSpecialitySearch={setSpecialitySearch}
+                            selectedAvailability={selectedAvailability}
+                            setSelectedAvailability={setSelectedAvailability}
+                            availabilityLoading={availabilityLoading}
                         />
                         {/* Doctors Content */}
                         <div className="flex-1 w-full">
+                            <div className="flex justify-between items-center mb-3">
+                                <p className="text-sm font-semibold text-gray-700">
+                                    Showing all <span className="text-pink-700 font-bold">{sortedDoctors.length}</span> doctors
+                                    {selectedLocation && <span> in <span className="text-pink-700 font-bold">{selectedLocation}</span></span>}
+                                    {selectedSpeciality && <span> for <span className="text-pink-700 font-bold">{selectedSpeciality}</span></span>}
+                                    {selectedAvailability && <span> available <span className="text-pink-700 font-bold">{selectedAvailability.toLowerCase()}</span></span>}
+                                </p>
+                            </div>
                             {sortedDoctors.length > 0 ? (
                                 <div className="grid grid-cols-1 gap-4 mb-8">
-                                    {sortedDoctors.slice(0, visibleDoctors).map((doctor, i) => (
+                                    {sortedDoctors.map((doctor, i) => (
                                         <div
                                             className="bg-white rounded-lg shadow-lg border border-gray-500 p-2 flex flex-col justify-between"
                                             key={doctor.id || i}
@@ -354,7 +476,7 @@ export default function DoctorsLandingPage({ initialDoctors = null, initialLocat
                     <div className="flex justify-between items-center pt-4 px-4">
                         {/* Breadcrumbs */}
                         <div>
-                            <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Doctors" }]} />
+                            <Breadcrumb items={selectedLocation ? [{ label: "Home", href: "/" }, { label: "Doctors", href: "/find-doctor/" }, { label: selectedLocation }] : [{ label: "Home", href: "/" }, { label: "Doctors" }]} />
                         </div>
                     </div>
                     <div className="p-4 max-w-full relative flex gap-6 items-start">
@@ -370,12 +492,23 @@ export default function DoctorsLandingPage({ initialDoctors = null, initialLocat
                             setLocationSearch={setLocationSearch}
                             specialitySearch={specialitySearch}
                             setSpecialitySearch={setSpecialitySearch}
+                            selectedAvailability={selectedAvailability}
+                            setSelectedAvailability={setSelectedAvailability}
+                            availabilityLoading={availabilityLoading}
                         />
                         {/* Doctors Content */}
                         <div className="flex-1">
+                            <div className="flex justify-between items-center mb-4">
+                                <p className="text-base font-semibold text-gray-700">
+                                    Showing all <span className="text-pink-700 font-bold">{sortedDoctors.length}</span> doctors
+                                    {selectedLocation && <span> in <span className="text-pink-700 font-bold">{selectedLocation}</span></span>}
+                                    {selectedSpeciality && <span> for <span className="text-pink-700 font-bold">{selectedSpeciality}</span></span>}
+                                    {selectedAvailability && <span> available <span className="text-pink-700 font-bold">{selectedAvailability.toLowerCase()}</span></span>}
+                                </p>
+                            </div>
                             {sortedDoctors.length > 0 ? (
                                 <div className="grid grid-cols-2 gap-4 mb-8">
-                                    {sortedDoctors.slice(0, visibleDoctors).map((doctor, i) => (
+                                    {sortedDoctors.map((doctor, i) => (
                                         <div
                                             className="bg-white rounded-lg shadow-lg border border-gray-500 p-4 flex flex-col justify-between"
                                             key={doctor.id || i}

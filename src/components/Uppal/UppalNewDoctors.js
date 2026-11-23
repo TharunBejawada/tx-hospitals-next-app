@@ -120,7 +120,7 @@ const UppalNewDoctors = ({ initialDoctors = [] }) => {
                         </div>
                         <div className="text-center">
                             <Link
-                                href="/find-doctor/?location=Uppal"
+                                href="/find-doctor/uppal-doctors/"
                                 className="inline-block px-8 py-2.5 rounded transition-all hover:bg-[#BD385C] hover:text-white"
                                 style={{ background: 'rgb(255, 255, 255)', fontSize: '15px', fontWeight: 500, color: 'rgb(189, 56, 92)', border: '1.5px solid rgb(189, 56, 92)' }}
                             >

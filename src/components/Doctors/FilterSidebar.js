@@ -14,9 +14,11 @@ export default function FiltersSidebar({
     setLocationSearch,
     specialitySearch,
     setSpecialitySearch,
+    selectedAvailability = "",
+    setSelectedAvailability,
+    availabilityLoading = false,
 }) {
     const [showAllSpecialities, setShowAllSpecialities] = useState(false);
-    const [selectedAvailability, setSelectedAvailability] = useState("Today");
     const isMobile = useIsMobile();
 
     const visibleDepartments = showAllSpecialities
@@ -111,15 +113,23 @@ export default function FiltersSidebar({
                                 </div>
                             </div>
                             <div>
-                                <h3 className="text-gray-700 font-semibold mb-2">Availability</h3>
+                                <div className="flex items-center justify-between mb-2">
+                                    <h3 className="text-gray-700 font-semibold">Availability</h3>
+                                    {availabilityLoading && (
+                                        <span className="text-[11px] text-pink-600 animate-pulse font-medium">Filtering...</span>
+                                    )}
+                                </div>
                                 <div className="space-y-2 text-sm">
                                     {["Today", "Tomorrow"].map((day) => (
-                                        <label key={day} className="flex items-center gap-2 text-gray-800">
+                                        <label key={day} className="flex items-center gap-2 text-gray-800 cursor-pointer select-none">
                                             <input
                                                 type="checkbox"
                                                 checked={selectedAvailability === day}
-                                                onChange={() => setSelectedAvailability(day)}
-                                                className="accent-pink-600"
+                                                onChange={() =>
+                                                    setSelectedAvailability &&
+                                                    setSelectedAvailability(selectedAvailability === day ? "" : day)
+                                                }
+                                                className="accent-pink-600 cursor-pointer"
                                             />
                                             {day}
                                         </label>
@@ -210,15 +220,23 @@ export default function FiltersSidebar({
 
                     {/* Availability */}
                     <div>
-                        <h3 className="text-gray-700 font-semibold mb-2">Availability</h3>
+                        <div className="flex items-center justify-between mb-2">
+                            <h3 className="text-gray-700 font-semibold">Availability</h3>
+                            {availabilityLoading && (
+                                <span className="text-[11px] text-pink-600 animate-pulse font-medium">Filtering...</span>
+                            )}
+                        </div>
                         <div className="space-y-2 text-sm">
                             {["Today", "Tomorrow"].map((day) => (
-                                <label key={day} className="flex items-center gap-2 text-gray-800">
+                                <label key={day} className="flex items-center gap-2 text-gray-800 cursor-pointer select-none">
                                     <input
                                         type="checkbox"
                                         checked={selectedAvailability === day}
-                                        onChange={() => setSelectedAvailability(day)}
-                                        className="accent-pink-600"
+                                        onChange={() =>
+                                            setSelectedAvailability &&
+                                            setSelectedAvailability(selectedAvailability === day ? "" : day)
+                                        }
+                                        className="accent-pink-600 cursor-pointer"
                                     />
                                     {day}
                                 </label>
