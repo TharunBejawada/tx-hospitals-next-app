@@ -19,7 +19,7 @@ const UppalNewAbout = () => {
                 </div>
                 <div className="flex-1 flex flex-col justify-center py-2 lg:py-4 lg:pl-10 lg:pr-11">
                     <h2 className="mb-2" style={{ fontSize: 'clamp(22px, 2.8vw, 34px)', fontWeight: 600, color: 'rgb(3, 2, 19)', lineHeight: 1.25 }}>
-                        Welcome to <span style={{ color: 'rgb(189, 56, 92)' }}>TX Hospitals, Uppal</span>
+                        Multi specialty Hospital in Uppal - <span style={{ color: 'rgb(189, 56, 92)' }}>TX Hospitals</span>
                     </h2>
                     <p className="mb-3" style={{ fontSize: '14px', fontWeight: 400, color: 'rgb(30, 30, 30)', lineHeight: 1.75 }}>
                         TX Hospitals, Uppal brings trusted healthcare closer to your neighbourhood with experienced doctors, 24/7 emergency care, CT scan, diagnostics, ICU support, modern operation theatres and surgical care under one roof.

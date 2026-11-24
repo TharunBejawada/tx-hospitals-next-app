@@ -33,7 +33,7 @@ const getAvailabilityDateInfo = (dayLabel) => {
     };
 };
 
-export default function DoctorsLandingPage({ initialDoctors = null, initialLocation = "" }) {
+export default function DoctorsLandingPage({ initialDoctors = null, initialLocation = "", customHeading = "" }) {
 
     const router = useRouter();
     const hasInitial = Array.isArray(initialDoctors) && initialDoctors.length > 0;
@@ -75,13 +75,33 @@ export default function DoctorsLandingPage({ initialDoctors = null, initialLocat
     const [selectedDoctor, setSelectedDoctor] = useState(null);
 
     useEffect(() => {
-        window.scrollTo({ left: document.body.scrollWidth, top: 0, behavior: "smooth" });
         if (router.query.location) {
             setSelectedLocation(router.query.location);
         } else if (initialLocation) {
             setSelectedLocation(initialLocation);
+        } else {
+            setSelectedLocation("");
         }
     }, [router.query.location, initialLocation]);
+
+    const handleLocationChange = (newLocation) => {
+        setSelectedLocation(newLocation);
+        const slugMap = {
+            "uppal": "uppal-doctors",
+            "kachiguda": "kachiguda-doctors",
+            "banjara hills": "banjara-hills-doctors",
+            "banjarahills": "banjara-hills-doctors",
+            "miyapur": "miyapur-doctors",
+        };
+        const key = String(newLocation || "").trim().toLowerCase();
+        const targetUrl = key && slugMap[key]
+            ? `/find-doctor/${slugMap[key]}/`
+            : `/find-doctor/`;
+
+        if (router.asPath !== targetUrl) {
+            router.push(targetUrl, undefined, { scroll: false });
+        }
+    };
 
     const filteredDoctors = useMemo(() => {
         return doctorsData.filter((doctor) => {
@@ -364,6 +384,7 @@ export default function DoctorsLandingPage({ initialDoctors = null, initialLocat
             <DoctorsHeader
                 searchTerm={searchTerm}
                 setSearchTerm={setSearchTerm}
+                heading={customHeading}
             />
             {isMobile ? (
                 <div className="relative bg-gray-200 w-full min-h-full">
@@ -381,7 +402,7 @@ export default function DoctorsLandingPage({ initialDoctors = null, initialLocat
                             selectedSpeciality={selectedSpeciality}
                             setSelectedSpeciality={setSelectedSpeciality}
                             selectedLocation={selectedLocation}
-                            setSelectedLocation={setSelectedLocation}
+                            setSelectedLocation={handleLocationChange}
                             locationSearch={locationSearch}
                             setLocationSearch={setLocationSearch}
                             specialitySearch={specialitySearch}
@@ -487,7 +508,7 @@ export default function DoctorsLandingPage({ initialDoctors = null, initialLocat
                             selectedSpeciality={selectedSpeciality}
                             setSelectedSpeciality={setSelectedSpeciality}
                             selectedLocation={selectedLocation}
-                            setSelectedLocation={setSelectedLocation}
+                            setSelectedLocation={handleLocationChange}
                             locationSearch={locationSearch}
                             setLocationSearch={setLocationSearch}
                             specialitySearch={specialitySearch}

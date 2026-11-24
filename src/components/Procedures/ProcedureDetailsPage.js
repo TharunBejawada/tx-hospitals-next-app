@@ -66,7 +66,8 @@ export default function ProcedureDetailsPage({ url, initialData = null }) {
         return null;
     }
 
-    const { pHeroSection, WhatIsProcedure: whatIsProcedureData, whyIsProcedureNeeded, conditionsTreated, symptoms, risksAvoided, typesOfProcedure, howIsProcedurePerformed, pDuration, benefits, recovery, whyChoose, takeCharge, faqs } = data;
+    const whatIsProcedureData = data?.whatIsProcedure || data?.WhatIsProcedure;
+    const { pHeroSection, whyIsProcedureNeeded, conditionsTreated, symptoms, risksAvoided, typesOfProcedure, howIsProcedurePerformed, pDuration, benefits, recovery, whyChoose, takeCharge, faqs } = data;
 
     return (
         <>

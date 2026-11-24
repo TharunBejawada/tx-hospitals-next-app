@@ -26,10 +26,14 @@ export async function getServerSideProps(context) {
         context.res.setHeader('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300');
     }
 
-    const slug = context.params?.slug || [];
-    if (!slug || slug.length === 0) {
+    const rawSlug = context.params?.slug || [];
+    if (!rawSlug || rawSlug.length === 0) {
         return { redirect: { destination: "/specialities/", permanent: false } };
     }
+
+    const slug = (Array.isArray(rawSlug) ? rawSlug : [rawSlug])
+        .filter(s => typeof s === "string" && !s.startsWith("_gl=") && !s.includes("_gcl_"))
+        .map(s => s.split("?")[0]);
 
     let dep = slug[0] || null;
     const second = slug[1] || null;
@@ -67,10 +71,10 @@ export async function getServerSideProps(context) {
             initialTab = second;
         } else if (second === "disease-and-treatment" && third) {
             initialRouteType = "dat-detail";
-            initialUrl = `/specialities/${slug.join('/')}/`;
+            initialUrl = `/specialities/${dep}/disease-and-treatment/${third}/`;
         } else if (second === "procedures" && third) {
             initialRouteType = "procedure-detail";
-            initialUrl = `/specialities/${slug.join('/')}/`;
+            initialUrl = `/specialities/${dep}/procedures/${third}/`;
         }
     }
 
@@ -142,9 +146,14 @@ export default function CenterOfExcellencePage({
     useEffect(() => {
         if (!slug) return;
 
-        let dep = slug[0] || null;
-        const second = slug[1] || null;
-        const third = slug[2] || null;
+        const rawSlug = Array.isArray(slug) ? slug : (slug ? [slug] : []);
+        const cleanSlug = rawSlug
+            .filter(s => typeof s === "string" && !s.startsWith("_gl=") && !s.includes("_gcl_"))
+            .map(s => s.split("?")[0]);
+
+        let dep = cleanSlug[0] || null;
+        const second = cleanSlug[1] || null;
+        const third = cleanSlug[2] || null;
 
         if (dep === "cardiothoracic-and-vascular-surgery-hospitals") {
             dep = "cardiothoracic-vascular-surgery";
@@ -182,14 +191,14 @@ export default function CenterOfExcellencePage({
 
         if (second === "disease-and-treatment" && third) {
             setRouteType("dat-detail");
-            const fullUrl = `/specialities/${slug.join('/')}/`;
+            const fullUrl = `/specialities/${dep}/disease-and-treatment/${third}/`;
             setUrl(fullUrl);
             return;
         }
 
         if (second === "procedures" && third) {
             setRouteType("procedure-detail");
-            const fullUrl = `/specialities/${slug.join('/')}/`;
+            const fullUrl = `/specialities/${dep}/procedures/${third}/`;
             setUrl(fullUrl);
             return;
         }

@@ -3,7 +3,7 @@ import Image from "next/image";
 import { FaSearch } from "react-icons/fa";
 import useIsMobile from "@/hooks/useIsMobile";
 
-export default function DoctorsHeader({ searchTerm, setSearchTerm }) {
+export default function DoctorsHeader({ searchTerm, setSearchTerm, heading }) {
 
     const isMobile = useIsMobile();
 
@@ -28,7 +28,7 @@ export default function DoctorsHeader({ searchTerm, setSearchTerm }) {
                         {/* Left side text */}
                         <div className="text-white max-w-xl">
                             <h1 className="text-2xl font-bold mb-2 leading-snug">
-                                The Physicians Behind <br /> Your Care
+                                {heading || <>The Physicians Behind <br /> Your Care</>}
                             </h1>
                             <p className="text-sm mb-4 text-gray-200">
                                 A trusted team of certified doctors with decades of collective experience
@@ -67,7 +67,7 @@ export default function DoctorsHeader({ searchTerm, setSearchTerm }) {
                         {/* Left side text */}
                         <div className="text-white max-w-xl">
                             <h1 className="text-4xl font-bold mb-4 leading-snug">
-                                The Physicians Behind <br /> Your Care
+                                {heading || <>The Physicians Behind <br /> Your Care</>}
                             </h1>
                             <p className="text-lg mb-8 text-gray-200">
                                 A trusted team of certified doctors with decades of collective experience

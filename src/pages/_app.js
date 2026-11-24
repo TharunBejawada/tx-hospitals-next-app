@@ -27,6 +27,25 @@ export default function App({ Component, pageProps }) {
     };
   }, []);
 
+  // Clean URL: Strip tracking parameters (_gl, _gcl_au, etc.) from address bar after load
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.location.search && window.location.search.includes("_gl=")) {
+      const timer = setTimeout(() => {
+        try {
+          const url = new URL(window.location.href);
+          url.searchParams.delete("_gl");
+          url.searchParams.delete("_gcl_au");
+          url.searchParams.delete("_gcl_aw");
+          url.searchParams.delete("_gcl_dc");
+          const remainingQuery = url.searchParams.toString();
+          const cleanUrl = url.pathname + (remainingQuery ? `?${remainingQuery}` : "") + url.hash;
+          window.history.replaceState(window.history.state, "", cleanUrl);
+        } catch (_) {}
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [router.asPath]);
+
   // Compute canonical URL dynamically
   let path = router.asPath.split("#")[0];
   let queryString = "";
@@ -99,7 +118,13 @@ export default function App({ Component, pageProps }) {
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'AW-18108940602');
+            gtag('config', 'AW-18108940602', {
+              'url_passthrough': false
+            });
+            gtag('set', 'linker', {
+              'domains': ['txhospitals.in', 'www.txhospitals.in'],
+              'url_passthrough': false
+            });
           `,
         }}
       />

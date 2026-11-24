@@ -17,23 +17,52 @@ const UppalNewFAQ = () => {
     const faqs = [
         {
             question: "Is TX Hospitals Uppal open 24 hours?",
-            answer: "Yes, TX Hospitals Uppal provides 24/7 emergency and critical care services. Our emergency department, ICU, ambulance support, and medical team are available round the clock to handle all medical emergencies."
+            answer: "Yes. The emergency department at TX Hospitals Uppal is open 24 hours a day, 7 days a week, including Sundays and public holidays. It handles accidents, injuries, chest pain and other urgent problems. In an emergency, call +91 91445 14459."
         },
         {
             question: "Which insurances are accepted at TX Hospitals Uppal?",
-            answer: "TX Hospitals Uppal accepts all major health insurance providers, TPAs, and government health schemes, including Aarogyasri, CGHS, ESI, Star Health, HDFC Ergo, ICICI Lombard, Medi Assist, and many more. Cashless treatment facilities are available for eligible patients."
+            answer: "TX Hospitals Uppal offers cashless treatment for eligible health insurance policies. Bring your insurance card and a photo ID, and the insurance desk will arrange pre-authorisation with your insurer or TPA. To check whether your policy is covered, call +91 91445 14459."
         },
         {
-            question: "How do I book an appointment with a doctor near Uppal?",
-            answer: "You can book an appointment at TX Hospitals Uppal by calling the hospital, using WhatsApp support, or filling out the online appointment form on the website. Our patient care team will help you schedule a consultation with the right specialist."
+            question: "How do I book an appointment with a doctor at TX Hospitals Uppal?",
+            answer: "Call +91 91445 14459 or 040-43 108 108, message +91 91445 14459 on WhatsApp, or book online at txhospitals.in and choose Uppal as the location. Walk-in consultations are available during OPD hours."
         },
         {
             question: "Are treatments at TX Hospitals Uppal affordable?",
-            answer: "Yes, TX Hospitals Uppal is committed to providing affordable healthcare with transparent pricing. We offer quality medical treatments, cashless insurance options, and flexible payment solutions without hidden charges."
+            answer: "Costs depend on the treatment, room category and insurance cover. The billing team gives an estimate before any planned procedure, and cashless insurance is available for eligible policies. Health checkup packages include the Whole Body, Master Health, Executive Health – Pro, Cardiac, Kidney, Gastro, Lungs and Orthopedic checkups. Call +91 91445 14459 for current package prices."
         },
         {
-            question: "Is there an ambulance service near Uppal?",
-            answer: "Yes, TX Hospitals Uppal offers 24/7 ambulance services for medical emergencies in Uppal, Nagole, Boduppal, Ramanthapur, Habsiguda, Kothapet, and nearby areas. Emergency response teams are available to provide immediate medical assistance and transportation."
+            question: "Is there an ambulance service at TX Hospitals Uppal?",
+            answer: "Yes. TX Hospitals Uppal runs an ambulance service for Uppal and nearby areas, including Nagole, Boduppal, Ramanthapur, Habsiguda, Nacharam and Kothapet. Call +91 91445 14459, available 24 hours."
+        },
+        {
+            question: "Which specialties are available at TX Hospitals Uppal?",
+            answer: `<ul class="list-disc pl-5 space-y-2 mb-3">
+<li><strong>Gynecology &amp; Obstetrics (Dr. L. Rama Devi Pasumarthy):</strong> pregnancy care, normal and painless delivery, high-risk pregnancy, PCOS, menopause care, laparoscopic gynecology surgery</li>
+<li><strong>Nephrology (Dr. Gangadhar Bathini):</strong> dialysis, chronic kidney disease and acute kidney injury care, kidney stones, kidney biopsy</li>
+<li><strong>Neurology (Dr. K. Amareshwara Rao, Dr. Ashwini Goli):</strong> stroke, epilepsy, Parkinson's disease, Alzheimer's disease, EEG and nerve conduction studies</li>
+<li><strong>Neurosurgery (Dr. P V Satyendra Vardhinedi):</strong> brain tumour, brain and spine surgery</li>
+<li><strong>Urology (Dr. Keerthana Kota):</strong> kidney stones (RIRS, laser lithotripsy), enlarged prostate (BPH), recurrent urinary infections, laparoscopic urology</li>
+<li><strong>Orthopaedics</strong> (Dr. Jagdish Pusa, Dr. M. Kumar Bhanu)</li>
+<li><strong>Surgical Oncology</strong> (Dr. U Azadh Chandrashekhar)</li>
+</ul>
+<p>24/7 emergency care, ICU, a 24/7 CT scan and imaging centre, laboratory services and health checkups are on site. Call +91 91445 14459 to book.</p>`
+        },
+        {
+            question: "Is there a gynecologist at TX Hospitals Uppal?",
+            answer: "Yes. Dr. L. Rama Devi Pasumarthy, a gynecologist with 11+ years of experience, consults at TX Hospitals Uppal and Kachiguda. The gynecology team handles pregnancy care, normal and painless delivery, high-risk pregnancy, PCOS, menopause and laparoscopic gynecology surgery. Book at +91 91445 14459."
+        },
+        {
+            question: "Is a CT scan available at TX Hospitals Uppal, and do I need a prescription?",
+            answer: "Yes. TX Hospitals Uppal has a 24/7 CT scan and imaging centre, so scans are available day and night, including for emergencies. Call +91 91445 14459 to check whether your scan needs a doctor's referral and when the report will be ready."
+        },
+        {
+            question: "Where is TX Hospitals Uppal located?",
+            answer: "TX Hospitals Uppal is at #2-6-71, Bharath Nagar Colony, near Masjid Uppal, Hyderabad, Telangana 500039. For directions, open TX Hospitals Uppal on Google Maps or call +91 91445 14459."
+        },
+        {
+            question: "Does TX Hospitals Uppal have an ICU?",
+            answer: "Yes. TX Hospitals Uppal has an ICU for critically ill patients and emergency admissions, staffed 24 hours a day. For ICU admission or transfer enquiries, call +91 91445 14459."
         }
     ];
 
@@ -87,9 +116,10 @@ const UppalNewFAQ = () => {
                                     </button>
                                     {isOpen && (
                                         <div className="px-5 py-4" style={{ background: 'rgb(254,236,236)' }}>
-                                            <p style={{ fontSize: 14, fontWeight: 400, color: 'rgb(30,30,30)', lineHeight: 1.7, margin: 0 }}>
-                                                {faq.answer}
-                                            </p>
+                                            <div
+                                                className="text-[14px] font-normal text-[rgb(30,30,30)] leading-[1.7]"
+                                                dangerouslySetInnerHTML={{ __html: faq.answer }}
+                                            />
                                         </div>
                                     )}
                                 </div>

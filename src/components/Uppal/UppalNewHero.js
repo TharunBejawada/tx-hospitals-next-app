@@ -272,8 +272,7 @@ const UppalNewHero = () => {
             >
                 <div>
                     <h1 className="mb-5" style={{ fontSize: 'clamp(22px, 2.8vw, 34px)', fontWeight: 600, color: 'rgb(255, 255, 255)', lineHeight: 1.25 }}>
-                        Your Neighborhood Multi-Specialty <br />
-                        Hospital in Uppal
+                        TX Hospitals Uppal: Multispecialty Hospital in Uppal, Hyderabad
                     </h1>
 
                     <div className="flex flex-wrap gap-2 mb-5">

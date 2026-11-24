@@ -61,10 +61,11 @@ export async function getServerSideProps(context) {
 }
 
 export default function FindDoctor_Page({ initialDoctors, initialLocation }) {
-    const pageTitle = "Find a Specialist Doctor in Hyderabad | TX Hospitals";
-    const pageDescription = "Easily find a doctor in Hyderabad at TX Hospitals—browse top specialists by specialty, location, and availability for expert multi-specialty care.";
+    const pageTitle = "Find the Best Doctors in Hyderabad | TX Hospitals";
+    const pageDescription = "Find the best doctors in Hyderabad at TX Hospitals. Consult experienced specialists in cardiology, neurology, gastroenterology, orthopaedics, pediatrics & more.";
     const pageKeywords = "find doctor in Hyderabad, Top Doctors in Hyderabad, Best Doctors in Hyderabad, Top Surgeons in Hyderabad, Best Surgeons in Hyderabad, Find a Surgeons in Hyderabad, Hyderabad Doctors list, Hyderabad Doctors";
     const canonicalUrl = "https://txhospitals.in/find-doctor/";
+    const pageHeading = "Find the Top Doctors in Hyderabad,India";
 
     return (
         <>
@@ -79,7 +80,11 @@ export default function FindDoctor_Page({ initialDoctors, initialLocation }) {
                 <meta property="og:type" content="website" />
             </Head>
             <SecondaryLayout>
-                <DoctorsLandingPage initialDoctors={initialDoctors} initialLocation={initialLocation} />
+                <DoctorsLandingPage
+                    initialDoctors={initialDoctors}
+                    initialLocation={initialLocation}
+                    customHeading={pageHeading}
+                />
             </SecondaryLayout>
         </>
     );

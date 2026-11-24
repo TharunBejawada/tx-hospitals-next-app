@@ -36,7 +36,7 @@ const UppalNewLocations = () => {
                                     <div className="flex items-center gap-1 mt-2">
                                         <Star className="w-3 h-3 text-[#BD385C]" fill="currentColor" strokeWidth={2} />
                                         <span style={{ fontSize: '12px', fontWeight: 600, color: 'rgb(189, 56, 92)' }}>
-                                            4.4
+                                            4.8
                                         </span>
                                     </div>
                                 </div>
