@@ -53,4 +53,21 @@ export function getBranchData(locationSlug) {
     return BRANCH_LOCATION_DATA[key] || BRANCH_LOCATION_DATA['banjara-hills'];
 }
 
+/**
+ * Build a Google Maps location URL (opens place pin, not directions mode).
+ */
+export function getGoogleMapsLocationUrl(placeQuery, coords) {
+    const query = placeQuery || (Array.isArray(coords) && coords.length === 2 ? `${coords[0]},${coords[1]}` : '');
+    if (!query) return 'https://www.google.com/maps';
+    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+}
+
+/**
+ * Open a branch location in Google Maps in a new tab.
+ */
+export function openBranchInGoogleMaps(placeQuery, coords) {
+    if (typeof window === 'undefined') return;
+    window.open(getGoogleMapsLocationUrl(placeQuery, coords), '_blank', 'noopener,noreferrer');
+}
+
 export default BRANCH_LOCATION_DATA;

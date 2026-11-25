@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ChevronDown, MapPin, Phone, Clock } from 'lucide-react';
 import FAQSchema from '@/utils/FAQSchema';
 import dynamic from 'next/dynamic';
+import { openBranchInGoogleMaps } from '@/utils/branchLocationData';
 
 const MapClient = dynamic(
     () => import('@/components/ContactUs/MapClient'),
@@ -58,7 +59,7 @@ const MiyapurFAQ = () => {
     };
 
     const openGoogleMaps = () => {
-        window.open(`https://www.google.com/maps/dir/?api=1&destination=${mapCoords[0]},${mapCoords[1]}`, "_blank");
+        openBranchInGoogleMaps(mapName, mapCoords);
     };
 
     return (

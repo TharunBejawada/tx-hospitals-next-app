@@ -5,6 +5,7 @@ import { locations } from "@/components/ContactUs/locations";
 import useIsMobile from "@/hooks/useIsMobile";
 import dynamic from "next/dynamic";
 import Breadcrumb from "@/components/Common/Breadcrumb";
+import { openBranchInGoogleMaps } from "@/utils/branchLocationData";
 const MapClient = dynamic(
     () => import("@/components/ContactUs/MapClient"),
     { ssr: false }
@@ -48,7 +49,7 @@ export default function ContactUs() {
     };
 
     const openGoogleMaps = (coords) => {
-        window.open(`https://www.google.com/maps/dir/?api=1&destination=${coords[0]},${coords[1]}`, "_blank");
+        openBranchInGoogleMaps(selectedLocation?.name, coords);
     };
 
     const makeCall = (phoneNumber) => {

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import { ChevronDown, MapPin, Phone } from "lucide-react";
 import FAQSchema from "@/utils/FAQSchema";
-import BRANCH_LOCATION_DATA from "@/utils/branchLocationData";
+import BRANCH_LOCATION_DATA, { openBranchInGoogleMaps } from "@/utils/branchLocationData";
 
 const MapClient = dynamic(
     () => import("@/components/ContactUs/MapClient"),
@@ -36,10 +36,7 @@ export default function DoctorFAQAndLocation({ doctorData }) {
 
     const openGoogleMaps = () => {
         if (!activeBranch?.coords) return;
-        window.open(
-            `https://www.google.com/maps/dir/?api=1&destination=${activeBranch.coords[0]},${activeBranch.coords[1]}`,
-            "_blank"
-        );
+        openBranchInGoogleMaps(activeBranch.mapName, activeBranch.coords);
     };
 
     const toggleFAQ = (index) => {
