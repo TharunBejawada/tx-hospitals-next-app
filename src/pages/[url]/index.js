@@ -6,6 +6,7 @@ import ViewProfile from "@/components/Doctors/ViewProfile";
 import { useRouter } from "next/router";
 import SecondaryLayout from "@/components/Layouts/SecondaryLayout";
 import SODetailsPage from "@/components/SecondOpinion/SODetailsPage";
+import BranchSOPage from "@/components/BranchSO/BranchSOPage";
 
 // In-memory cache on the Node.js server to make SSR resolution ultra-fast (1 minute TTL)
 let serverCache = {
@@ -128,6 +129,25 @@ export async function getServerSideProps(context) {
             } catch (err) {
                 console.error("SSR Surgery fetch error:", err.message);
             }
+        }
+
+        // 4. Check Branch-wise SO Landing Pages
+        try {
+            const branchSoRes = await axios.get(
+                `${CONFIG.API_BASE_URL}/api/so-landing-pages/by-url?url=${encodeURIComponent("/" + cleanUrl + "/")}`,
+                { timeout: 4000 }
+            );
+            if (branchSoRes?.data && branchSoRes.data.PageData) {
+                return {
+                    props: {
+                        initialType: "branch-so",
+                        initialData: branchSoRes.data,
+                        initialDepartments: []
+                    }
+                };
+            }
+        } catch (err) {
+            // Not a branch SO page (404 expected when unmatched)
         }
 
         // If it looks like a doctor URL but no match was found
@@ -348,6 +368,15 @@ export default function UniversalPage({ initialType, initialData, initialDepartm
         return (
             <SecondaryLayout>
                 <SODetailsPage surgeryData={data} />
+            </SecondaryLayout>
+        );
+    }
+
+    /* Branch-wise Second Opinion Surgery */
+    if (type === "branch-so") {
+        return (
+            <SecondaryLayout>
+                <BranchSOPage soPageData={data} />
             </SecondaryLayout>
         );
     }
