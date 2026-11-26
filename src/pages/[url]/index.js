@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import SecondaryLayout from "@/components/Layouts/SecondaryLayout";
 import SODetailsPage from "@/components/SecondOpinion/SODetailsPage";
 import BranchSOPage from "@/components/BranchSO/BranchSOPage";
+import DiagnosticPage from "@/components/DiagnosticsPage/DiagnosticPage";
 
 // In-memory cache on the Node.js server to make SSR resolution ultra-fast (1 minute TTL)
 let serverCache = {
@@ -150,6 +151,25 @@ export async function getServerSideProps(context) {
             // Not a branch SO page (404 expected when unmatched)
         }
 
+        // 5. Check Diagnostic Pages
+        try {
+            const diagRes = await axios.get(
+                `${CONFIG.API_BASE_URL}/api/diagnostics-pages/by-url?url=${encodeURIComponent("/" + cleanUrl + "/")}`,
+                { timeout: 4000 }
+            );
+            if (diagRes?.data && diagRes.data.PageData) {
+                return {
+                    props: {
+                        initialType: "diagnostic-page",
+                        initialData: diagRes.data,
+                        initialDepartments: []
+                    }
+                };
+            }
+        } catch (err) {
+            // Not a diagnostic page (404 expected when unmatched)
+        }
+
         // If it looks like a doctor URL but no match was found
         if (cleanUrl.startsWith("dr-")) {
             return {
@@ -198,13 +218,16 @@ export default function UniversalPage({ initialType, initialData, initialDepartm
     };
 
     useEffect(() => {
-        // If data was already rendered by SSR, save hint to localStorage and return
+        // If data was already rendered by SSR, sync state and save hint to localStorage
         if (initialData && initialType) {
+            setType(initialType);
+            setData(initialData);
+            setDepartments(initialDepartments || []);
             try {
                 const cleanUrl = String(url || "").replace(/^\/|\/$/g, "");
                 if (cleanUrl) {
                     const existingMap = JSON.parse(localStorage.getItem('slugMap') || '{}');
-                    const id = initialData.blogId || initialData.id || initialData.soId;
+                    const id = initialData.blogId || initialData.id || initialData.soId || initialData.diagPageId;
                     if (id) {
                         existingMap[cleanUrl] = { id, type: initialType };
                         localStorage.setItem('slugMap', JSON.stringify(existingMap));
@@ -235,6 +258,24 @@ export default function UniversalPage({ initialType, initialData, initialDepartm
                         setData(res?.data?.Item);
                         setLoading(false);
                         return;
+                    }
+                    if (hint.type === 'branch-so') {
+                        const res = await axios.get(`${CONFIG.API_BASE_URL}/api/so-landing-pages/item/${encodeURIComponent(hint.id)}`);
+                        if (res?.data?.PageData) {
+                            setType("branch-so");
+                            setData(res.data);
+                            setLoading(false);
+                            return;
+                        }
+                    }
+                    if (hint.type === 'diagnostic-page') {
+                        const res = await axios.get(`${CONFIG.API_BASE_URL}/api/diagnostics-pages/item/${encodeURIComponent(hint.id)}`);
+                        if (res?.data?.PageData) {
+                            setType("diagnostic-page");
+                            setData(res.data);
+                            setLoading(false);
+                            return;
+                        }
                     }
                     if (hint.type === 'doctor') {
                         try {
@@ -314,6 +355,26 @@ export default function UniversalPage({ initialType, initialData, initialDepartm
                     return;
                 }
 
+                try {
+                    const branchSoRes = await axios.get(`${CONFIG.API_BASE_URL}/api/so-landing-pages/by-url?url=${encodeURIComponent("/" + cleanUrl + "/")}`);
+                    if (branchSoRes?.data?.PageData) {
+                        setType("branch-so");
+                        setData(branchSoRes.data);
+                        setLoading(false);
+                        return;
+                    }
+                } catch (_) {}
+
+                try {
+                    const diagRes = await axios.get(`${CONFIG.API_BASE_URL}/api/diagnostics-pages/by-url?url=${encodeURIComponent("/" + cleanUrl + "/")}`);
+                    if (diagRes?.data?.PageData) {
+                        setType("diagnostic-page");
+                        setData(diagRes.data);
+                        setLoading(false);
+                        return;
+                    }
+                } catch (_) {}
+
                 if (cleanUrl.startsWith("dr-")) {
                     router.replace("/find-doctor/");
                     return;
@@ -377,6 +438,15 @@ export default function UniversalPage({ initialType, initialData, initialDepartm
         return (
             <SecondaryLayout>
                 <BranchSOPage soPageData={data} />
+            </SecondaryLayout>
+        );
+    }
+
+    /* Diagnostic Page */
+    if (type === "diagnostic-page") {
+        return (
+            <SecondaryLayout>
+                <DiagnosticPage diagnosticPageData={data} />
             </SecondaryLayout>
         );
     }
