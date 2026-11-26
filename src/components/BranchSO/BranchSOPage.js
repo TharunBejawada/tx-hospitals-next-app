@@ -12,10 +12,6 @@ import BranchSORisks from "@/components/BranchSO/BranchSORisks";
 import BranchSOWhyChoose from "@/components/BranchSO/BranchSOWhyChoose";
 import BranchSOCTA from "@/components/BranchSO/BranchSOCTA";
 import BranchSOFAQ from "@/components/BranchSO/BranchSOFAQ";
-import BranchSORisks from "@/components/BranchSO/BranchSORisks";
-import BranchSOWhyChoose from "@/components/BranchSO/BranchSOWhyChoose";
-import BranchSOCTA from "@/components/BranchSO/BranchSOCTA";
-import BranchSOFAQ from "@/components/BranchSO/BranchSOFAQ";
 
 export default function BranchSOPage({ soPageData }) {
     const pageData = soPageData?.PageData || {};
@@ -78,28 +74,6 @@ export default function BranchSOPage({ soPageData }) {
                         packageSection={pageData.packageSection}
                         location={location}
                     />
-                )}
-
-                {pageData.risksSection && (
-                    <BranchSORisks
-                        risksSection={pageData.risksSection}
-                        location={location}
-                    />
-                )}
-
-                {pageData.whyChooseSection && (
-                    <BranchSOWhyChoose whyChooseSection={pageData.whyChooseSection} />
-                )}
-
-                {pageData.ctaSection && (
-                    <BranchSOCTA
-                        ctaSection={pageData.ctaSection}
-                        location={location}
-                    />
-                )}
-
-                {pageData.faqSection && (
-                    <BranchSOFAQ faqSection={pageData.faqSection} />
                 )}
 
                 {pageData.risksSection && (
