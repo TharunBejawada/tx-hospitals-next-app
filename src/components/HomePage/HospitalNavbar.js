@@ -166,9 +166,8 @@ export default function HospitalNavbar({ variant = "primary", forceSecondary = f
             return;
         }
 
-        // Check if URL should open in New Tab (_blank) or Same Page (_self)
-        const target = getLinkTarget(path);
-        if (target === "_blank") {
+        // Open any page navigation link in a new tab
+        if (path !== "/") {
             handleClose();
             if (typeof window !== "undefined") {
                 window.open(path, "_blank", "noopener,noreferrer");
@@ -593,8 +592,7 @@ export default function HospitalNavbar({ variant = "primary", forceSecondary = f
             router.push("/");
             return;
         }
-        const target = getLinkTarget(path);
-        if (target === "_blank") {
+        if (path !== "/") {
             if (typeof window !== "undefined") {
                 window.open(path, "_blank", "noopener,noreferrer");
             }

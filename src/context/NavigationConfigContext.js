@@ -112,19 +112,12 @@ export function NavigationConfigProvider({ children }) {
         return;
       }
 
-      const target = getNavigationTarget(href, targetsMapRef.current);
-
-      if (target === "_blank") {
-        // Intercept navigation and open in a new tab
+      // Open any page navigation link in a new tab
+      if (href !== "/") {
         event.preventDefault();
         event.stopPropagation();
         event.stopImmediatePropagation();
         window.open(anchor.href || href, "_blank", "noopener,noreferrer");
-      } else if (target === "_self") {
-        // If configured as same page, make sure anchor target doesn't force _blank
-        if (anchor.getAttribute("target") === "_blank") {
-          anchor.removeAttribute("target");
-        }
       }
     };
 
