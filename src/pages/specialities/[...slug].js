@@ -14,6 +14,7 @@ import { getDepartmentDetails } from "@/utils/departmentUtils";
 import Breadcrumb from "@/components/Common/Breadcrumb";
 import DTDDetailsPage from "@/components/DiseaseAndTreatment/DTDDetailsPage";
 import ProcedureDetailsPage from "@/components/Procedures/ProcedureDetailsPage";
+import DiagnosticPage from "@/components/DiagnosticsPage/DiagnosticPage";
 import CONFIG from "@/config";
 import dynamic from "next/dynamic";
 
@@ -75,6 +76,9 @@ export async function getServerSideProps(context) {
         } else if (second === "procedures" && third) {
             initialRouteType = "procedure-detail";
             initialUrl = `/specialities/${dep}/procedures/${third}/`;
+        } else if (second === "diagnostics" && third) {
+            initialRouteType = "diagnostic-detail";
+            initialUrl = `/specialities/${dep}/diagnostics/${third}/`;
         }
     }
 
@@ -110,6 +114,13 @@ export async function getServerSideProps(context) {
         } else if (initialRouteType === "procedure-detail" && initialUrl) {
             const res = await axios.get(`${CONFIG.API_BASE_URL}/new-procedures/getNewProceduresbyURL/${encodeURIComponent(initialUrl)}`, { timeout });
             initialData = Array.isArray(res?.data) ? res.data[0] : (res?.data || null);
+        } else if (initialRouteType === "diagnostic-detail" && initialUrl) {
+            let res = await axios.get(`${CONFIG.API_BASE_URL}/api/diagnostics-pages/by-url?url=${encodeURIComponent(initialUrl)}`, { timeout }).catch(() => null);
+            if (!res?.data?.PageData && slug[0] && slug[0] !== dep) {
+                const rawDiagUrl = `/specialities/${slug[0]}/diagnostics/${third}/`;
+                res = await axios.get(`${CONFIG.API_BASE_URL}/api/diagnostics-pages/by-url?url=${encodeURIComponent(rawDiagUrl)}`, { timeout }).catch(() => null);
+            }
+            initialData = res?.data?.PageData ? res.data : null;
         }
     } catch (err) {
         console.error("SSR error in specialities [...slug].js:", err.message);
@@ -141,6 +152,10 @@ export default function CenterOfExcellencePage({
     const [department, setDepartment] = useState(initialDepartment);
     const [tab, setTab] = useState(initialTab);
     const [url, setUrl] = useState(initialUrl);
+    const [diagPageData, setDiagPageData] = useState(
+        initialRouteType === "diagnostic-detail" ? initialData : null
+    );
+    const [diagLoading, setDiagLoading] = useState(false);
     const isMobile = useIsMobile();
 
     useEffect(() => {
@@ -203,7 +218,31 @@ export default function CenterOfExcellencePage({
             return;
         }
 
-    }, [slug]);
+        if (second === "diagnostics" && third) {
+            setRouteType("diagnostic-detail");
+            const fullUrl = `/specialities/${dep}/diagnostics/${third}/`;
+            setUrl(fullUrl);
+            if (initialRouteType === "diagnostic-detail" && initialData && initialUrl === fullUrl) {
+                setDiagPageData(initialData);
+                setDiagLoading(false);
+            } else {
+                setDiagLoading(true);
+                axios
+                    .get(`${CONFIG.API_BASE_URL}/api/diagnostics-pages/by-url?url=${encodeURIComponent(fullUrl)}`)
+                    .then((res) => {
+                        setDiagPageData(res?.data?.PageData ? res.data : null);
+                    })
+                    .catch(() => {
+                        setDiagPageData(null);
+                    })
+                    .finally(() => {
+                        setDiagLoading(false);
+                    });
+            }
+            return;
+        }
+
+    }, [slug, initialRouteType, initialData, initialUrl]);
 
     const handleTabClick = (key) => {
         setTab(key);
@@ -314,6 +353,30 @@ export default function CenterOfExcellencePage({
                     </div>
                 </SecondaryLayout>
             </>
+        );
+    }
+
+    if (routeType === "diagnostic-detail") {
+        return (
+            <SecondaryLayout>
+                {diagLoading ? (
+                    <div className="flex flex-row justify-center items-center mt-20 mb-12 gap-2">
+                        <div className="w-8 h-8 border-2 border-pink-700 border-t-transparent rounded-full animate-spin"></div>
+                        <div className="text-pink-700 text-lg font-medium animate-pulse">
+                            Loading...
+                        </div>
+                    </div>
+                ) : diagPageData ? (
+                    <DiagnosticPage diagnosticPageData={diagPageData} />
+                ) : (
+                    <div className="max-w-4xl mx-auto py-20 px-4 text-center text-gray-600">
+                        Diagnostic page not found.
+                    </div>
+                )}
+                <div className="mt-8 md:mt-12">
+                    <OurLocations />
+                </div>
+            </SecondaryLayout>
         );
     }
 

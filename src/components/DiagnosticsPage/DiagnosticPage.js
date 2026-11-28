@@ -9,6 +9,7 @@ import DiagnosticTypes from "@/components/DiagnosticsPage/DiagnosticTypes";
 import DiagnosticSteps from "@/components/DiagnosticsPage/DiagnosticSteps";
 import DiagnosticResults from "@/components/DiagnosticsPage/DiagnosticResults";
 import DiagnosticCTA from "@/components/DiagnosticsPage/DiagnosticCTA";
+import DiagnosticFAQ from "@/components/DiagnosticsPage/DiagnosticFAQ";
 
 export default function DiagnosticPage({ diagnosticPageData }) {
     const pageData = diagnosticPageData?.PageData || {};
@@ -71,6 +72,10 @@ export default function DiagnosticPage({ diagnosticPageData }) {
 
                 {pageData.ctaSection && (
                     <DiagnosticCTA ctaSection={pageData.ctaSection} />
+                )}
+
+                {pageData.faqSection && (
+                    <DiagnosticFAQ faqSection={pageData.faqSection} />
                 )}
             </main>
         </>
